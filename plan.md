@@ -104,30 +104,9 @@ These helpers should come before broad new skill work when they remove repeated 
 
 | Helper | Priority | First Consumer | Purpose | Keep Simple Boundary |
 | --- | --- | --- | --- | --- |
-| `scripts/git/gh-get-ci.sh` | High | `$git-ci-watch` | Normalize GitHub PR checks, workflow runs, jobs, conclusions, failed logs, and URLs. | Read-only; accept explicit repo plus one target type at a time: PR, branch, commit, or run ID. |
-| `scripts/git/glab-get-ci.sh` | High | `$git-ci-watch` | Normalize GitLab MR pipelines, branch pipelines, jobs, statuses, failed logs, and URLs. | Read-only; accept explicit repo plus one target type at a time: MR, branch, commit, or pipeline ID. |
 | `scripts/git/resolve-target.sh` | Medium | Table and CI helpers | Normalize remotes, URLs, hosts, repo slugs, and `all remotes`. | Output target JSON only; do not call platform APIs. |
 | `scripts/git/get-branch-state.sh` | Medium | `$git-branch-sync` | Emit branch, upstream, base guess, ahead/behind, dirty state, and pushed HEAD. | Local git only; no mutation. |
 | `scripts/git/gh-get-pr.sh` and `scripts/git/glab-get-mr.sh` | Medium | `$git-pr-watcher` | Collect richer single PR/MR detail than list helpers. | Read-only detail collection; no review or merge actions. |
-
-Preferred CI helper output shape:
-
-```json
-{
-  "host": "github|gitlab",
-  "repo": "owner/name or group/project",
-  "target": {"type": "pr|mr|branch|commit|run|pipeline", "value": "..."},
-  "status": "Pass|Failing|Pending|Canceled|Skipped|Missing|Unknown",
-  "url": "...",
-  "commit": "...",
-  "jobs": [
-    {"name": "...", "status": "...", "url": "...", "required": true, "summary": "..."}
-  ],
-  "failed_logs": [
-    {"job": "...", "summary": "..."}
-  ]
-}
-```
 
 ## DRY And Script Opportunities
 

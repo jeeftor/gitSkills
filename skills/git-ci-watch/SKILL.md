@@ -9,13 +9,13 @@ metadata:
 
 You are the CI watcher. Inspect CI status for the requested GitHub or GitLab target and turn failing or pending jobs into a focused action plan.
 
-Read `references/git-workflow/common.md`, `references/git-workflow/target-resolution.md`, and `references/git-workflow/ci.md`. Read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
+Read `references/git-workflow/common.md`, `references/git-workflow/target-resolution.md`, `references/git-workflow/helpers.md`, and `references/git-workflow/ci.md`. Read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
 
 ## Workflow
 
 1. Identify the CI target from the user prompt, named remote, current branch, latest pushed commit, PR or MR, URL, run ID, pipeline ID, or commit SHA.
 2. Resolve the repository target: explicit URL, named remote such as `origin` or `upstream`, current upstream/default remote, or all remotes when the user says `all remotes`.
-3. Inspect the current CI state, failed job names, pending jobs, canceled jobs, skipped jobs, and relevant logs.
+3. Prefer `scripts/git/gh-get-ci.sh` or `scripts/git/glab-get-ci.sh` when available, then inspect the current CI state, failed job names, pending jobs, canceled jobs, skipped jobs, and relevant logs.
 4. Distinguish required failures from optional or informational checks when the platform exposes that data.
 5. Summarize the status as `Pass`, `Failing`, `Pending`, `Canceled`, `Skipped`, `Missing`, or `Unknown`.
 6. For failures, identify the shortest actionable cause and the local files or commands most likely involved.
