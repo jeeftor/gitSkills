@@ -34,12 +34,14 @@ The skills prefer `gh` and `glab` for normal operations and use platform APIs on
 
 ## Helper Scripts
 
-Read-only helper scripts live under `scripts/git/` and emit normalized JSON for table workflows:
+Read-only helper scripts live under `scripts/git/` and emit normalized JSON for table and CI workflows:
 
 - `gh-get-issues.sh` - collect GitHub issues.
 - `glab-get-issues.sh` - collect GitLab issues.
 - `gh-get-prs.sh` - collect GitHub pull requests.
 - `glab-get-mrs.sh` - collect GitLab merge requests.
+- `gh-get-ci.sh` - collect GitHub Actions/check status.
+- `glab-get-ci.sh` - collect GitLab pipeline/job status.
 - `get-issues.sh` - compatibility wrapper for GitHub issue collection.
 
 Examples:
@@ -49,6 +51,8 @@ scripts/git/gh-get-issues.sh --repo jeeftor/gitSkills --state open --limit 50
 scripts/git/glab-get-issues.sh --repo jeef/gitskills --state opened --limit 50
 scripts/git/gh-get-prs.sh --repo jeeftor/gitSkills --state open --scope all --limit 50
 scripts/git/glab-get-mrs.sh --repo jeef/gitskills --state opened --scope all --limit 50
+scripts/git/gh-get-ci.sh --repo jeeftor/gitSkills --target-type branch --target master
+scripts/git/glab-get-ci.sh --repo group/project --target-type branch --target main
 ```
 
 ## Install

@@ -58,6 +58,16 @@ Prefer `--body-file` over generated inline bodies when the repo has a PR templat
 
 ## CI And Runs
 
+When an installed or repo-local helper is available, prefer it for CI watch data:
+
+```bash
+scripts/git/gh-get-ci.sh --repo <owner/repo> --target-type branch --target <branch>
+scripts/git/gh-get-ci.sh --repo <owner/repo> --target-type pr --target <number>
+scripts/git/gh-get-ci.sh --repo <owner/repo> --target-type run --target <run-id>
+```
+
+The helper emits normalized JSON for summaries, including status, jobs, failed logs, URL, commit, and branch fields.
+
 - PR checks: `gh pr checks <number> --repo <owner/repo>`
 - Workflow runs for branch: `gh run list --repo <owner/repo> --branch <branch> --limit 20`
 - Workflow run summary: `gh run view <run-id> --repo <owner/repo> --json status,conclusion,jobs,headSha,url`

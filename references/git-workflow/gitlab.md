@@ -58,6 +58,16 @@ Prefer file-backed descriptions when the repo has a merge request template.
 
 ## CI And Pipelines
 
+When an installed or repo-local helper is available, prefer it for CI watch data:
+
+```bash
+scripts/git/glab-get-ci.sh --repo <group/project> --target-type branch --target <branch>
+scripts/git/glab-get-ci.sh --repo <group/project> --target-type mr --target <iid>
+scripts/git/glab-get-ci.sh --repo <group/project> --target-type pipeline --target <pipeline-id>
+```
+
+The helper emits normalized JSON for summaries, including status, jobs, failed logs, URL, commit, and branch fields.
+
 - Pipelines for branch: `glab pipeline list --branch <branch>`
 - Pipeline details: `glab pipeline view <pipeline-id>`
 - Job logs: use `glab ci view` or GitLab API when `glab pipeline view` is insufficient.
