@@ -60,4 +60,12 @@ Validate before pushing:
 make validate
 ```
 
+Install the local commit hook with:
+
+```bash
+prek install
+```
+
+The hook runs `make validate` before each commit.
+
 The skills use shared references under `references/git-workflow/`, helper scripts under `scripts/git/`, and load GitHub or GitLab details only after detecting the repository host.
