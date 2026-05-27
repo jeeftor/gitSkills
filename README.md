@@ -27,8 +27,29 @@ These skills are built around the platform CLIs:
 
 - GitHub workflows require `gh` with authentication configured.
 - GitLab workflows require `glab` with authentication configured.
+- Helper scripts require `jq`.
+- Local hook installation uses `prek`.
 
 The skills prefer `gh` and `glab` for normal operations and use platform APIs only when the CLI output is missing required details.
+
+## Helper Scripts
+
+Read-only helper scripts live under `scripts/git/` and emit normalized JSON for table workflows:
+
+- `gh-get-issues.sh` - collect GitHub issues.
+- `glab-get-issues.sh` - collect GitLab issues.
+- `gh-get-prs.sh` - collect GitHub pull requests.
+- `glab-get-mrs.sh` - collect GitLab merge requests.
+- `get-issues.sh` - compatibility wrapper for GitHub issue collection.
+
+Examples:
+
+```bash
+scripts/git/gh-get-issues.sh --repo jeeftor/gitSkills --state open --limit 50
+scripts/git/glab-get-issues.sh --repo jeef/gitskills --state opened --limit 50
+scripts/git/gh-get-prs.sh --repo jeeftor/gitSkills --state open --scope all --limit 50
+scripts/git/glab-get-mrs.sh --repo jeef/gitskills --state opened --scope all --limit 50
+```
 
 ## Install
 

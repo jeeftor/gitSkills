@@ -26,12 +26,14 @@
 - Updated `make validate` to syntax-check every shell helper under `scripts/*.sh` and `scripts/git/*.sh`.
 - Updated `make install` to copy shared helper scripts into every installed skill alongside shared references.
 - Updated `README.md` to document shared helper scripts and their install behavior.
+- Updated `README.md` to document helper script prerequisites and usage examples.
 - Updated `README.md` to document installing the local hook with `prek install`.
 - Updated GitHub and GitLab workflow references to prefer provider-specific helper scripts for issue and PR/MR table data when available.
 - Updated `$git-issue-table` and `$git-pr-table` to read shared helper and table references.
 - Updated `$git-issue-table`, `$git-pr-table`, and `$git-ci-watch` to support consistent named-remote and `all remotes` target phrasing.
 - Updated shared target-resolution guidance so named remotes such as `origin` or `upstream` are explicit repository targets.
 - Added shared target phrasing to `common.md`, including the distinction between bare `all` and `all remotes`.
+- Updated `AGENTS.md` to require README and agent matrix relevance checks plus changelog updates before commits.
 
 ### Verified
 
