@@ -54,6 +54,7 @@ Use `git-pr-*` even for GitLab because the user often says "PR"; skill bodies sh
 - Added `references/git-workflow/ci.md`.
 - Updated `make install` so shared references are copied into each installed skill under `~/.agents/skills/<skill>/references/git-workflow/`.
 - Added optimized README artwork at `assets/gitSkills.webp`.
+- Documented `gh` and `glab` CLI requirements in README.
 - Verified `make validate` passes for the current eight skills.
 
 ## Skill Authoring Workflow

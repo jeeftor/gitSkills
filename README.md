@@ -19,6 +19,15 @@ It installs plain skill names:
 
 See [agent-matrix.md](agent-matrix.md) for the skill routing hierarchy.
 
+## Requirements
+
+These skills are built around the platform CLIs:
+
+- GitHub workflows require `gh` with authentication configured.
+- GitLab workflows require `glab` with authentication configured.
+
+The skills prefer `gh` and `glab` for normal operations and use platform APIs only when the CLI output is missing required details.
+
 ## Install
 
 From this checkout:
