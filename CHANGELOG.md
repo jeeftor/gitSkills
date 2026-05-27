@@ -32,6 +32,7 @@
 - Updated `$git-issue-table` and `$git-pr-table` to read shared helper and table references.
 - Updated `$git-issue-table`, `$git-pr-table`, and `$git-ci-watch` to support consistent named-remote and `all remotes` target phrasing.
 - Updated shared target-resolution guidance so named remotes such as `origin` or `upstream` are explicit repository targets.
+- Removed site-specific remote examples from skill and workflow documentation.
 - Added shared target phrasing to `common.md`, including the distinction between bare `all` and `all remotes`.
 - Updated `AGENTS.md` to require README and agent matrix relevance checks plus changelog updates before commits.
 

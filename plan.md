@@ -81,29 +81,72 @@ During normal use, watch for:
 - Output quality: tables too verbose, missing blockers, poor next-action recommendations.
 - Reference loading: skills reading too much context or missing the right host-specific reference.
 
-Immediate improvement areas:
+Keep this plan short. When a command or helper is implemented, move the useful decision into `README.md`, `agent-matrix.md`, `references/git-workflow/`, or the relevant `SKILL.md`, then remove or compact the row here.
 
-1. Expand `references/git-workflow/common.md` with default branch detection, dirty-state policy, PR/MR lookup rules, and mutation safety.
-2. Expand `references/git-workflow/github.md` with concrete `gh` commands for create, update, review, merge, CI, and API fallbacks.
-3. Expand `references/git-workflow/gitlab.md` with concrete `glab` commands for create, update, approvals, discussions, merge, pipeline inspection, and API fallbacks.
-4. Use the installed skills against this repo and at least one GitLab-backed repo, then patch based on observed misses.
-5. Add trigger-eval prompts for primary skills once there is enough real usage to write realistic should-trigger and should-not-trigger examples.
+## Next Command Backlog
 
-## Future Work
+Implement only one or two at a time. Favor commands that reuse the existing GitHub/GitLab target-resolution and table-helper patterns.
 
-Candidate skills after the initial PR/MR lifecycle proves useful:
+| Command | Priority | Scope | Why Next | Keep Simple Boundary |
+| --- | --- | --- | --- | --- |
+| `$git-branch-sync` | High | Sync current branch with base branch. | Common daily workflow and safety-sensitive enough to deserve a skill. | Detect base/upstream, report ahead/behind, recommend merge or rebase; mutate only when asked. |
+| `$git-pr-review` | High | Review someone else's PR/MR. | Natural companion to `$git-pr-watcher`; covers checkout, diff, tests, and review findings. | Read-only by default; no submitted review unless explicitly asked. |
+| `$git-changelog` | Medium | Update `CHANGELOG.md` for a change. | This repo now requires changelog updates before commits. | Patch existing changelog style only; do not invent release tooling. |
+| `$git-issue-create` | Medium | Create GitHub/GitLab issues from a clear request. | Completes the issue workflow without mixing mutation into `$git-issue-table`. | Title/body/labels only; ask before milestones, assignments, or cross-repo creation. |
+| `$git-issue-update` | Medium | Edit or close one issue. | Useful after issue triage finds the next action. | Require an explicit issue target; do not bulk edit. |
+| `$git-release-notes` | Low | Summarize merged PRs/MRs or commits. | Useful later, but overlaps `$git-changelog`. | Keep separate only if release summaries prove different from changelog maintenance. |
+| `$git-init` | Low | Initialize or connect a repo and first push. | Good demo/VHS candidate but less urgent for daily work. | Local repo, remotes, default branch, first commit; avoid project scaffolding. |
+| `$git-prek-setup` | Low | Add a conservative `prek` validate hook. | Helpful for repos that already have a clear validation command. | Configure existing checks only; do not add new linters by default. |
 
-- `$git-init`: initialize or connect a local repo, add or verify remotes, choose the preferred default branch, make the first commit, and push the first branch.
-- `$git-branch-sync`: update a branch from its base branch, handle behind/conflict states, and manage rebase/merge/force-with-lease safety.
-- `$git-pr-review`: review someone else's PR/MR, check out safely, run targeted verification, and prepare review findings or comments.
-- `$git-changelog`: update `CHANGELOG.md`, release notes, or similar project changelog files when preparing a PR or release.
-- `$git-release-notes`: summarize merged PRs/MRs or commits into release notes. Do not add this separately from `$git-changelog` unless the workflows are clearly different.
-- `$git-issue-create` and `$git-issue-update`: create or edit issues, labels, milestones, and assignments. Keep `$git-issue-table` read-only.
-- `$git-feature`: possible broad coordinator for feature branch setup, smallest verifiable goal, verification, changelog/docs checks, and PR handoff. Defer because generic feature implementation can become too broad.
-- `$git-prek-setup`: detect repository languages/tooling and set up `prek` hooks for the repo. Use `prek`, not `pre-commit`, and keep language-specific hook choices conservative.
-- Extend `$git-workflow` as future issue, changelog, release, initialization, and feature workflows become real.
-- Add repo maintenance scripts only when repeated logic becomes fragile enough to justify them. Good candidates are trigger-eval runners, metadata audits, or a structured `gh`/`glab` status normalizer; avoid scripts for simple one-off CLI calls.
-- MCP integration policy: if GitHub or GitLab MCP servers become available, prefer them for structured read operations where they are clearly better than CLI output. Keep local git state, staging, commit, push, rebase, and merge safety grounded in local `git` plus explicit user intent.
+## Next Helper Backlog
+
+These helpers should come before broad new skill work when they remove repeated provider-specific CLI plumbing.
+
+| Helper | Priority | First Consumer | Purpose | Keep Simple Boundary |
+| --- | --- | --- | --- | --- |
+| `scripts/git/gh-get-ci.sh` | High | `$git-ci-watch` | Normalize GitHub PR checks, workflow runs, jobs, conclusions, failed logs, and URLs. | Read-only; accept explicit repo plus one target type at a time: PR, branch, commit, or run ID. |
+| `scripts/git/glab-get-ci.sh` | High | `$git-ci-watch` | Normalize GitLab MR pipelines, branch pipelines, jobs, statuses, failed logs, and URLs. | Read-only; accept explicit repo plus one target type at a time: MR, branch, commit, or pipeline ID. |
+| `scripts/git/resolve-target.sh` | Medium | Table and CI helpers | Normalize remotes, URLs, hosts, repo slugs, and `all remotes`. | Output target JSON only; do not call platform APIs. |
+| `scripts/git/get-branch-state.sh` | Medium | `$git-branch-sync` | Emit branch, upstream, base guess, ahead/behind, dirty state, and pushed HEAD. | Local git only; no mutation. |
+| `scripts/git/gh-get-pr.sh` and `scripts/git/glab-get-mr.sh` | Medium | `$git-pr-watcher` | Collect richer single PR/MR detail than list helpers. | Read-only detail collection; no review or merge actions. |
+
+Preferred CI helper output shape:
+
+```json
+{
+  "host": "github|gitlab",
+  "repo": "owner/name or group/project",
+  "target": {"type": "pr|mr|branch|commit|run|pipeline", "value": "..."},
+  "status": "Pass|Failing|Pending|Canceled|Skipped|Missing|Unknown",
+  "url": "...",
+  "commit": "...",
+  "jobs": [
+    {"name": "...", "status": "...", "url": "...", "required": true, "summary": "..."}
+  ],
+  "failed_logs": [
+    {"job": "...", "summary": "..."}
+  ]
+}
+```
+
+## DRY And Script Opportunities
+
+Add scripts only when repeated commands become noisy, fragile, or easy to get subtly wrong.
+
+| Opportunity | Candidate Helper | Useful For | Notes |
+| --- | --- | --- | --- |
+| Resolve remotes and hosts once. | `scripts/git/resolve-target.sh` | `$git-issue-table`, `$git-pr-table`, `$git-ci-watch`, future mutation skills. | Normalize `origin`, `upstream`, URLs, and `all remotes` before provider-specific commands. |
+| Normalize current branch state. | `scripts/git/get-branch-state.sh` | `$git-branch-sync`, `$git-pr-update`, `$git-pr-create`. | Emit branch, upstream, base guess, ahead/behind, dirty state, and pushed HEAD. |
+| Collect one PR/MR deeply. | `scripts/git/gh-get-pr.sh` and `scripts/git/glab-get-mr.sh` | `$git-pr-watcher`, `$git-pr-review`, `$git-pr-merge`. | Existing table helpers are list-oriented; watcher flows need richer single-item data. |
+| Share shell argument checks. | `scripts/git/lib.sh` | All helper scripts. | Only add when helper count grows; current duplication is tolerable. |
+| Exercise routing examples. | `scripts/validate-skill-routing.sh` | `make validate`, future trigger tests. | Start as a lightweight metadata/reference check, not a model-eval harness. |
+
+## Future Policy Notes
+
+- Extend `$git-workflow` only when a new command is actually implemented.
+- Keep `$git-issue-table`, `$git-pr-table`, and `$git-pr-watcher` read-only.
+- Keep local git state, staging, commit, push, rebase, and merge safety grounded in local `git` plus explicit user intent.
+- If GitHub or GitLab MCP servers become available, prefer them only for structured read operations where they are clearly better than CLI output.
 
 ## Open Questions
 
