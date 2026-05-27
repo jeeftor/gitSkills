@@ -20,12 +20,14 @@ Use GraphQL when unresolved review thread counts or mergeability details are mis
 When an installed or repo-local helper is available, prefer it for PR table data:
 
 ```bash
+scripts/git/get-prs.sh --state open --scope all --limit 50
+scripts/git/get-prs.sh origin --state open --scope all --limit 50
 scripts/git/gh-get-prs.sh --repo <owner/repo> --state open --scope all --limit 50
 ```
 
 Use `--scope authored`, `--scope assigned`, or `--scope review` when the user asks for PRs they authored, PRs assigned to them, or PRs needing their review.
 
-The helper emits normalized JSON for table summaries, including draft state, review decision, merge state, branches, labels, assignees, and status-check counts.
+The generic helper resolves the current checkout or named remote before delegating to the GitHub helper. It emits a table-ready `items` list with draft state, CI status, review status, mergeability, branch freshness, URLs, and blocker text. The GitHub helper remains available for direct provider-specific collection.
 
 Fallback command:
 

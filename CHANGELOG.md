@@ -19,6 +19,7 @@
 - Added GitHub PR and GitLab MR helper scripts.
   - `scripts/git/gh-get-prs.sh` normalizes GitHub pull request data, including draft state, review decision, merge state, labels, assignees, branches, and status-check counts.
   - `scripts/git/glab-get-mrs.sh` normalizes GitLab merge request data, including draft state, reviewers, merge status, discussion status, branches, and pipeline data.
+  - `scripts/git/get-prs.sh` resolves the current checkout, named remote, GitHub/GitLab URL, or all remotes before delegating to the provider helper and adding table-ready status fields.
 - Added GitHub Actions and GitLab pipeline helper scripts.
   - `scripts/git/gh-get-ci.sh` normalizes GitHub PR checks, workflow runs, jobs, failed logs, and run URLs.
   - `scripts/git/glab-get-ci.sh` normalizes GitLab MR pipelines, branch pipelines, jobs, failed logs, and pipeline URLs.
@@ -34,6 +35,7 @@
 - Updated `README.md` to document installing the local hook with `prek install`.
 - Updated GitHub and GitLab workflow references to prefer provider-specific helper scripts for issue and PR/MR table data when available.
 - Updated `$git-issue-table` to use the generic issue helper for normal target resolution before falling back to manual target inspection.
+- Updated `$git-pr-table` to use the generic PR/MR helper for normal target resolution and table-ready status fields before falling back to manual target inspection.
 - Updated `AGENTS.md` to prefer script-backed common paths when workflows require repeated target-resolution commands.
 - Updated CI workflow references to prefer provider-specific helper scripts for CI watch data when available.
 - Updated `$git-issue-table` and `$git-pr-table` to read shared helper and table references.

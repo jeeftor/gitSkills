@@ -44,12 +44,15 @@ Read-only helper scripts live under `scripts/git/` and emit normalized JSON for 
 - `gh-get-ci.sh` - collect GitHub Actions/check status.
 - `glab-get-ci.sh` - collect GitLab pipeline/job status.
 - `get-issues.sh` - resolve the current checkout, named remote, or GitHub/GitLab URL and collect issues.
+- `get-prs.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes and collect PRs/MRs with table-ready status fields.
 
 Examples:
 
 ```bash
 scripts/git/get-issues.sh --state open --limit 50
 scripts/git/get-issues.sh upstream --state open --limit 50
+scripts/git/get-prs.sh --state open --scope all --limit 50
+scripts/git/get-prs.sh all remotes --state open --scope review --limit 50
 scripts/git/gh-get-issues.sh --repo jeeftor/gitSkills --state open --limit 50
 scripts/git/glab-get-issues.sh --repo jeef/gitskills --state opened --limit 50
 scripts/git/gh-get-prs.sh --repo jeeftor/gitSkills --state open --scope all --limit 50

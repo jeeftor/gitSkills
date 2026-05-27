@@ -52,6 +52,7 @@ CI helpers should emit this general shape:
 - `scripts/git/gh-get-issues.sh`: collect GitHub issues as normalized JSON, including parent issue, sub-issue, and dependency metadata from the GitHub REST API.
 - `scripts/git/glab-get-issues.sh`: collect GitLab issues as normalized JSON, including task completion and blocking issue metadata from the GitLab REST API.
 - `scripts/git/get-issues.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then collect normalized issue JSON with the provider helper.
+- `scripts/git/get-prs.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes, then collect normalized PR/MR JSON with table-ready status fields.
 - `scripts/git/gh-get-prs.sh`: collect GitHub pull requests as normalized JSON, including draft, review, merge, branch, and status-check fields.
 - `scripts/git/glab-get-mrs.sh`: collect GitLab merge requests as normalized JSON, including draft, review, merge, branch, discussion, and pipeline fields.
 - `scripts/git/gh-get-ci.sh`: collect GitHub Actions/check status as normalized JSON, including PR checks, workflow runs, jobs, failed logs, and run URLs.
