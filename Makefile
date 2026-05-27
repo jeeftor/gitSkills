@@ -7,7 +7,5 @@ uninstall:
 	ASSUME_YES=1 ./scripts/uninstall.sh
 
 validate:
-	sh -n scripts/install.sh
-	sh -n scripts/uninstall.sh
+	for script in scripts/*.sh scripts/git/*.sh; do sh -n "$$script"; done
 	for skill in skills/*; do ~/.codex/codex-python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py "$$skill"; done
-

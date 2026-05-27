@@ -8,7 +8,7 @@ Do not assume `origin` is the only source of truth. Some repositories mirror bet
 
 Resolve the target platform in this order:
 
-1. Explicit user input: platform name, GitHub URL, GitLab URL, PR URL, MR URL, issue URL, run URL, or pipeline URL.
+1. Explicit user input: platform name, remote name, GitHub URL, GitLab URL, PR URL, MR URL, issue URL, run URL, or pipeline URL.
 2. Current task language:
    - `pull request`, `PR`, GitHub Actions, check suite, workflow run -> prefer GitHub.
    - `merge request`, `MR`, GitLab pipeline, job, merge train -> prefer GitLab.
@@ -26,6 +26,18 @@ Resolve the target platform in this order:
 
 If detection is still ambiguous, ask before using a platform-specific command.
 
+## Remote Target Resolution
+
+Treat a named git remote in the user prompt as an explicit target. For example, `remote upstream`, `upstream remote`, or a bare remote name such as `upstream` should resolve with:
+
+```bash
+git remote get-url upstream
+```
+
+Use the resolved remote URL to identify the host and repository. If the bare word matches both a remote name and another valid scope word, ask before proceeding.
+
+For read-only overview requests, treat `all remotes` as a request to inspect every distinct GitHub or GitLab repository from `git remote -v`. Deduplicate fetch and push URLs for the same remote. Do not treat a bare `all` as `all remotes`; for issue tables, bare `all` means all open issues in the resolved repository unless the user clarifies otherwise.
+
 ## Mixed GitHub And GitLab Repos
 
 - Explicit user intent wins over remotes.
@@ -42,6 +54,7 @@ If detection is still ambiguous, ask before using a platform-specific command.
 - Local status: `git status --short --branch`
 - Origin URL: `git remote get-url origin`
 - Upstream URL: `git remote get-url upstream`
+- Named remote URL: `git remote get-url <remote>`
 - All remotes: `git remote -v`
 - Default branch candidates: inspect remote HEAD with `git remote show <remote>` when needed.
 

@@ -15,6 +15,38 @@ Use this reference when remotes, URLs, or user input identify GitLab.
 
 Use the GitLab API when approval status, discussions, merge train state, or pipeline details are missing from `glab`.
 
+## Merge Requests
+
+When an installed or repo-local helper is available, prefer it for MR table data:
+
+```bash
+scripts/git/glab-get-mrs.sh --repo <group/project> --state opened --scope all --limit 50
+```
+
+Use `--scope authored`, `--scope assigned`, or `--scope review` when the user asks for MRs they authored, MRs assigned to them, or MRs needing their review.
+
+The helper emits normalized JSON for table summaries, including draft state, reviewers, merge state, branches, discussion status, and head-pipeline fields.
+
+Fallback commands:
+
+- List MRs: `glab mr list --repo <group/project> --output json --per-page 50`
+- MR API: `glab api projects/<url-encoded-project-path>/merge_requests`
+
+## Issues
+
+When an installed or repo-local helper is available, prefer it for issue table data:
+
+```bash
+scripts/git/glab-get-issues.sh --repo <group/project> --state opened --limit 50
+```
+
+The helper emits normalized JSON and includes GitLab REST fields that are awkward to extract from `glab issue list`, including task completion and blocking issue metadata.
+
+Fallback commands:
+
+- List issues: `glab issue list --repo <group/project> --opened --output json --per-page 50`
+- Issue API: `glab api projects/<url-encoded-project-path>/issues`
+
 ## Create And Update
 
 - Create draft MR: `glab mr create --draft --source-branch <branch> --target-branch <base> --title <title> --description-file <file>`

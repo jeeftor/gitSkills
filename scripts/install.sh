@@ -4,6 +4,7 @@ set -eu
 SKILLS_DIR="${SKILLS_DIR:-$HOME/.agents/skills}"
 SKILLS="git-workflow git-issue-table git-pr git-pr-table git-pr-watcher git-pr-address-comments git-ci-watch git-pr-create git-pr-update git-pr-merge"
 REFERENCE_SUBDIR="references/git-workflow"
+HELPER_SUBDIR="scripts/git"
 
 script_dir() {
   case "$0" in
@@ -44,6 +45,11 @@ if [ ! -d "$repo_dir/$REFERENCE_SUBDIR" ]; then
   exit 1
 fi
 
+if [ ! -d "$repo_dir/$HELPER_SUBDIR" ]; then
+  echo "Missing helper scripts: $HELPER_SUBDIR" >&2
+  exit 1
+fi
+
 confirm_plan
 
 mkdir -p "$SKILLS_DIR"
@@ -53,6 +59,8 @@ for skill in $SKILLS; do
   cp -R "$repo_dir/skills/$skill" "$SKILLS_DIR/$skill"
   mkdir -p "$SKILLS_DIR/$skill/references"
   cp -R "$repo_dir/$REFERENCE_SUBDIR" "$SKILLS_DIR/$skill/references/git-workflow"
+  mkdir -p "$SKILLS_DIR/$skill/scripts"
+  cp -R "$repo_dir/$HELPER_SUBDIR" "$SKILLS_DIR/$skill/scripts/git"
   echo "Installed $skill"
 done
 

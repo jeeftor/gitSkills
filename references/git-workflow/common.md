@@ -3,6 +3,8 @@
 Use this lightweight reference for every `gitSkills` workflow. Read deeper references only when the task needs them:
 
 - `target-resolution.md`: host, repository, branch, PR/MR, issue, CI target, and mixed GitHub/GitLab detection.
+- `table.md`: compact table output, ANSI color, emoji, and status-token conventions.
+- `helpers.md`: repo-local and installed helper script conventions.
 - `github.md`: GitHub `gh` commands and GitHub API fallbacks.
 - `gitlab.md`: GitLab `glab` commands and GitLab API fallbacks.
 - `ci.md`: CI status normalization, logs, runs, jobs, pipelines, and read-only CI safety.
@@ -15,6 +17,12 @@ Use this lightweight reference for every `gitSkills` workflow. Read deeper refer
 - `Review`: approved, changes requested, review required, or unknown.
 - `Merge`: mergeable, blocked, conflict, behind, or unknown.
 - `Main blocker`: the shortest actionable reason work cannot proceed.
+
+## Shared Target Phrasing
+
+- A named remote in the prompt, such as `origin`, `upstream`, or `remote upstream`, is an explicit repository target. Resolve it with `target-resolution.md`.
+- `all remotes` means inspect every distinct GitHub or GitLab repository from the local remotes for read-only overview workflows.
+- Bare `all` is workflow-specific scope, such as all open issues or all open PRs/MRs for the resolved repository. Do not treat bare `all` as `all remotes`.
 
 ## Safety
 

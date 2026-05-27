@@ -15,6 +15,37 @@ Use this reference when remotes, URLs, or user input identify GitHub.
 
 Use GraphQL when unresolved review thread counts or mergeability details are missing from `gh pr view`.
 
+## Pull Requests
+
+When an installed or repo-local helper is available, prefer it for PR table data:
+
+```bash
+scripts/git/gh-get-prs.sh --repo <owner/repo> --state open --scope all --limit 50
+```
+
+Use `--scope authored`, `--scope assigned`, or `--scope review` when the user asks for PRs they authored, PRs assigned to them, or PRs needing their review.
+
+The helper emits normalized JSON for table summaries, including draft state, review decision, merge state, branches, labels, assignees, and status-check counts.
+
+Fallback command:
+
+- List PRs: `gh pr list --repo <owner/repo> --state open --limit 50 --json number,title,url,state,isDraft,mergeStateStatus,reviewDecision,statusCheckRollup,updatedAt,headRefName,baseRefName,author,assignees,labels,reviewRequests`
+
+## Issues
+
+When an installed or repo-local helper is available, prefer it for issue table data:
+
+```bash
+scripts/git/gh-get-issues.sh --repo <owner/repo> --state open --limit 50
+```
+
+The helper emits normalized JSON and includes GitHub REST fields that `gh issue list` omits, including `parent_issue_url`, `sub_issues_summary`, and `issue_dependencies_summary`.
+
+Fallback commands:
+
+- List issues: `gh issue list --repo <owner/repo> --state open --limit 50 --json number,title,url,state,labels,assignees,updatedAt`
+- Issue details: `gh api repos/<owner>/<repo>/issues/<number>`
+
 ## Create And Update
 
 - Create draft PR: `gh pr create --draft --base <base> --head <branch> --title <title> --body-file <file>`

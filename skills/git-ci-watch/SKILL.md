@@ -13,12 +13,19 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 
 ## Workflow
 
-1. Identify the CI target from the user prompt, current branch, latest pushed commit, PR or MR, URL, run ID, pipeline ID, or commit SHA.
-2. Inspect the current CI state, failed job names, pending jobs, canceled jobs, skipped jobs, and relevant logs.
-3. Distinguish required failures from optional or informational checks when the platform exposes that data.
-4. Summarize the status as `Pass`, `Failing`, `Pending`, `Canceled`, `Skipped`, `Missing`, or `Unknown`.
-5. For failures, identify the shortest actionable cause and the local files or commands most likely involved.
-6. Recommend the next action: wait, rerun, inspect logs deeper, fix locally, update the branch, or hand off to `$git-pr-update`.
+1. Identify the CI target from the user prompt, named remote, current branch, latest pushed commit, PR or MR, URL, run ID, pipeline ID, or commit SHA.
+2. Resolve the repository target: explicit URL, named remote such as `origin` or `upstream`, current upstream/default remote, or all remotes when the user says `all remotes`.
+3. Inspect the current CI state, failed job names, pending jobs, canceled jobs, skipped jobs, and relevant logs.
+4. Distinguish required failures from optional or informational checks when the platform exposes that data.
+5. Summarize the status as `Pass`, `Failing`, `Pending`, `Canceled`, `Skipped`, `Missing`, or `Unknown`.
+6. For failures, identify the shortest actionable cause and the local files or commands most likely involved.
+7. Recommend the next action: wait, rerun, inspect logs deeper, fix locally, update the branch, or hand off to `$git-pr-update`.
+
+Supported target phrasing:
+
+- `$git-ci-watch` - use the normal target resolution rules.
+- `$git-ci-watch remote upstream` or `$git-ci-watch upstream` - use the `upstream` git remote.
+- `$git-ci-watch all remotes` - inspect CI for every distinct GitHub or GitLab remote when the target can be resolved read-only.
 
 For many failing jobs or mixed GitHub/GitLab CI, follow the subagent guidance in `common.md` if the user asks for parallel log inspection.
 
