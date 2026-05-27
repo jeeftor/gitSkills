@@ -95,12 +95,10 @@ duplicates_file="$(mktemp)"
 created_file="$(mktemp)"
 trap 'rm -f "$raw_duplicates_file" "$duplicates_file" "$created_file"' EXIT HUP INT TERM
 
-glab issue list \
-  --repo "$repo" \
-  --search "$title" \
-  --opened \
-  --output json \
-  --per-page "$duplicate_limit" >"$raw_duplicates_file"
+project_path="$(printf '%s' "$repo" | jq -sRr @uri)"
+search_query="$(printf '%s' "$title" | jq -sRr @uri)"
+
+glab api "projects/$project_path/issues?state=opened&search=$search_query&per_page=$duplicate_limit" >"$raw_duplicates_file"
 
 jq '[.[] | {
       number: (.iid // .id),
@@ -159,8 +157,6 @@ if [ -n "$body_file" ]; then
 else
   description="$body"
 fi
-
-project_path="$(printf '%s' "$repo" | jq -sRr @uri)"
 
 glab api "projects/$project_path/issues" \
   -X POST \
