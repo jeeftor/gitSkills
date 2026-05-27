@@ -1,6 +1,6 @@
 ---
 name: git-pr-update
-description: Commit and push updates to an existing pull request or merge request.
+description: Commit and push updates to an existing PR or MR.
 metadata:
   short-description: Update PRs and MRs
 ---

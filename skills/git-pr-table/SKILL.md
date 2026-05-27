@@ -1,6 +1,6 @@
 ---
 name: git-pr-table
-description: Summarize open GitHub pull requests or GitLab merge requests.
+description: Summarize open GitHub PRs or GitLab MRs.
 metadata:
   short-description: Summarize PRs and MRs
 ---
@@ -21,5 +21,7 @@ Read `references/git-workflow/common.md`. Then read `references/git-workflow/git
 
 Use `$git-pr-watcher` for a deep dive into one selected item.
 Use `$git-ci-watch` when the user only wants CI for a latest push, branch, commit, run, pipeline, PR, or MR.
+
+For large read-only PR/MR portfolios, follow the subagent guidance in `common.md` if the user asks for parallel work.
 
 Do not modify branches, push commits, rerun CI, edit descriptions, close discussions, or merge from this skill.

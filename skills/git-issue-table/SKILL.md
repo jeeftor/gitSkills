@@ -1,6 +1,6 @@
 ---
 name: git-issue-table
-description: ⭐ Primary entry point for summarizing GitHub or GitLab issues for the current repository.
+description: ⭐ Summarize GitHub or GitLab issues.
 metadata:
   short-description: ⭐ Summarize issues
 ---
@@ -18,5 +18,7 @@ Read `references/git-workflow/common.md`. Then read `references/git-workflow/git
 3. List open issues with title, URL, labels, assignee, update time, and likely blocker.
 4. Build a compact table with `Issue`, `Title`, `Labels`, `Assignee`, `Updated`, and `Next action`.
 5. Recommend the top one to three issues to inspect or work next.
+
+For very large read-only issue sets, follow the subagent guidance in `common.md` if the user asks for parallel triage.
 
 Do not edit issues, labels, assignees, milestones, or branches from this skill.

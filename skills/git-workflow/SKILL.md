@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: ⭐ Primary entry point for choosing a Git, GitHub, or GitLab workflow.
+description: ⭐ Route Git, GitHub, and GitLab workflows.
 metadata:
   short-description: ⭐ Route Git work
 ---

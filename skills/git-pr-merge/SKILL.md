@@ -1,6 +1,6 @@
 ---
 name: git-pr-merge
-description: Merge an approved GitHub pull request or GitLab merge request.
+description: Merge an approved GitHub PR or GitLab MR.
 metadata:
   short-description: Merge PRs and MRs
 ---
@@ -26,4 +26,3 @@ Read `references/git-workflow/common.md`. Then read `references/git-workflow/git
 5. Verify the merged state and report the merge commit or resulting status.
 
 Do not delete branches unless the user asks or repository policy clearly requires it.
-

@@ -1,6 +1,6 @@
 ---
 name: git-pr
-description: ⭐ Primary entry point for routing GitHub pull request or GitLab merge request work.
+description: ⭐ Route GitHub PR and GitLab MR work.
 metadata:
   short-description: ⭐ Route PR and MR work
 ---

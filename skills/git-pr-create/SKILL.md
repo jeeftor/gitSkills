@@ -1,6 +1,6 @@
 ---
 name: git-pr-create
-description: Create a GitHub pull request or GitLab merge request.
+description: Create a GitHub PR or GitLab MR.
 metadata:
   short-description: Create PRs and MRs
 ---
@@ -29,4 +29,3 @@ Read `references/git-workflow/common.md`. Then read `references/git-workflow/git
 8. Verify the URL and state before reporting success.
 
 Prefer preserving project templates and repo-local contribution guidance over generated prose.
-

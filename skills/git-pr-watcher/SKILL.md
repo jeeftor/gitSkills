@@ -1,6 +1,6 @@
 ---
 name: git-pr-watcher
-description: Inspect one GitHub pull request or GitLab merge request and produce a read-only action plan.
+description: Inspect one GitHub PR or GitLab MR.
 metadata:
   short-description: Watch one PR or MR
 ---
@@ -22,5 +22,7 @@ Read `references/git-workflow/common.md`. Then read `references/git-workflow/git
 
 Use `$git-pr-table` first when the user asks for a portfolio overview or what to work on next across multiple items.
 Use `$git-ci-watch` when the user only wants CI for a branch, commit, latest push, run, pipeline, PR, or MR.
+
+For complex read-only investigations, follow the subagent guidance in `common.md` if the user asks to split CI, review comments, discussions, and mergeability.
 
 Do not edit files, commit, push, rebase, rerun CI, resolve discussions, edit PR or MR bodies, or merge from this skill.

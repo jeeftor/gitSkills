@@ -32,9 +32,14 @@ The first usable skill set is written, installed, validated, committed, and push
 - Token efficiency depends on what a skill reads, not on how many reference copies exist on disk.
 - Use `gh` for GitHub workflows and `glab` for GitLab workflows; both are required when using the matching platform.
 - Keep `rg`, `fd`, `gum`, and personal display preferences in global or repo-local `AGENTS.md`, not repeated in every skill.
+- Do not use `allowed-tools` frontmatter for now. The Agent Skills spec marks it experimental and client support varies, so it is not a reliable way to guarantee tool access in Codex.
 - Mark only primary entry-point skills with ⭐ so Codex skill lists are easier to scan without making every skill look equally important. `$git-workflow` is the broadest start-here skill.
+- Keep frontmatter descriptions short because Codex includes installed skill metadata in its initial context.
 - Keep `$git-pr-watcher` read-only. Use `$git-ci-watch` for CI-only work and `$git-pr-update` for branch/code updates.
+- Respect each target repo's `.gitignore`; do not stage ignored local artifacts unless the user explicitly asks.
+- Never blindly run `git add -A`, `git add .`, `git commit -a`, or broad equivalent staging commands. Prefer path-specific staging after reviewing the file list.
 - For repositories with both GitHub and GitLab signals, explicit user intent wins. Branch upstream beats generic remotes. Ask before mutating when the platform is ambiguous.
+- Use subagents for read-only investigation only when explicitly requested or clearly useful. Keep mutations serialized in the main agent.
 - Do not make HA skills depend on `gitSkills` yet. HA-specific workflows stay in `agentSkills`.
 
 ## Install And Update
@@ -81,6 +86,7 @@ Immediate improvement areas:
 2. Expand `references/git-workflow/github.md` with concrete `gh` commands for create, update, review, merge, CI, and API fallbacks.
 3. Expand `references/git-workflow/gitlab.md` with concrete `glab` commands for create, update, approvals, discussions, merge, pipeline inspection, and API fallbacks.
 4. Use the installed skills against this repo and at least one GitLab-backed repo, then patch based on observed misses.
+5. Add trigger-eval prompts for primary skills once there is enough real usage to write realistic should-trigger and should-not-trigger examples.
 
 ## Future Work
 
@@ -96,6 +102,7 @@ Candidate skills after the initial PR/MR lifecycle proves useful:
 - `$git-feature`: possible broad coordinator for feature branch setup, smallest verifiable goal, verification, changelog/docs checks, and PR handoff. Defer because generic feature implementation can become too broad.
 - `$git-prek-setup`: detect repository languages/tooling and set up `prek` hooks for the repo. Use `prek`, not `pre-commit`, and keep language-specific hook choices conservative.
 - Extend `$git-workflow` as future issue, changelog, release, initialization, and feature workflows become real.
+- Add repo maintenance scripts only when repeated logic becomes fragile enough to justify them. Good candidates are trigger-eval runners, metadata audits, or a structured `gh`/`glab` status normalizer; avoid scripts for simple one-off CLI calls.
 
 ## Open Questions
 
