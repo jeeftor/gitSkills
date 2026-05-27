@@ -52,6 +52,16 @@ Fallback commands:
 
 ## Create And Update
 
+When an installed or repo-local helper is available, prefer it for issue creation after explicit user intent is confirmed:
+
+```bash
+scripts/git/create-issue.sh --title "Issue title" --body-file <file>
+scripts/git/create-issue.sh --title "Issue title" --body-file <file> --yes
+scripts/git/gh-create-issue.sh --repo <owner/repo> --title "Issue title" --body-file <file> --yes
+```
+
+The issue create helper searches likely duplicate open issues before creating. Without `--yes`, it emits JSON describing the target and duplicate candidates without mutating issue state.
+
 - Create issue: `gh issue create --repo <owner/repo> --title <title> --body-file <file>`
 - Create draft PR: `gh pr create --draft --base <base> --head <branch> --title <title> --body-file <file>`
 - Create ready PR: `gh pr create --base <base> --head <branch> --title <title> --body-file <file>`

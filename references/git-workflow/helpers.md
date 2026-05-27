@@ -1,6 +1,6 @@
 # Git Helper Scripts Reference
 
-Use helper scripts for repeated read-only collection and normalization. Keep final prioritization, explanation, and recommendations in Codex.
+Use helper scripts for repeated target detection, collection, and normalization. Keep final prioritization, explanation, and recommendations in Codex.
 
 ## Location
 
@@ -21,6 +21,7 @@ Prefer the installed helper next to the active skill when working outside this r
 ## Contract
 
 - Helpers should be read-only unless their name and documentation clearly state otherwise.
+- Mutating helpers must require an explicit confirmation flag such as `--yes`.
 - Helpers should emit structured JSON for Codex to summarize.
 - Helpers should normalize repeated platform and target-resolution details, not decide user-facing priorities.
 - Helpers should accept explicit `--repo`, `--state`, `--limit`, or similar target flags when practical.
@@ -53,6 +54,9 @@ CI helpers should emit this general shape:
 - `scripts/git/glab-get-issues.sh`: collect GitLab issues as normalized JSON, including task completion and blocking issue metadata from the GitLab REST API.
 - `scripts/git/get-issues.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then collect normalized issue JSON with the provider helper.
 - `scripts/git/get-prs.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes, then collect normalized PR/MR JSON with table-ready status fields.
+- `scripts/git/gh-create-issue.sh`: create a GitHub issue after duplicate search and explicit `--yes` confirmation.
+- `scripts/git/glab-create-issue.sh`: create a GitLab issue after duplicate search and explicit `--yes` confirmation.
+- `scripts/git/create-issue.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then delegate issue creation to the provider helper.
 - `scripts/git/gh-get-prs.sh`: collect GitHub pull requests as normalized JSON, including draft, review, merge, branch, and status-check fields.
 - `scripts/git/glab-get-mrs.sh`: collect GitLab merge requests as normalized JSON, including draft, review, merge, branch, discussion, and pipeline fields.
 - `scripts/git/gh-get-ci.sh`: collect GitHub Actions/check status as normalized JSON, including PR checks, workflow runs, jobs, failed logs, and run URLs.

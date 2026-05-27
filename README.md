@@ -35,7 +35,7 @@ The skills prefer `gh` and `glab` for normal operations and use platform APIs on
 
 ## Helper Scripts
 
-Read-only helper scripts live under `scripts/git/` and emit normalized JSON for table and CI workflows:
+Helper scripts live under `scripts/git/` and emit normalized JSON for table, CI, and explicitly confirmed issue creation workflows:
 
 - `gh-get-issues.sh` - collect GitHub issues.
 - `glab-get-issues.sh` - collect GitLab issues.
@@ -45,6 +45,9 @@ Read-only helper scripts live under `scripts/git/` and emit normalized JSON for 
 - `glab-get-ci.sh` - collect GitLab pipeline/job status.
 - `get-issues.sh` - resolve the current checkout, named remote, or GitHub/GitLab URL and collect issues.
 - `get-prs.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes and collect PRs/MRs with table-ready status fields.
+- `gh-create-issue.sh` - create a GitHub issue after duplicate search and `--yes`.
+- `glab-create-issue.sh` - create a GitLab issue after duplicate search and `--yes`.
+- `create-issue.sh` - resolve the current checkout, named remote, or GitHub/GitLab URL before issue creation.
 
 Examples:
 
@@ -59,6 +62,10 @@ scripts/git/gh-get-prs.sh --repo jeeftor/gitSkills --state open --scope all --li
 scripts/git/glab-get-mrs.sh --repo jeef/gitskills --state opened --scope all --limit 50
 scripts/git/gh-get-ci.sh --repo jeeftor/gitSkills --target-type branch --target master
 scripts/git/glab-get-ci.sh --repo group/project --target-type branch --target main
+scripts/git/create-issue.sh --title "Issue title" --body-file /tmp/issue-body.md
+scripts/git/create-issue.sh upstream --title "Issue title" --body "Short body" --yes
+scripts/git/gh-create-issue.sh --repo jeeftor/gitSkills --title "Issue title" --yes
+scripts/git/glab-create-issue.sh --repo group/project --title "Issue title" --yes
 ```
 
 ## Install
