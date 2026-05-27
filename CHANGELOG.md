@@ -4,6 +4,7 @@
 
 ### Added
 
+- Added `scripts/git/codex-color-probe.sh` for checking ANSI, Markdown, HTML, plain-label, and JSON color-hint rendering inside Codex.
 - Added shared table output guidance in `references/git-workflow/table.md`.
   - Keeps full URLs out of tables and moves raw links into a terminal-friendly `Links:` section.
   - Defines compact table rules for issue, PR, and MR summaries.
@@ -13,25 +14,30 @@
   - Documents the contract for read-only JSON helper scripts.
   - Notes that installed skills receive helper copies under `~/.agents/skills/<skill>/scripts/git/`.
 - Added GitHub and GitLab issue helper scripts.
-  - `scripts/git/gh-get-issues.sh` normalizes GitHub issue data, including parent issue, sub-issue, and dependency metadata.
-  - `scripts/git/glab-get-issues.sh` normalizes GitLab issue data, including task completion and blocking metadata.
+  - `scripts/git/gh/get-issues.sh` normalizes lightweight GitHub issue table data.
+  - `scripts/git/glab/get-issues.sh` normalizes GitLab issue data, including task completion and blocking metadata.
   - `scripts/git/get-issues.sh` resolves the current checkout, named remote, or GitHub/GitLab URL before delegating to the provider helper.
 - Added GitHub PR and GitLab MR helper scripts.
-  - `scripts/git/gh-get-prs.sh` normalizes GitHub pull request data, including draft state, review decision, merge state, labels, assignees, branches, and status-check counts.
-  - `scripts/git/glab-get-mrs.sh` normalizes GitLab merge request data, including draft state, reviewers, merge status, discussion status, branches, and pipeline data.
+  - `scripts/git/gh/get-prs.sh` normalizes GitHub pull request data, including draft state, review decision, merge state, labels, assignees, branches, and status-check counts.
+  - `scripts/git/glab/get-mrs.sh` normalizes GitLab merge request data, including draft state, reviewers, merge status, discussion status, branches, and pipeline data.
   - `scripts/git/get-prs.sh` resolves the current checkout, named remote, GitHub/GitLab URL, or all remotes before delegating to the provider helper and adding table-ready status fields.
 - Added GitHub Actions and GitLab pipeline helper scripts.
-  - `scripts/git/gh-get-ci.sh` normalizes GitHub PR checks, workflow runs, jobs, failed logs, and run URLs.
-  - `scripts/git/glab-get-ci.sh` normalizes GitLab MR pipelines, branch pipelines, jobs, failed logs, and pipeline URLs.
+  - `scripts/git/gh/get-ci.sh` normalizes GitHub PR checks, workflow runs, jobs, failed logs, and run URLs.
+  - `scripts/git/glab/get-ci.sh` normalizes GitLab MR pipelines, branch pipelines, jobs, failed logs, and pipeline URLs.
 - Added `$git-issue-create` for creating GitHub or GitLab issues after target resolution and duplicate checks.
 - Added script-backed issue creation helpers for `$git-issue-create`.
   - `scripts/git/create-issue.sh` resolves the current checkout, named remote, or GitHub/GitLab URL before delegating.
-  - `scripts/git/gh-create-issue.sh` and `scripts/git/glab-create-issue.sh` search likely duplicate open issues and require `--yes` before creating.
+  - `scripts/git/gh/create-issue.sh` and `scripts/git/glab/create-issue.sh` search likely duplicate open issues and require `--yes` before creating.
 - Added a local pre-commit hook configuration that runs `make validate`.
 
 ### Changed
 
-- Updated `make validate` to syntax-check every shell helper under `scripts/*.sh` and `scripts/git/*.sh`.
+- Updated issue and PR/MR table helpers to emit explicit color-hint metadata while preserving plain status text.
+- Updated issue and PR/MR table guidance to prefer Markdown tables with stable status symbols and optional ANSI because fixed-width box tables wrap poorly in Codex.
+- Updated `$git-issue-table` to prioritize issue titles and relative update ages instead of labels, owners, work signals, or a generic next-action column.
+- Updated GitHub issue collection to use one lightweight `gh issue list` call for the default issue table.
+- Updated provider helpers to live under `scripts/git/gh/` and `scripts/git/glab/`.
+- Updated `make validate` to syntax-check shell helpers recursively under `scripts/`.
 - Updated `make install` to copy shared helper scripts into every installed skill alongside shared references.
 - Updated `README.md` to document shared helper scripts and their install behavior.
 - Updated `README.md` to document helper script prerequisites and usage examples.

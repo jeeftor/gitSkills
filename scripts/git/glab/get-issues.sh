@@ -3,7 +3,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: scripts/git/glab-get-issues.sh --repo group/project [--state open|opened|closed|all] [--limit n]
+Usage: scripts/git/glab/get-issues.sh --repo group/project [--state open|opened|closed|all] [--limit n]
 
 Collect GitLab issues as normalized JSON for gitSkills table workflows.
 The script is read-only and uses glab for repository access.
@@ -87,13 +87,15 @@ jq \
     --arg repo "$repo" \
     --arg state "$api_state" \
     --argjson limit "$limit" \
-    '{
+    '
+    {
       host: $host,
       repo: $repo,
       state: $state,
       limit: $limit,
       issues: [
-        .[] | {
+        .[] |
+        {
           number: .iid,
           title,
           url: .web_url,
@@ -101,6 +103,7 @@ jq \
           labels: (.labels // []),
           assignees: [(.assignees // [])[].username],
           author: .author.username,
+          comments_count: (.user_notes_count // 0),
           updated_at,
           issue_type,
           parent_issue_url: null,
@@ -121,6 +124,12 @@ jq \
             total_blocked_by: null,
             blocking: (.blocking_issues_count // 0),
             total_blocking: (.blocking_issues_count // 0)
+          },
+          table: {
+            display: ("#" + (.iid | tostring)),
+            labels_text: (if ((.labels // []) | length) == 0 then "No labels" else ((.labels // []) | join(", ")) end),
+            assignee_text: (if ((.assignees // []) | length) == 0 then "No assignee" else ([(.assignees // [])[].username] | join(", ")) end),
+            updated_at
           }
         }
       ]

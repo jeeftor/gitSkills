@@ -128,12 +128,28 @@ collect_target() {
 
   case "$target_host" in
     github)
-      "$(script_dir)/gh-get-prs.sh" \
+      "$(script_dir)/gh/get-prs.sh" \
         --repo "$target_repo" \
         --state "$(github_state "$target_state")" \
         --scope "$scope" \
         --limit "$limit" |
         jq '
+          def color_hint($value):
+            if ["Ready", "Passing", "Approved", "Mergeable", "Current", "None", "No blocker", "Closed"] | index($value) then "green"
+            elif ["Draft", "Pending", "Review needed", "Review requested", "Behind", "Triage", "Stale", "Unassigned", "Inspect", "Open"] | index($value) then "yellow"
+            elif ["Failing", "Conflict", "Changes requested", "Blocked", "Overdue", "Needs owner"] | index($value) then "red"
+            elif ["Unknown", "Missing", "Skipped", "No checks", "No labels", "No assignee"] | index($value) then "cyan"
+            else "plain"
+            end;
+          def state_hint:
+            if .is_draft then "Draft"
+            else
+              ((.state // "") | ascii_downcase) as $state |
+              if $state == "open" or $state == "opened" then "Open"
+              elif $state == "closed" or $state == "merged" then "Closed"
+              else "Unknown"
+              end
+            end;
           def gh_ci:
             if .status_checks.total == 0 then "Missing"
             elif .status_checks.failing > 0 then "Failing"
@@ -194,6 +210,15 @@ collect_target() {
                 branch_status: gh_branch,
                 unresolved_discussions: "Unknown",
                 blocker: gh_blocker,
+                colors: {
+                  state: color_hint(state_hint),
+                  ci: color_hint(gh_ci),
+                  review: color_hint(gh_review),
+                  merge: color_hint(gh_merge),
+                  branch: color_hint(gh_branch),
+                  discussions: color_hint("Unknown"),
+                  blocker: color_hint(gh_blocker)
+                },
                 updated_at,
                 head_branch,
                 base_branch
@@ -202,12 +227,28 @@ collect_target() {
           }'
       ;;
     gitlab)
-      "$(script_dir)/glab-get-mrs.sh" \
+      "$(script_dir)/glab/get-mrs.sh" \
         --repo "$target_repo" \
         --state "$target_state" \
         --scope "$scope" \
         --limit "$limit" |
         jq '
+          def color_hint($value):
+            if ["Ready", "Passing", "Approved", "Mergeable", "Current", "None", "No blocker", "Closed", "Resolved"] | index($value) then "green"
+            elif ["Draft", "Pending", "Review needed", "Review requested", "Behind", "Triage", "Stale", "Unassigned", "Inspect", "Open"] | index($value) then "yellow"
+            elif ["Failing", "Conflict", "Changes requested", "Blocked", "Overdue", "Needs owner", "Unresolved"] | index($value) then "red"
+            elif ["Unknown", "Missing", "Skipped", "No checks", "No labels", "No assignee"] | index($value) then "cyan"
+            else "plain"
+            end;
+          def state_hint:
+            if .is_draft then "Draft"
+            else
+              ((.state // "") | ascii_downcase) as $state |
+              if $state == "open" or $state == "opened" then "Open"
+              elif $state == "closed" or $state == "merged" then "Closed"
+              else "Unknown"
+              end
+            end;
           def gl_ci:
             (.pipeline.status // "") as $status |
             if $status == "" then "Missing"
@@ -272,6 +313,15 @@ collect_target() {
                 branch_status: gl_branch,
                 unresolved_discussions: gl_discussions,
                 blocker: gl_blocker,
+                colors: {
+                  state: color_hint(state_hint),
+                  ci: color_hint(gl_ci),
+                  review: color_hint(gl_review),
+                  merge: color_hint(gl_merge),
+                  branch: color_hint(gl_branch),
+                  discussions: color_hint(gl_discussions),
+                  blocker: color_hint(gl_blocker)
+                },
                 updated_at,
                 head_branch,
                 base_branch

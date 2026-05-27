@@ -22,7 +22,7 @@ When an installed or repo-local helper is available, prefer it for PR table data
 ```bash
 scripts/git/get-prs.sh --state open --scope all --limit 50
 scripts/git/get-prs.sh origin --state open --scope all --limit 50
-scripts/git/gh-get-prs.sh --repo <owner/repo> --state open --scope all --limit 50
+scripts/git/gh/get-prs.sh --repo <owner/repo> --state open --scope all --limit 50
 ```
 
 Use `--scope authored`, `--scope assigned`, or `--scope review` when the user asks for PRs they authored, PRs assigned to them, or PRs needing their review.
@@ -40,14 +40,14 @@ When an installed or repo-local helper is available, prefer it for issue table d
 ```bash
 scripts/git/get-issues.sh --state open --limit 50
 scripts/git/get-issues.sh origin --state open --limit 50
-scripts/git/gh-get-issues.sh --repo <owner/repo> --state open --limit 50
+scripts/git/gh/get-issues.sh --repo <owner/repo> --state open --limit 50
 ```
 
-The generic helper resolves the current checkout or named remote before delegating to the GitHub helper. The GitHub helper emits normalized JSON and includes REST fields that `gh issue list` omits, including `parent_issue_url`, `sub_issues_summary`, and `issue_dependencies_summary`.
+The generic helper resolves the current checkout or named remote before delegating to the GitHub helper. The GitHub helper emits lightweight normalized JSON for issue tables.
 
 Fallback commands:
 
-- List issues: `gh issue list --repo <owner/repo> --state open --limit 50 --json number,title,url,state,labels,assignees,updatedAt`
+- List issues: `gh issue list --repo <owner/repo> --state open --limit 50 --json number,title,url,state,updatedAt`
 - Issue details: `gh api repos/<owner>/<repo>/issues/<number>`
 
 ## Create And Update
@@ -57,7 +57,7 @@ When an installed or repo-local helper is available, prefer it for issue creatio
 ```bash
 scripts/git/create-issue.sh --title "Issue title" --body-file <file>
 scripts/git/create-issue.sh --title "Issue title" --body-file <file> --yes
-scripts/git/gh-create-issue.sh --repo <owner/repo> --title "Issue title" --body-file <file> --yes
+scripts/git/gh/create-issue.sh --repo <owner/repo> --title "Issue title" --body-file <file> --yes
 ```
 
 The issue create helper searches likely duplicate open issues before creating. Without `--yes`, it emits JSON describing the target and duplicate candidates without mutating issue state.
@@ -76,9 +76,9 @@ Prefer `--body-file` over generated inline bodies when the repo has an issue or 
 When an installed or repo-local helper is available, prefer it for CI watch data:
 
 ```bash
-scripts/git/gh-get-ci.sh --repo <owner/repo> --target-type branch --target <branch>
-scripts/git/gh-get-ci.sh --repo <owner/repo> --target-type pr --target <number>
-scripts/git/gh-get-ci.sh --repo <owner/repo> --target-type run --target <run-id>
+scripts/git/gh/get-ci.sh --repo <owner/repo> --target-type branch --target <branch>
+scripts/git/gh/get-ci.sh --repo <owner/repo> --target-type pr --target <number>
+scripts/git/gh/get-ci.sh --repo <owner/repo> --target-type run --target <run-id>
 ```
 
 The helper emits normalized JSON for summaries, including status, jobs, failed logs, URL, commit, and branch fields.

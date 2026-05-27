@@ -3,7 +3,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: scripts/git/glab-get-ci.sh --repo group/project [--target-type mr|branch|commit|pipeline] [--target value] [--limit n]
+Usage: scripts/git/glab/get-ci.sh --repo group/project [--target-type mr|branch|commit|pipeline] [--target value] [--limit n]
 
 Collect GitLab pipeline/job status as normalized JSON for gitSkills CI workflows.
 The script is read-only and uses glab for repository access.

@@ -193,10 +193,10 @@ fi
 
 case "$host" in
   github)
-    exec "$(script_dir)/gh-get-issues.sh" --repo "$repo" --state "$state" --limit "$limit"
+    exec "$(script_dir)/gh/get-issues.sh" --repo "$repo" --state "$state" --limit "$limit"
     ;;
   gitlab)
-    exec "$(script_dir)/glab-get-issues.sh" --repo "$repo" --state "$state" --limit "$limit"
+    exec "$(script_dir)/glab/get-issues.sh" --repo "$repo" --state "$state" --limit "$limit"
     ;;
   *)
     die "Could not determine issue host. Use --host github or --host gitlab." 2

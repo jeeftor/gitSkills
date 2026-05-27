@@ -17,8 +17,10 @@ Read `references/git-workflow/common.md`, `references/git-workflow/helpers.md`, 
 2. For a named remote such as `origin` or `upstream`, pass it to the helper as the target: `scripts/git/get-prs.sh <remote> --state open --scope all --limit 50`.
 3. For authored, assigned, or review-requested items, use `--scope authored`, `--scope assigned`, or `--scope review`.
 4. For `all remotes`, use `scripts/git/get-prs.sh all remotes --state open --scope all --limit 50`.
-5. Build a compact table from the helper's `items` list with `PR/MR`, `Title`, `State`, `CI`, `Review`, `Merge`, and `Main blocker`.
-6. Recommend the top one to three items to handle next.
+5. Build a Markdown table from the helper's `items` list with `PR/MR`, `Title`, `State`, `CI`, `Review`, `Merge`, and `Main blocker`.
+6. When helper `colors` fields are available, prefix short status or blocker cells with stable status symbols: `🟢` for green, `🟡` for yellow, `🔴` for red, and `⚪` for cyan or unknown. Use ANSI color only when it improves readability without widening the cell; never rely on ANSI as the only status cue.
+7. Keep titles and blockers readable but compact. If either would make the table hard to scan, truncate it with `...` and keep the full PR/MR URL in the `Links:` section.
+8. Recommend the top one to three items to handle next.
 
 Supported target phrasing:
 

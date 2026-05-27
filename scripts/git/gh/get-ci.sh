@@ -3,7 +3,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: scripts/git/gh-get-ci.sh [--repo owner/name] [--target-type pr|branch|commit|run] [--target value] [--limit n]
+Usage: scripts/git/gh/get-ci.sh [--repo owner/name] [--target-type pr|branch|commit|run] [--target value] [--limit n]
 
 Collect GitHub Actions/check status as normalized JSON for gitSkills CI workflows.
 The script is read-only and uses gh for repository access.

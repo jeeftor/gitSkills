@@ -3,7 +3,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: scripts/git/gh-get-prs.sh [--repo owner/name] [--state open|closed|merged|all] [--scope all|authored|assigned|review] [--limit n]
+Usage: scripts/git/gh/get-prs.sh [--repo owner/name] [--state open|closed|merged|all] [--scope all|authored|assigned|review] [--limit n]
 
 Collect GitHub pull requests as normalized JSON for gitSkills table workflows.
 The script is read-only and uses gh for repository access.

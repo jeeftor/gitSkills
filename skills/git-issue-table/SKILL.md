@@ -16,9 +16,11 @@ Read `references/git-workflow/common.md`, `references/git-workflow/helpers.md`, 
 1. Use `scripts/git/get-issues.sh --state open --limit 50` for the default repository target.
 2. For a named remote such as `origin` or `upstream`, pass it to the helper as the target: `scripts/git/get-issues.sh <remote> --state open --limit 50`.
 3. Identify the issue scope: assigned to the user, authored by the user, or all open issues. Treat bare `all` as all open issues for the resolved repository, not all remotes.
-4. List open issues with title, URL, labels, assignee, update time, and likely blocker.
-5. Build a compact table with `Issue`, `Title`, `Labels`, `Assignee`, `Updated`, and `Next action`.
-6. Recommend the top one to three issues to inspect or work next.
+4. List open issues with title, URL, and update age.
+5. Build a Markdown table with `Issue`, `Title`, and `Updated`. Do not include labels, owner, work, or a generic `Next action` column for normal issue lists; put recommendations after the table.
+6. Prioritize the `Title` column.
+7. Format `Updated` as a compact relative age such as `2h ago`, `1d ago`, or `3mo ago` when possible. Use an exact date only when relative age would be unclear.
+8. Recommend the top one to three issues to inspect or work next based on recency, title relevance, and explicit user context.
 
 Supported target phrasing:
 
