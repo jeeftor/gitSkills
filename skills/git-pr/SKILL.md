@@ -9,7 +9,7 @@ metadata:
 
 You are the pull request and merge request coordinator.
 
-Read `references/git-workflow/common.md`.
+Read `references/git-workflow/common.md` and `references/git-workflow/target-resolution.md`.
 
 ## Route
 

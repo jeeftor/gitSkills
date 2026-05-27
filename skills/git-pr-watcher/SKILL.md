@@ -9,7 +9,7 @@ metadata:
 
 You are the pull request and merge request watcher. Inspect one existing item and turn CI, review, and discussion feedback into a focused read-only action plan.
 
-Read `references/git-workflow/common.md`. Then read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
+Read `references/git-workflow/common.md`, `references/git-workflow/target-resolution.md`, and `references/git-workflow/reviews.md`. Then read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host. Read `references/git-workflow/ci.md` for CI details.
 
 ## Workflow
 

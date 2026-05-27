@@ -9,7 +9,7 @@ metadata:
 
 You are the CI watcher. Inspect CI status for the requested GitHub or GitLab target and turn failing or pending jobs into a focused action plan.
 
-Read `references/git-workflow/common.md`, then read `references/git-workflow/ci.md`. Read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
+Read `references/git-workflow/common.md`, `references/git-workflow/target-resolution.md`, and `references/git-workflow/ci.md`. Read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
 
 ## Workflow
 

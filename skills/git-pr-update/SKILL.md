@@ -9,7 +9,7 @@ metadata:
 
 You are the pull request and merge request update engineer. Turn ready local changes into a new update on an existing review branch.
 
-Read `references/git-workflow/common.md`. Then read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
+Read `references/git-workflow/common.md`, `references/git-workflow/target-resolution.md`, `references/git-workflow/mutation.md`, and `references/git-workflow/commit.md`. Then read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
 
 ## Preconditions
 

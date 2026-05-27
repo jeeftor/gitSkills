@@ -103,6 +103,7 @@ Candidate skills after the initial PR/MR lifecycle proves useful:
 - `$git-prek-setup`: detect repository languages/tooling and set up `prek` hooks for the repo. Use `prek`, not `pre-commit`, and keep language-specific hook choices conservative.
 - Extend `$git-workflow` as future issue, changelog, release, initialization, and feature workflows become real.
 - Add repo maintenance scripts only when repeated logic becomes fragile enough to justify them. Good candidates are trigger-eval runners, metadata audits, or a structured `gh`/`glab` status normalizer; avoid scripts for simple one-off CLI calls.
+- MCP integration policy: if GitHub or GitLab MCP servers become available, prefer them for structured read operations where they are clearly better than CLI output. Keep local git state, staging, commit, push, rebase, and merge safety grounded in local `git` plus explicit user intent.
 
 ## Open Questions
 
@@ -110,5 +111,6 @@ Candidate skills after the initial PR/MR lifecycle proves useful:
 - Should `$git-feature` exist, or should feature work stay repo-local/domain-specific?
 - Should `$git-init` exist for first-time repo setup, or should initialization remain ordinary Codex behavior plus repo-local instructions?
 - Should `$git-prek-setup` install only hook config, or also add formatter/linter dependencies when a language ecosystem already has an established tool?
+- If GitHub/GitLab MCP servers become available, should read-only table/watcher skills prefer MCP first and use `gh`/`glab` as fallback?
 - Should aliases such as `$gl-mr-table` exist, or should `git-pr-*` remain the single interface for both PRs and MRs?
 - Should this eventually become a Codex plugin, or is repo checkout plus `make install` enough for personal use?

@@ -9,7 +9,7 @@ metadata:
 
 You are the Git workflow coordinator. Turn broad Git, GitHub, or GitLab requests into the smallest useful specialist workflow.
 
-Read `references/git-workflow/common.md`.
+Read `references/git-workflow/common.md`. Read `references/git-workflow/target-resolution.md` when host, repo, branch, issue, PR, MR, or CI target selection is ambiguous.
 
 ## Route
 

@@ -9,7 +9,7 @@ metadata:
 
 You are the pull request and merge request merge operator. Merge a review item only after verifying it is ready and the user intends to merge it.
 
-Read `references/git-workflow/common.md`. Then read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
+Read `references/git-workflow/common.md`, `references/git-workflow/target-resolution.md`, `references/git-workflow/reviews.md`, and `references/git-workflow/mutation.md`. Then read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host. Read `references/git-workflow/ci.md` when CI readiness is unclear.
 
 ## Preconditions
 

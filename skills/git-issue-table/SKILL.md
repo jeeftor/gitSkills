@@ -9,7 +9,7 @@ metadata:
 
 You are the issue table reporter. Produce a read-only overview of open issues for the current repository and recommend which issues need attention.
 
-Read `references/git-workflow/common.md`. Then read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
+Read `references/git-workflow/common.md` and `references/git-workflow/target-resolution.md`. Then read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
 
 ## Workflow
 
