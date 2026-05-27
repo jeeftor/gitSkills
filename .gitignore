@@ -2,3 +2,5 @@
 /github-social-preview.png
 /icon.png
 /skillz.png
+/docs/demos/output/*
+!/docs/demos/output/.gitkeep
