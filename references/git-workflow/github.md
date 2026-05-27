@@ -50,13 +50,14 @@ Fallback commands:
 
 ## Create And Update
 
+- Create issue: `gh issue create --repo <owner/repo> --title <title> --body-file <file>`
 - Create draft PR: `gh pr create --draft --base <base> --head <branch> --title <title> --body-file <file>`
 - Create ready PR: `gh pr create --base <base> --head <branch> --title <title> --body-file <file>`
 - Edit title/body: `gh pr edit <number> --title <title> --body-file <file>`
 - Mark ready: `gh pr ready <number>`
 - Checkout PR: `gh pr checkout <number>`
 
-Prefer `--body-file` over generated inline bodies when the repo has a PR template.
+Prefer `--body-file` over generated inline bodies when the repo has an issue or PR template.
 
 ## CI And Runs
 

@@ -4,6 +4,7 @@
 flowchart TD
     WORKFLOW["$git-workflow<br/>Route Git work"]
     ISSUE_TABLE["$git-issue-table<br/>Summarize issues"]
+    ISSUE_CREATE["$git-issue-create<br/>Create issues"]
     PR["$git-pr<br/>Route PR and MR work"]
     PR_TABLE["$git-pr-table<br/>Summarize PRs and MRs"]
     PR_WATCHER["$git-pr-watcher<br/>Inspect one PR or MR"]
@@ -14,6 +15,7 @@ flowchart TD
     PR_MERGE["$git-pr-merge<br/>Merge a PR or MR"]
 
     WORKFLOW --> ISSUE_TABLE
+    WORKFLOW --> ISSUE_CREATE
     WORKFLOW --> PR
     WORKFLOW --> CI_WATCH
     PR --> PR_TABLE
