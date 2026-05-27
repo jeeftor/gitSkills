@@ -51,6 +51,16 @@ Fallback commands:
 
 ## Create And Update
 
+When an installed or repo-local helper is available, prefer it for issue creation after explicit user intent is confirmed:
+
+```bash
+scripts/git/create-issue.sh <gitlab-remote> --title "Issue title" --body-file <file>
+scripts/git/create-issue.sh <gitlab-remote> --title "Issue title" --body-file <file> --yes
+scripts/git/glab-create-issue.sh --repo <group/project> --title "Issue title" --body-file <file> --yes
+```
+
+The issue create helper searches likely duplicate open issues before creating. Without `--yes`, it emits JSON describing the target and duplicate candidates without mutating issue state.
+
 - Create issue: `glab issue create --repo <group/project> --title <title> --description <description> --yes`
 - Create draft MR: `glab mr create --draft --source-branch <branch> --target-branch <base> --title <title> --description-file <file>`
 - Create ready MR: `glab mr create --source-branch <branch> --target-branch <base> --title <title> --description-file <file>`
