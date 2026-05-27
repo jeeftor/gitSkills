@@ -50,12 +50,13 @@ Fallback commands:
 
 ## Create And Update
 
+- Create issue: `glab issue create --repo <group/project> --title <title> --description <description> --yes`
 - Create draft MR: `glab mr create --draft --source-branch <branch> --target-branch <base> --title <title> --description-file <file>`
 - Create ready MR: `glab mr create --source-branch <branch> --target-branch <base> --title <title> --description-file <file>`
 - Edit MR: `glab mr update <iid>`
 - Checkout MR: `glab mr checkout <iid>`
 
-Prefer file-backed descriptions when the repo has a merge request template.
+Prefer file-backed descriptions when the repo has a merge request template. For issue bodies, prepare the description in a temporary file first when the body is too long to quote safely.
 
 ## CI And Pipelines
 

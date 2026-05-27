@@ -12,6 +12,7 @@ It installs plain skill names:
 - ⭐ `$git-pr` - route GitHub pull request or GitLab merge request work
 - ⭐ `$git-ci-watch` - watch CI for a branch, commit, latest push, pull request, merge request, run, or pipeline
 - ⭐ `$git-issue-table` - summarize open GitHub issues or GitLab issues
+- `$git-issue-create` - create a GitHub issue or GitLab issue
 - `$git-pr-table` - summarize open GitHub pull requests or GitLab merge requests
 - `$git-pr-watcher` - inspect one pull request or merge request
 - `$git-pr-address-comments` - address review comments on an existing pull request or merge request
