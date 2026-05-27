@@ -36,10 +36,12 @@ Fallback command:
 When an installed or repo-local helper is available, prefer it for issue table data:
 
 ```bash
+scripts/git/get-issues.sh --state open --limit 50
+scripts/git/get-issues.sh origin --state open --limit 50
 scripts/git/gh-get-issues.sh --repo <owner/repo> --state open --limit 50
 ```
 
-The helper emits normalized JSON and includes GitHub REST fields that `gh issue list` omits, including `parent_issue_url`, `sub_issues_summary`, and `issue_dependencies_summary`.
+The generic helper resolves the current checkout or named remote before delegating to the GitHub helper. The GitHub helper emits normalized JSON and includes REST fields that `gh issue list` omits, including `parent_issue_url`, `sub_issues_summary`, and `issue_dependencies_summary`.
 
 Fallback commands:
 

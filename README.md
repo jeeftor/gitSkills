@@ -42,11 +42,13 @@ Read-only helper scripts live under `scripts/git/` and emit normalized JSON for 
 - `glab-get-mrs.sh` - collect GitLab merge requests.
 - `gh-get-ci.sh` - collect GitHub Actions/check status.
 - `glab-get-ci.sh` - collect GitLab pipeline/job status.
-- `get-issues.sh` - compatibility wrapper for GitHub issue collection.
+- `get-issues.sh` - resolve the current checkout, named remote, or GitHub/GitLab URL and collect issues.
 
 Examples:
 
 ```bash
+scripts/git/get-issues.sh --state open --limit 50
+scripts/git/get-issues.sh upstream --state open --limit 50
 scripts/git/gh-get-issues.sh --repo jeeftor/gitSkills --state open --limit 50
 scripts/git/glab-get-issues.sh --repo jeef/gitskills --state opened --limit 50
 scripts/git/gh-get-prs.sh --repo jeeftor/gitSkills --state open --scope all --limit 50

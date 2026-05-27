@@ -37,10 +37,11 @@ Fallback commands:
 When an installed or repo-local helper is available, prefer it for issue table data:
 
 ```bash
+scripts/git/get-issues.sh <gitlab-remote> --state open --limit 50
 scripts/git/glab-get-issues.sh --repo <group/project> --state opened --limit 50
 ```
 
-The helper emits normalized JSON and includes GitLab REST fields that are awkward to extract from `glab issue list`, including task completion and blocking issue metadata.
+The generic helper resolves named GitLab remotes before delegating to the GitLab helper. The GitLab helper emits normalized JSON and includes REST fields that are awkward to extract from `glab issue list`, including task completion and blocking issue metadata.
 
 Fallback commands:
 
