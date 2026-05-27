@@ -15,7 +15,7 @@
 - Added GitHub and GitLab issue helper scripts.
   - `scripts/git/gh-get-issues.sh` normalizes GitHub issue data, including parent issue, sub-issue, and dependency metadata.
   - `scripts/git/glab-get-issues.sh` normalizes GitLab issue data, including task completion and blocking metadata.
-  - `scripts/git/get-issues.sh` remains as a GitHub compatibility wrapper.
+  - `scripts/git/get-issues.sh` resolves the current checkout, named remote, or GitHub/GitLab URL before delegating to the provider helper.
 - Added GitHub PR and GitLab MR helper scripts.
   - `scripts/git/gh-get-prs.sh` normalizes GitHub pull request data, including draft state, review decision, merge state, labels, assignees, branches, and status-check counts.
   - `scripts/git/glab-get-mrs.sh` normalizes GitLab merge request data, including draft state, reviewers, merge status, discussion status, branches, and pipeline data.
@@ -32,6 +32,8 @@
 - Updated `README.md` to document helper script prerequisites and usage examples.
 - Updated `README.md` to document installing the local hook with `prek install`.
 - Updated GitHub and GitLab workflow references to prefer provider-specific helper scripts for issue and PR/MR table data when available.
+- Updated `$git-issue-table` to use the generic issue helper for normal target resolution before falling back to manual target inspection.
+- Updated `AGENTS.md` to prefer script-backed common paths when workflows require repeated target-resolution commands.
 - Updated CI workflow references to prefer provider-specific helper scripts for CI watch data when available.
 - Updated `$git-issue-table` and `$git-pr-table` to read shared helper and table references.
 - Updated `$git-issue-table`, `$git-pr-table`, and `$git-ci-watch` to support consistent named-remote and `all remotes` target phrasing.
