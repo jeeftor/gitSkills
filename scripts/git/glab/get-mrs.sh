@@ -3,7 +3,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: scripts/git/glab-get-mrs.sh --repo group/project [--state open|opened|closed|merged|all] [--scope all|authored|assigned|review] [--limit n]
+Usage: scripts/git/glab/get-mrs.sh --repo group/project [--state open|opened|closed|merged|all] [--scope all|authored|assigned|review] [--limit n]
 
 Collect GitLab merge requests as normalized JSON for gitSkills table workflows.
 The script is read-only and uses glab for repository access.

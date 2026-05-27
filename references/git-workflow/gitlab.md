@@ -21,7 +21,7 @@ When an installed or repo-local helper is available, prefer it for MR table data
 
 ```bash
 scripts/git/get-prs.sh <gitlab-remote> --state open --scope all --limit 50
-scripts/git/glab-get-mrs.sh --repo <group/project> --state opened --scope all --limit 50
+scripts/git/glab/get-mrs.sh --repo <group/project> --state opened --scope all --limit 50
 ```
 
 Use `--scope authored`, `--scope assigned`, or `--scope review` when the user asks for MRs they authored, MRs assigned to them, or MRs needing their review.
@@ -39,7 +39,7 @@ When an installed or repo-local helper is available, prefer it for issue table d
 
 ```bash
 scripts/git/get-issues.sh <gitlab-remote> --state open --limit 50
-scripts/git/glab-get-issues.sh --repo <group/project> --state opened --limit 50
+scripts/git/glab/get-issues.sh --repo <group/project> --state opened --limit 50
 ```
 
 The generic helper resolves named GitLab remotes before delegating to the GitLab helper. The GitLab helper emits normalized JSON and includes REST fields that are awkward to extract from `glab issue list`, including task completion and blocking issue metadata.
@@ -56,7 +56,7 @@ When an installed or repo-local helper is available, prefer it for issue creatio
 ```bash
 scripts/git/create-issue.sh <gitlab-remote> --title "Issue title" --body-file <file>
 scripts/git/create-issue.sh <gitlab-remote> --title "Issue title" --body-file <file> --yes
-scripts/git/glab-create-issue.sh --repo <group/project> --title "Issue title" --body-file <file> --yes
+scripts/git/glab/create-issue.sh --repo <group/project> --title "Issue title" --body-file <file> --yes
 ```
 
 The issue create helper searches likely duplicate open issues before creating. Without `--yes`, it emits JSON describing the target and duplicate candidates without mutating issue state.
@@ -74,9 +74,9 @@ Prefer file-backed descriptions when the repo has a merge request template. For 
 When an installed or repo-local helper is available, prefer it for CI watch data:
 
 ```bash
-scripts/git/glab-get-ci.sh --repo <group/project> --target-type branch --target <branch>
-scripts/git/glab-get-ci.sh --repo <group/project> --target-type mr --target <iid>
-scripts/git/glab-get-ci.sh --repo <group/project> --target-type pipeline --target <pipeline-id>
+scripts/git/glab/get-ci.sh --repo <group/project> --target-type branch --target <branch>
+scripts/git/glab/get-ci.sh --repo <group/project> --target-type mr --target <iid>
+scripts/git/glab/get-ci.sh --repo <group/project> --target-type pipeline --target <pipeline-id>
 ```
 
 The helper emits normalized JSON for summaries, including status, jobs, failed logs, URL, commit, and branch fields.

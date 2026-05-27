@@ -37,5 +37,6 @@ flowchart TD
 ```
 
 Read-only overview skills should run before mutating create, update, or merge workflows when the target item is ambiguous.
+`$git-issue-table` uses `scripts/git/get-issues.sh` for the common scripted issue collection path.
 `$git-pr-table` uses `scripts/git/get-prs.sh` for the common scripted PR/MR collection path before handing one selected item to `$git-pr-watcher`.
 Use `$git-ci-watch` instead of `$git-pr-watcher` when the user only asks about CI for the latest push, branch, commit, run, pipeline, PR, or MR.

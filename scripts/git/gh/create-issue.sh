@@ -3,9 +3,9 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: scripts/git/glab-create-issue.sh --repo group/project --title title [--body text|--body-file file] [--duplicate-limit n] [--allow-duplicate] [--yes]
+Usage: scripts/git/gh/create-issue.sh --repo owner/name --title title [--body text|--body-file file] [--duplicate-limit n] [--allow-duplicate] [--yes]
 
-Create a GitLab issue after searching open issues for likely duplicates.
+Create a GitHub issue after searching open issues for likely duplicates.
 Without --yes, the script only reports the target and duplicate candidates.
 EOF
 }
@@ -87,31 +87,25 @@ case "$duplicate_limit" in
     ;;
 esac
 
-require_command glab
+require_command gh
 require_command jq
 
-raw_duplicates_file="$(mktemp)"
 duplicates_file="$(mktemp)"
-created_file="$(mktemp)"
-trap 'rm -f "$raw_duplicates_file" "$duplicates_file" "$created_file"' EXIT HUP INT TERM
+temp_body_file=""
+trap 'rm -f "$duplicates_file" ${temp_body_file:+"$temp_body_file"}' EXIT HUP INT TERM
 
-project_path="$(printf '%s' "$repo" | jq -sRr @uri)"
-search_query="$(printf '%s' "$title" | jq -sRr @uri)"
-
-glab api "projects/$project_path/issues?state=opened&search=$search_query&per_page=$duplicate_limit" >"$raw_duplicates_file"
-
-jq '[.[] | {
-      number: (.iid // .id),
-      title,
-      url: (.web_url // .webUrl // .url),
-      state
-    }]' "$raw_duplicates_file" >"$duplicates_file"
+gh issue list \
+  --repo "$repo" \
+  --state open \
+  --search "$title in:title" \
+  --limit "$duplicate_limit" \
+  --json number,title,url,state >"$duplicates_file"
 
 duplicate_count="$(jq 'length' "$duplicates_file")"
 
 if [ "$assume_yes" != "1" ]; then
   jq -n \
-    --arg host "gitlab" \
+    --arg host "github" \
     --arg repo "$repo" \
     --arg title "$title" \
     --argjson duplicate_count "$duplicate_count" \
@@ -132,7 +126,7 @@ fi
 
 if [ "$duplicate_count" -gt 0 ] && [ "$allow_duplicate" != "1" ]; then
   jq -n \
-    --arg host "gitlab" \
+    --arg host "github" \
     --arg repo "$repo" \
     --arg title "$title" \
     --argjson duplicate_count "$duplicate_count" \
@@ -153,20 +147,20 @@ fi
 
 if [ -n "$body_file" ]; then
   [ -f "$body_file" ] || die "Body file does not exist: $body_file" 2
-  description="$(cat "$body_file")"
+  prepared_body_file="$body_file"
 else
-  description="$body"
+  temp_body_file="$(mktemp)"
+  printf '%s\n' "$body" >"$temp_body_file"
+  prepared_body_file="$temp_body_file"
 fi
 
-glab api "projects/$project_path/issues" \
-  -X POST \
-  -F "title=$title" \
-  -F "description=$description" >"$created_file"
+url="$(gh issue create --repo "$repo" --title "$title" --body-file "$prepared_body_file")"
 
-jq \
-  --arg host "gitlab" \
+jq -n \
+  --arg host "github" \
   --arg repo "$repo" \
   --arg title "$title" \
+  --arg url "$url" \
   --argjson duplicate_count "$duplicate_count" \
   --slurpfile candidates "$duplicates_file" \
   '{
@@ -175,11 +169,8 @@ jq \
     title: $title,
     dry_run: false,
     created: true,
-    url: .web_url,
-    issue: {
-      number: .iid,
-      url: .web_url
-    },
+    url: $url,
+    issue: {url: $url},
     duplicate_count: $duplicate_count,
     duplicate_candidates: $candidates[0]
-  }' "$created_file"
+  }'

@@ -30,9 +30,9 @@ Treat missing or partial data as unknown, not successful.
 When an installed or repo-local helper is available, prefer it for CI watch data:
 
 ```bash
-scripts/git/gh-get-ci.sh --repo <owner/repo> --target-type branch --target <branch>
-scripts/git/gh-get-ci.sh --repo <owner/repo> --target-type pr --target <number>
-scripts/git/gh-get-ci.sh --repo <owner/repo> --target-type run --target <run-id>
+scripts/git/gh/get-ci.sh --repo <owner/repo> --target-type branch --target <branch>
+scripts/git/gh/get-ci.sh --repo <owner/repo> --target-type pr --target <number>
+scripts/git/gh/get-ci.sh --repo <owner/repo> --target-type run --target <run-id>
 ```
 
 The helper emits normalized JSON with `Pass`, `Failing`, `Pending`, `Canceled`, `Skipped`, `Missing`, or `Unknown`, plus job rows, failed log summaries, run URL, commit, and branch when available.
@@ -52,9 +52,9 @@ Use GraphQL or `gh api` when required-check metadata, check suites, or merge que
 When an installed or repo-local helper is available, prefer it for CI watch data:
 
 ```bash
-scripts/git/glab-get-ci.sh --repo <group/project> --target-type branch --target <branch>
-scripts/git/glab-get-ci.sh --repo <group/project> --target-type mr --target <iid>
-scripts/git/glab-get-ci.sh --repo <group/project> --target-type pipeline --target <pipeline-id>
+scripts/git/glab/get-ci.sh --repo <group/project> --target-type branch --target <branch>
+scripts/git/glab/get-ci.sh --repo <group/project> --target-type mr --target <iid>
+scripts/git/glab/get-ci.sh --repo <group/project> --target-type pipeline --target <pipeline-id>
 ```
 
 The helper emits normalized JSON with `Pass`, `Failing`, `Pending`, `Canceled`, `Skipped`, `Missing`, or `Unknown`, plus job rows, failed log summaries, pipeline URL, commit, and branch when available.

@@ -237,10 +237,10 @@ fi
 
 case "$host" in
   github)
-    exec "$(script_dir)/gh-create-issue.sh" "$@"
+    exec "$(script_dir)/gh/create-issue.sh" "$@"
     ;;
   gitlab)
-    exec "$(script_dir)/glab-create-issue.sh" "$@"
+    exec "$(script_dir)/glab/create-issue.sh" "$@"
     ;;
   *)
     die "Could not determine issue host. Use --host github or --host gitlab." 2

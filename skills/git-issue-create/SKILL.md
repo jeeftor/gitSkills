@@ -33,8 +33,8 @@ Helper examples:
 scripts/git/create-issue.sh --title "Issue title" --body-file /tmp/issue-body.md
 scripts/git/create-issue.sh upstream --title "Issue title" --body "Short body"
 scripts/git/create-issue.sh https://github.com/owner/repo --title "Issue title" --yes
-scripts/git/gh-create-issue.sh --repo owner/repo --title "Issue title" --yes
-scripts/git/glab-create-issue.sh --repo group/project --title "Issue title" --yes
+scripts/git/gh/create-issue.sh --repo owner/repo --title "Issue title" --yes
+scripts/git/glab/create-issue.sh --repo group/project --title "Issue title" --yes
 ```
 
 Supported target phrasing:
