@@ -41,6 +41,7 @@
 - Removed site-specific remote examples from skill and workflow documentation.
 - Added shared target phrasing to `common.md`, including the distinction between bare `all` and `all remotes`.
 - Updated `AGENTS.md` to require README and agent matrix relevance checks plus changelog updates before commits.
+- Updated `$git-pr-create` to prefer Markdown tables for dense PR/MR description details while keeping simple descriptions concise.
 
 ### Verified
 

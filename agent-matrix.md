@@ -9,7 +9,7 @@ flowchart TD
     PR_WATCHER["$git-pr-watcher<br/>Inspect one PR or MR"]
     PR_ADDRESS["$git-pr-address-comments<br/>Address review feedback"]
     CI_WATCH["$git-ci-watch<br/>Watch CI"]
-    PR_CREATE["$git-pr-create<br/>Create a PR or MR"]
+    PR_CREATE["$git-pr-create<br/>Create a PR or MR<br/>with clear descriptions"]
     PR_UPDATE["$git-pr-update<br/>Update a PR or MR"]
     PR_MERGE["$git-pr-merge<br/>Merge a PR or MR"]
 
