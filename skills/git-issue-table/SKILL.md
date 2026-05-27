@@ -1,8 +1,8 @@
 ---
 name: git-issue-table
-description: Summarize open GitHub or GitLab issues for the current repository.
+description: ⭐ Primary entry point for summarizing GitHub or GitLab issues for the current repository.
 metadata:
-  short-description: Summarize issues
+  short-description: ⭐ Summarize issues
 ---
 
 # Git Issue Table
@@ -20,4 +20,3 @@ Read `references/git-workflow/common.md`. Then read `references/git-workflow/git
 5. Recommend the top one to three issues to inspect or work next.
 
 Do not edit issues, labels, assignees, milestones, or branches from this skill.
-

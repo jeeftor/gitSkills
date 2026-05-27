@@ -8,11 +8,12 @@ Codex Git Skills is a global skill bundle for GitHub and GitLab issue, pull requ
 
 It installs plain skill names:
 
-- `$git-issue-table` - summarize open GitHub issues or GitLab issues
-- `$git-pr` - route GitHub pull request or GitLab merge request work
+- ⭐ `$git-workflow` - choose a Git, GitHub, or GitLab workflow
+- ⭐ `$git-pr` - route GitHub pull request or GitLab merge request work
+- ⭐ `$git-ci-watch` - watch CI for a branch, commit, latest push, pull request, merge request, run, or pipeline
+- ⭐ `$git-issue-table` - summarize open GitHub issues or GitLab issues
 - `$git-pr-table` - summarize open GitHub pull requests or GitLab merge requests
 - `$git-pr-watcher` - inspect one pull request or merge request
-- `$git-ci-watch` - watch CI for a branch, commit, latest push, pull request, merge request, run, or pipeline
 - `$git-pr-create` - create a GitHub pull request or GitLab merge request
 - `$git-pr-update` - commit and push updates to an existing pull request or merge request
 - `$git-pr-merge` - merge an approved pull request or merge request

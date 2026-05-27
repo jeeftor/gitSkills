@@ -1,8 +1,8 @@
 ---
 name: git-ci-watch
-description: Watch GitHub or GitLab CI for a branch, commit, latest push, pull request, merge request, run, or pipeline.
+description: ⭐ Primary entry point for watching GitHub or GitLab CI on branches, commits, PRs, MRs, runs, or pipelines.
 metadata:
-  short-description: Watch CI
+  short-description: ⭐ Watch CI
 ---
 
 # Git CI Watch

@@ -1,8 +1,8 @@
 ---
 name: git-pr
-description: Route GitHub pull request or GitLab merge request work to the right Git workflow skill.
+description: ⭐ Primary entry point for routing GitHub pull request or GitLab merge request work.
 metadata:
-  short-description: Route PR and MR work
+  short-description: ⭐ Route PR and MR work
 ---
 
 # Git PR

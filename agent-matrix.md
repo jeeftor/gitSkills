@@ -2,6 +2,7 @@
 
 ```mermaid
 flowchart TD
+    WORKFLOW["$git-workflow<br/>Route Git work"]
     ISSUE_TABLE["$git-issue-table<br/>Summarize issues"]
     PR["$git-pr<br/>Route PR and MR work"]
     PR_TABLE["$git-pr-table<br/>Summarize PRs and MRs"]
@@ -11,6 +12,9 @@ flowchart TD
     PR_UPDATE["$git-pr-update<br/>Update a PR or MR"]
     PR_MERGE["$git-pr-merge<br/>Merge a PR or MR"]
 
+    WORKFLOW --> ISSUE_TABLE
+    WORKFLOW --> PR
+    WORKFLOW --> CI_WATCH
     PR --> PR_TABLE
     PR --> PR_WATCHER
     PR --> CI_WATCH

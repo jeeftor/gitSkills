@@ -2,7 +2,7 @@
 set -eu
 
 SKILLS_DIR="${SKILLS_DIR:-$HOME/.agents/skills}"
-SKILLS="git-issue-table git-pr git-pr-table git-pr-watcher git-ci-watch git-pr-create git-pr-update git-pr-merge"
+SKILLS="git-workflow git-issue-table git-pr git-pr-table git-pr-watcher git-ci-watch git-pr-create git-pr-update git-pr-merge"
 
 confirm_plan() {
   echo
