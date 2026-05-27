@@ -15,6 +15,7 @@ Read `references/git-workflow/common.md` and `references/git-workflow/target-res
 
 - Multi-PR or multi-MR overview, prioritization, or "what should I work on next": `$git-pr-table`.
 - One existing PR or MR status, reviews, comments, mergeability, or branch freshness: `$git-pr-watcher`.
+- Address clear review comments or unresolved discussion feedback with local edits: `$git-pr-address-comments`.
 - Latest CI for a branch, commit, pushed update, PR, MR, GitHub Actions run, or GitLab pipeline: `$git-ci-watch`.
 - Commit, push, and create a new PR or MR from a ready branch: `$git-pr-create`.
 - Commit and push updates to an already-open PR or MR branch: `$git-pr-update`.
@@ -22,4 +23,4 @@ Read `references/git-workflow/common.md` and `references/git-workflow/target-res
 
 If the user explicitly asks for subagents or parallel work, delegate using the target skill name in the subagent prompt. Otherwise, continue in the current agent and apply the relevant specialist workflow directly.
 
-If intent is unclear, ask whether they want to list open review items, inspect one item, watch CI, create a new PR or MR, update an existing PR or MR, or merge.
+If intent is unclear, ask whether they want to list open review items, inspect one item, address comments, watch CI, create a new PR or MR, update an existing PR or MR, or merge.

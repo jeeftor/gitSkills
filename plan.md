@@ -20,6 +20,7 @@ The first usable skill set is written, installed, validated, committed, and push
 - ⭐ `$git-issue-table` - summarize GitHub or GitLab issues.
 - `$git-pr-table` - summarize GitHub pull requests or GitLab merge requests.
 - `$git-pr-watcher` - inspect one PR or MR and produce a read-only action plan.
+- `$git-pr-address-comments` - address clear review comments with local changes before handoff to update.
 - `$git-pr-create` - create a PR or MR.
 - `$git-pr-update` - update an existing PR or MR branch.
 - `$git-pr-merge` - merge an approved PR or MR.
@@ -93,7 +94,6 @@ Immediate improvement areas:
 Candidate skills after the initial PR/MR lifecycle proves useful:
 
 - `$git-init`: initialize or connect a local repo, add or verify remotes, choose the preferred default branch, make the first commit, and push the first branch.
-- `$git-pr-address-comments`: inspect review comments or unresolved threads and make requested code/doc/test changes, then hand off to `$git-pr-update`.
 - `$git-branch-sync`: update a branch from its base branch, handle behind/conflict states, and manage rebase/merge/force-with-lease safety.
 - `$git-pr-review`: review someone else's PR/MR, check out safely, run targeted verification, and prepare review findings or comments.
 - `$git-changelog`: update `CHANGELOG.md`, release notes, or similar project changelog files when preparing a PR or release.

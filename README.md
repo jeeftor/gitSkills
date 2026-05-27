@@ -14,6 +14,7 @@ It installs plain skill names:
 - ⭐ `$git-issue-table` - summarize open GitHub issues or GitLab issues
 - `$git-pr-table` - summarize open GitHub pull requests or GitLab merge requests
 - `$git-pr-watcher` - inspect one pull request or merge request
+- `$git-pr-address-comments` - address review comments on an existing pull request or merge request
 - `$git-pr-create` - create a GitHub pull request or GitLab merge request
 - `$git-pr-update` - commit and push updates to an existing pull request or merge request
 - `$git-pr-merge` - merge an approved pull request or merge request

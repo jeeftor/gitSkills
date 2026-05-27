@@ -15,6 +15,7 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 
 - Use this only when the current branch already has an open PR or MR, or when the user identifies one.
 - Never create a new PR or MR from this skill.
+- Use `$git-pr-address-comments` first when review feedback still needs local code, test, documentation, or changelog changes.
 - Do not update a default branch.
 - Do not commit or push when verification is failing unless the user explicitly accepts that status.
 
