@@ -6,6 +6,7 @@ flowchart TD
     ISSUE_TABLE["$git-issue-table<br/>Summarize issues"]
     ISSUE_DETAILS["$git-issue-details<br/>Inspect one issue"]
     ISSUE_CREATE["$git-issue-create<br/>Create issues"]
+    BRANCH_SYNC["$git-branch-sync<br/>Sync branches"]
     PR["$git-pr<br/>Route PR and MR work"]
     PR_TABLE["$git-pr-table<br/>Summarize PRs and MRs"]
     PR_WATCHER["$git-pr-watcher<br/>Inspect one PR or MR"]
@@ -18,6 +19,7 @@ flowchart TD
     WORKFLOW --> ISSUE_TABLE
     WORKFLOW --> ISSUE_DETAILS
     WORKFLOW --> ISSUE_CREATE
+    WORKFLOW --> BRANCH_SYNC
     WORKFLOW --> PR
     WORKFLOW --> CI_WATCH
     ISSUE_TABLE --> ISSUE_DETAILS
@@ -42,6 +44,7 @@ flowchart TD
 Read-only overview skills should run before mutating create, update, or merge workflows when the target item is ambiguous.
 `$git-issue-table` uses `scripts/git/get-issues.sh` for the common scripted issue collection path.
 `$git-issue-details` uses `scripts/git/get-issue.sh` for the common scripted issue detail path before recommending next actions.
+`$git-branch-sync` uses `scripts/git/get-branch-state.sh` before recommending or performing branch sync mutations.
 `$git-pr-table` uses `scripts/git/get-prs.sh` for the common scripted PR/MR collection path before handing one selected item to `$git-pr-watcher`.
 `$git-pr-watcher` uses `scripts/git/get-pr.sh` for the common scripted PR/MR detail path before recommending next actions.
 Use `$git-ci-watch` instead of `$git-pr-watcher` when the user only asks about CI for the latest push, branch, commit, run, pipeline, PR, or MR.

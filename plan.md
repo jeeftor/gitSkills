@@ -9,6 +9,7 @@ Repository: https://github.com/jeeftor/gitSkills
 `README.md` and `agent-matrix.md` are the source of truth for implemented skills. Current workflows cover:
 
 - Routing: `$git-workflow`, `$git-pr`
+- Branches: `$git-branch-sync`
 - Issues: `$git-issue-table`, `$git-issue-details`, `$git-issue-create`
 - Pull requests and merge requests: `$git-pr-table`, `$git-pr-watcher`, `$git-pr-address-comments`, `$git-pr-create`, `$git-pr-update`, `$git-pr-merge`
 - CI: `$git-ci-watch`
@@ -17,7 +18,7 @@ Repository: https://github.com/jeeftor/gitSkills
 
 - Use `~/.agents/skills`, not `~/.agent/skills` or `~/.codex/skills`, for this repo's Makefile install path.
 - Keep references DRY in Git under `references/git-workflow/`.
-- During `make install`, copy shared references into each installed skill so every skill is self-contained under `~/.agents/skills/<skill>/`.
+- During `make install`, copy shared references and helpers once into `~/.agents/gitSkills/` and link each installed skill back to that shared location.
 - Token efficiency depends on what a skill reads, not on how many reference copies exist on disk.
 - Use `gh` for GitHub workflows and `glab` for GitLab workflows; both are required when using the matching platform.
 - Keep `rg`, `fd`, `gum`, and personal display preferences in global or repo-local `AGENTS.md`, not repeated in every skill.
@@ -77,7 +78,6 @@ Implement only one or two at a time. Favor work that reuses existing GitHub/GitL
 
 | Work | Priority | Why Next | Keep Simple Boundary |
 | --- | --- | --- | --- |
-| `$git-branch-sync` | High | Common daily workflow and safety-sensitive enough to deserve a skill. | Use `scripts/git/get-branch-state.sh` for the read-only branch snapshot first; mutate only when asked. |
 | `$git-pr-review` plus single PR/MR detail helpers | High | Natural companion to `$git-pr-watcher`; covers checkout, diff, tests, and review findings. | Read-only by default; no submitted review unless explicitly asked. |
 | `$git-issue-update` | Medium | Useful after issue triage finds the next action. | Require an explicit issue target; do not bulk edit. |
 | `scripts/validate-skill-routing.sh` | Low | Routing examples can catch missing metadata and reference drift during `make validate`. | Start as a lightweight metadata/reference check, not a model-eval harness. |
