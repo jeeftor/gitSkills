@@ -4,6 +4,13 @@
 
 ### Added
 
+- Added `$vhs` for repeatable terminal screenshots, GIFs, videos, output guidance, runner selection, deterministic fixture guidance, and GIF optimization with Charmbracelet VHS.
+- Added VHS helper scripts.
+  - `scripts/vhs/check.sh` checks required VHS rendering tools and optional optimization tools.
+  - `scripts/vhs/render.sh` validates or renders one tape or all configured tapes and reports artifact sizes.
+  - `scripts/vhs/optimize-gif.sh` optimizes GIFs with `gifsicle` and replaces originals only when smaller.
+  - `scripts/vhs/new-demo.sh` creates starter tapes with deterministic defaults.
+- Added `make vhs`, `make vhs-check`, `make vhs-validate`, `make vhs-one`, and `make vhs-new` targets for repo-native VHS workflows.
 - Added `scripts/git/codex-color-probe.sh` for checking ANSI, Markdown, HTML, plain-label, and JSON color-hint rendering inside Codex.
 - Added shared table output guidance in `references/git-workflow/table.md`.
   - Keeps full URLs out of tables and moves raw links into a terminal-friendly `Links:` section.
@@ -46,6 +53,8 @@
 
 ### Changed
 
+- Updated install and uninstall scripts to include `$vhs` and shared `scripts/vhs/` helper installation.
+- Updated static skill routing validation to include `$vhs` references.
 - Updated issue and PR/MR table helpers to emit explicit color-hint metadata while preserving plain status text.
 - Updated issue and PR/MR table guidance to prefer Markdown tables with stable status symbols and optional ANSI because fixed-width box tables wrap poorly in Codex.
 - Updated `$git-issue-table` to prioritize issue titles and relative update ages instead of labels, owners, work signals, or a generic next-action column.

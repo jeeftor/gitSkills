@@ -3,6 +3,7 @@
 ```mermaid
 flowchart TD
     WORKFLOW["$git-workflow<br/>Route Git work"]
+    VHS["$vhs<br/>Record terminal demos"]
     ISSUE_TABLE["$git-issue-table<br/>Summarize issues"]
     ISSUE_DETAILS["$git-issue-details<br/>Inspect one issue"]
     ISSUE_CREATE["$git-issue-create<br/>Create issues"]
@@ -46,6 +47,8 @@ flowchart TD
     PR_UPDATE --> PR_WATCHER
     PR_WATCHER --> PR_MERGE
 ```
+
+`$vhs` is an independent utility skill for repeatable terminal screenshots, GIFs, videos, and VHS runner guidance. It is not routed through `$git-workflow`.
 
 Read-only overview skills should run before mutating create, update, or merge workflows when the target item is ambiguous.
 `$git-issue-table` uses `scripts/git/get-issues.sh` for the common scripted issue collection path.

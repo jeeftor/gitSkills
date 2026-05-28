@@ -3,9 +3,10 @@ set -eu
 
 SKILLS_DIR="${SKILLS_DIR:-$HOME/.agents/skills}"
 GITSKILLS_HOME="${GITSKILLS_HOME:-$HOME/.agents/gitSkills}"
-SKILLS="git-workflow git-branch-sync git-issue-table git-issue-details git-issue-create git-issue-update git-pr git-pr-table git-pr-watcher git-pr-review git-pr-address-comments git-ci-watch git-pr-create git-pr-update git-pr-merge"
+SKILLS="git-workflow git-branch-sync git-issue-table git-issue-details git-issue-create git-issue-update git-pr git-pr-table git-pr-watcher git-pr-review git-pr-address-comments git-ci-watch git-pr-create git-pr-update git-pr-merge vhs"
 REFERENCE_SUBDIR="references/git-workflow"
-HELPER_SUBDIR="scripts/git"
+GIT_HELPER_SUBDIR="scripts/git"
+VHS_HELPER_SUBDIR="scripts/vhs"
 
 script_dir() {
   case "$0" in
@@ -27,7 +28,8 @@ confirm_plan() {
   echo
   echo "Shared references and helpers will be copied once to:"
   echo "  $repo_dir/$REFERENCE_SUBDIR -> $GITSKILLS_HOME/references/git-workflow"
-  echo "  $repo_dir/$HELPER_SUBDIR -> $GITSKILLS_HOME/scripts/git"
+  echo "  $repo_dir/$GIT_HELPER_SUBDIR -> $GITSKILLS_HOME/scripts/git"
+  echo "  $repo_dir/$VHS_HELPER_SUBDIR -> $GITSKILLS_HOME/scripts/vhs"
 
   if [ "${ASSUME_YES:-0}" = "1" ] || [ "${CI:-0}" = "1" ]; then
     echo "Proceeding because ASSUME_YES=1 or CI=1."
@@ -50,8 +52,13 @@ if [ ! -d "$repo_dir/$REFERENCE_SUBDIR" ]; then
   exit 1
 fi
 
-if [ ! -d "$repo_dir/$HELPER_SUBDIR" ]; then
-  echo "Missing helper scripts: $HELPER_SUBDIR" >&2
+if [ ! -d "$repo_dir/$GIT_HELPER_SUBDIR" ]; then
+  echo "Missing helper scripts: $GIT_HELPER_SUBDIR" >&2
+  exit 1
+fi
+
+if [ ! -d "$repo_dir/$VHS_HELPER_SUBDIR" ]; then
+  echo "Missing helper scripts: $VHS_HELPER_SUBDIR" >&2
   exit 1
 fi
 
@@ -62,16 +69,23 @@ mkdir -p "$GITSKILLS_HOME/references" "$GITSKILLS_HOME/scripts"
 
 rm -rf "${GITSKILLS_HOME:?}/references/git-workflow"
 rm -rf "${GITSKILLS_HOME:?}/scripts/git"
+rm -rf "${GITSKILLS_HOME:?}/scripts/vhs"
 cp -R "$repo_dir/$REFERENCE_SUBDIR" "$GITSKILLS_HOME/references/git-workflow"
-cp -R "$repo_dir/$HELPER_SUBDIR" "$GITSKILLS_HOME/scripts/git"
+cp -R "$repo_dir/$GIT_HELPER_SUBDIR" "$GITSKILLS_HOME/scripts/git"
+cp -R "$repo_dir/$VHS_HELPER_SUBDIR" "$GITSKILLS_HOME/scripts/vhs"
 
 for skill in $SKILLS; do
   rm -rf "${SKILLS_DIR:?}/$skill"
   cp -R "$repo_dir/skills/$skill" "$SKILLS_DIR/$skill"
-  mkdir -p "$SKILLS_DIR/$skill/references"
-  ln -s "$GITSKILLS_HOME/references/git-workflow" "$SKILLS_DIR/$skill/references/git-workflow"
-  mkdir -p "$SKILLS_DIR/$skill/scripts"
-  ln -s "$GITSKILLS_HOME/scripts/git" "$SKILLS_DIR/$skill/scripts/git"
+  if [ "$skill" = "vhs" ]; then
+    mkdir -p "$SKILLS_DIR/$skill/scripts"
+    ln -s "$GITSKILLS_HOME/scripts/vhs" "$SKILLS_DIR/$skill/scripts/vhs"
+  else
+    mkdir -p "$SKILLS_DIR/$skill/references"
+    ln -s "$GITSKILLS_HOME/references/git-workflow" "$SKILLS_DIR/$skill/references/git-workflow"
+    mkdir -p "$SKILLS_DIR/$skill/scripts"
+    ln -s "$GITSKILLS_HOME/scripts/git" "$SKILLS_DIR/$skill/scripts/git"
+  fi
   echo "Installed $skill"
 done
 
