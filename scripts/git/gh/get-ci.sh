@@ -225,7 +225,15 @@ gh run view "$run_id" \
   --repo "$repo" \
   --json databaseId,status,conclusion,headSha,url,jobs,headBranch,displayTitle,workflowName >"$run_file"
 
-if ! gh run view "$run_id" --repo "$repo" --log-failed >"$logs_file" 2>/dev/null; then
+failed_job_count="$(
+  jq '[
+    (.jobs // [])[] |
+    ((.conclusion // .status // "") | ascii_downcase) as $status |
+    select(["failure", "failed", "error", "timed_out", "action_required", "startup_failure"] | index($status))
+  ] | length' "$run_file"
+)"
+
+if [ "$failed_job_count" -gt 0 ] && ! gh run view "$run_id" --repo "$repo" --log-failed >"$logs_file" 2>/dev/null; then
   : >"$logs_file"
 fi
 

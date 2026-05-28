@@ -89,7 +89,7 @@ set -- gh pr list \
   --repo "$repo" \
   --state "$state" \
   --limit "$limit" \
-  --json number,title,url,state,isDraft,mergeStateStatus,reviewDecision,statusCheckRollup,updatedAt,headRefName,baseRefName,author,assignees,labels,reviewRequests
+  --json number,title,url,state,isDraft,mergeStateStatus,reviewDecision,statusCheckRollup,updatedAt,headRefName,baseRefName
 
 case "$scope" in
   authored)
@@ -129,13 +129,6 @@ jq \
           url,
           state,
           is_draft: (.isDraft // false),
-          labels: [(.labels // [])[].name],
-          assignees: [(.assignees // [])[].login],
-          author: (.author.login // null),
-          review_requests: [
-            (.reviewRequests // [])[] |
-            (.login // .slug // .name // empty)
-          ],
           updated_at: .updatedAt,
           head_branch: .headRefName,
           base_branch: .baseRefName,

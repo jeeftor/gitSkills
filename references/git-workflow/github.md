@@ -30,7 +30,7 @@ scripts/git/gh/get-pr.sh --repo <owner/repo> --number <number>
 
 Use `--scope authored`, `--scope assigned`, or `--scope review` when the user asks for PRs they authored, PRs assigned to them, or PRs needing their review.
 
-The generic list helper resolves the current checkout or named remote before delegating to the GitHub helper. It emits a table-ready `items` list with draft state, CI status, review status, mergeability, branch freshness, URLs, and blocker text. The generic detail helper resolves one PR by URL, number, or branch and emits body, comments, reviews, merge state, branches, and status checks. GitHub helpers remain available for direct provider-specific collection.
+The generic list helper resolves the current checkout or named remote before delegating to the GitHub helper. It keeps list collection narrow and emits a table-ready `items` list with draft state, CI status, review status, mergeability, branch freshness, URLs, and blocker text. The generic detail helper resolves one PR by URL, number, or branch and emits body, comments, reviews, merge state, branches, and status checks. GitHub helpers remain available for direct provider-specific collection.
 
 Fallback command:
 

@@ -29,7 +29,7 @@ scripts/git/glab/get-mr.sh --repo <group/project> --number <iid>
 
 Use `--scope authored`, `--scope assigned`, or `--scope review` when the user asks for MRs they authored, MRs assigned to them, or MRs needing their review.
 
-The generic list helper resolves named GitLab remotes before delegating to the GitLab helper. It emits a table-ready `items` list with draft state, CI status, review status, discussion status, mergeability, branch freshness, URLs, and blocker text. The generic detail helper resolves one MR by URL, IID, or branch and emits description, discussions, approvals, merge state, branches, and pipeline context. GitLab helpers remain available for direct provider-specific collection.
+The generic list helper resolves named GitLab remotes before delegating to the GitLab helper. It keeps normalized list output narrow and emits a table-ready `items` list with draft state, CI status, review status, discussion status, mergeability, branch freshness, URLs, and blocker text. The generic detail helper resolves one MR by URL, IID, or branch and emits description, discussions, approvals, merge state, branches, and pipeline context. GitLab helpers remain available for direct provider-specific collection.
 
 Fallback commands:
 

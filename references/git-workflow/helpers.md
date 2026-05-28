@@ -10,11 +10,13 @@ Repo-local helpers live under:
 scripts/git/
 ```
 
-During `make install`, these helpers are copied into each installed skill under:
+During `make install`, these helpers are copied once into the shared gitSkills install directory:
 
 ```text
-~/.agents/skills/<skill>/scripts/git/
+~/.agents/gitSkills/scripts/git/
 ```
+
+Each installed skill gets a `scripts/git` symlink back to that shared helper directory so relative helper paths keep working without duplicating the full helper tree per skill.
 
 Prefer the installed helper next to the active skill when working outside this repository checkout. Use the repo-local helper when developing this repository.
 
@@ -102,13 +104,13 @@ For `--all-remotes`, `repo` is `null` and `targets` contains one normalized targ
 - `scripts/git/create-issue.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then delegate issue creation to the provider helper.
 - `scripts/git/gh/get-issues.sh`: collect GitHub issues as normalized JSON using the lightweight issue list API fields needed for issue tables.
 - `scripts/git/gh/get-issue.sh`: collect one GitHub issue as normalized JSON, including body, labels, assignees, milestone, and comments.
-- `scripts/git/gh/get-prs.sh`: collect GitHub pull requests as normalized JSON, including draft, review, merge, branch, and status-check fields.
+- `scripts/git/gh/get-prs.sh`: collect GitHub pull requests as normalized JSON, including the draft, review, merge, branch, and status-check fields needed for default PR tables.
 - `scripts/git/gh/get-pr.sh`: collect one GitHub pull request as normalized JSON, including body, comments, reviews, merge state, branches, and status checks.
 - `scripts/git/gh/get-ci.sh`: collect GitHub Actions/check status as normalized JSON, including PR checks, workflow runs, jobs, failed logs, and run URLs.
 - `scripts/git/gh/create-issue.sh`: create a GitHub issue after duplicate search and explicit `--yes` confirmation.
 - `scripts/git/glab/get-issues.sh`: collect GitLab issues as normalized JSON, including task completion and blocking issue metadata from the GitLab REST API.
 - `scripts/git/glab/get-issue.sh`: collect one GitLab issue as normalized JSON, including description, labels, assignees, milestone, notes, and task metadata.
-- `scripts/git/glab/get-mrs.sh`: collect GitLab merge requests as normalized JSON, including draft, review, merge, branch, discussion, and pipeline fields.
+- `scripts/git/glab/get-mrs.sh`: collect GitLab merge requests as normalized JSON, including the draft, reviewer, merge, branch, discussion, and pipeline fields needed for default MR tables.
 - `scripts/git/glab/get-mr.sh`: collect one GitLab merge request as normalized JSON, including description, discussions, approvals, merge state, branches, and pipeline fields.
 - `scripts/git/glab/get-ci.sh`: collect GitLab pipeline/job status as normalized JSON, including MR pipelines, branch pipelines, jobs, failed logs, and pipeline URLs.
 - `scripts/git/glab/create-issue.sh`: create a GitLab issue after duplicate search and explicit `--yes` confirmation.
