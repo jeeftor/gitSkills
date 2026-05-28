@@ -19,7 +19,7 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 
 ## Workflow
 
-1. Inspect branch, remotes, staged files, unstaged files, untracked files, and upstream state.
+1. Use `scripts/git/get-branch-state.sh` to inspect branch, staged files, unstaged files, untracked files, upstream state, pushed state, and the default/base branch guess.
 2. Confirm no open PR or MR already exists for the branch.
 3. Confirm the staged files are intended.
 4. Run or confirm the narrowest practical verification.
@@ -32,7 +32,7 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 
 Prefer preserving project templates and repo-local contribution guidance over generated prose. Fill required template sections instead of deleting them, and keep contribution checklist wording intact unless the local instructions say otherwise.
 
-Keep simple PRs and MRs concise. Use short prose or bullets when the change has only a few related facts and a table would add visual noise.
+Keep simple PRs and MRs concise. Use short prose or bullets when the change has only a few related facts and a table would add visual noise. When composing a PR/MR description or when dense description guidance is needed, read `references/git-workflow/pr-description.md`.
 
 Use Markdown tables when dense structured details are clearer as rows and columns, especially for:
 
@@ -40,41 +40,3 @@ Use Markdown tables when dense structured details are clearer as rows and column
 - affected areas or components
 - compatibility, platform, or migration status
 - follow-up work or rollout items
-
-Make tables render cleanly on GitHub and GitLab:
-
-- Put a blank line before and after each table.
-- Use a normal header and separator row, such as `| Check | Result | Notes |` followed by `| --- | --- | --- |`.
-- Keep cells short; move long reasoning below the table.
-- Avoid multiline cells, nested lists, and raw full URLs in table cells.
-- Escape literal pipe characters in cells as `\|`.
-
-Examples:
-
-```markdown
-| Check | Result | Notes |
-| --- | --- | --- |
-| `make validate` | Pass | Validates skill metadata and shell syntax. |
-| Manual PR preview | Pass | Table renders on GitHub and GitLab. |
-```
-
-```markdown
-| Area | Change | Impact |
-| --- | --- | --- |
-| PR description | Adds table guidance | Clearer dense review context. |
-| Templates | Preserved | Existing project requirements remain intact. |
-```
-
-```markdown
-| Platform | Status | Notes |
-| --- | --- | --- |
-| GitHub | Supported | Standard Markdown tables render in PR bodies. |
-| GitLab | Supported | Standard Markdown tables render in MR descriptions. |
-```
-
-```markdown
-| Follow-up | Owner | Timing |
-| --- | --- | --- |
-| Watch CI | Author | After push |
-| Address review comments | Author | During review |
-```

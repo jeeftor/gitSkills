@@ -48,8 +48,36 @@ CI helpers should emit this general shape:
 }
 ```
 
+Branch-state helpers should emit this general shape:
+
+```json
+{
+  "current_branch": "feature/example",
+  "is_detached": false,
+  "current_head": "...",
+  "upstream": {"ref": "origin/feature/example", "head": "...", "exists": true},
+  "pushed": {"remote": "origin", "branch": "feature/example", "head": "...", "exists": true},
+  "base": {"branch": "master", "remote": "origin", "source": "origin_head", "exists": true},
+  "dirty": {
+    "is_dirty": true,
+    "summary": {"staged": 1, "unstaged": 0, "untracked": 1},
+    "staged": [{"status": "M", "path": "file"}],
+    "unstaged": [],
+    "untracked": [{"status": "??", "path": "new-file"}]
+  },
+  "ahead_behind": {
+    "upstream": {"ahead": 1, "behind": 0},
+    "base": {"ahead": 3, "behind": 0},
+    "pushed": {"ahead": 1, "behind": 0}
+  }
+}
+```
+
+Use `scripts/git/get-branch-state.sh` at the start of PR/MR create and update workflows to inspect the current branch, default/base branch guess, upstream or pushed commit state, and dirty working-tree summaries. It is a local-only snapshot; still use provider helpers or platform CLIs to detect duplicate PRs/MRs, verify remote review state, and inspect CI.
+
 ## Current Helpers
 
+- `scripts/git/get-branch-state.sh`: inspect the current branch, upstream, base branch guess, dirty state summaries, ahead/behind counts, current HEAD, and local pushed/upstream HEADs for PR/MR create and update workflows.
 - `scripts/git/get-issues.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then collect normalized issue JSON with the provider helper.
 - `scripts/git/get-issue.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or issue URL, then collect normalized detail JSON for one issue.
 - `scripts/git/get-prs.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes, then collect normalized PR/MR JSON with table-ready status and color-hint fields.

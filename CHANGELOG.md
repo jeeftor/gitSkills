@@ -33,6 +33,8 @@
   - `scripts/git/create-issue.sh` resolves the current checkout, named remote, or GitHub/GitLab URL before delegating.
   - `scripts/git/gh/create-issue.sh` and `scripts/git/glab/create-issue.sh` search likely duplicate open issues and require `--yes` before creating.
 - Added a local pre-commit hook configuration that runs `make validate`.
+- Added `scripts/git/get-branch-state.sh` for read-only local branch, dirty state, upstream, base, pushed HEAD, and ahead/behind inspection.
+- Added `references/git-workflow/pr-description.md` for dense PR/MR description and Markdown table guidance.
 
 ### Changed
 
@@ -61,10 +63,15 @@
 - Added shared target phrasing to `common.md`, including the distinction between bare `all` and `all remotes`.
 - Updated `AGENTS.md` to require README and agent matrix relevance checks plus changelog updates before commits.
 - Updated `$git-pr-create` to prefer Markdown tables for dense PR/MR description details while keeping simple descriptions concise.
+- Updated `$git-pr-create` and `$git-pr-update` to prefer the branch-state helper for initial local branch inspection.
+- Updated `$git-pr-create` to load detailed PR/MR description examples only from the focused reference when needed.
+- Updated `plan.md` to remove stale implemented backlog entries and compact live next-work planning.
+- Added optional `make shellcheck` validation and fixed current demo script ShellCheck warnings.
 
 ### Verified
 
 - Ran `make validate`.
+- Ran `make shellcheck`.
 - Verified GitHub issue collection against `jeeftor/gitSkills`.
 - Verified GitLab issue collection against a GitLab-backed test repository.
 - Verified installed helper copies under `~/.agents/skills/`.
