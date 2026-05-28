@@ -2,6 +2,8 @@
 
 Use this reference for review comments, requested changes, unresolved threads, issue comments, maintainer questions, and discussion triage.
 
+For local PR/MR code reviews, lead with findings ordered by severity. Include file/line references, concrete evidence, and the user-visible or maintenance risk. Put open questions after findings and keep summaries brief.
+
 ## Review Classification
 
 Classify feedback into:
@@ -42,3 +44,4 @@ Treat "GitLab PR" as a merge request.
 - Read-only triage should produce an action plan, not silently edit code.
 - Ask before behavior changes, risky rebases, force pushes, or ambiguous reviewer feedback.
 - Do not resolve threads, submit reviews, edit PR/MR bodies, or push commits unless the user explicitly asks for that mutating workflow.
+- Do not check out remote review branches with a dirty local working tree unless the user explicitly accepts the risk.
