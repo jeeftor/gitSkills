@@ -52,6 +52,7 @@ flowchart TD
 
 Read-only overview skills should run before mutating create, update, or merge workflows when the target item is ambiguous.
 `$git-workflow` asks for an explicit completion endpoint before broad implementation requests such as "work on issue 49 to completion" when commit, push, PR/MR, or issue closure behavior is not stated.
+Completed workflows use `references/git-workflow/common.md` completion handoff guidance to recommend only the smallest useful next skill or known issue-table item.
 `$git-issue-table` uses `scripts/git/get-issues.sh` for the common scripted issue collection path.
 `$git-issue-details` uses `scripts/git/get-issue.sh` for the common scripted issue detail path before recommending next actions.
 `$git-issue-update` uses `scripts/git/get-issue.sh` before and after explicit one-issue mutations.

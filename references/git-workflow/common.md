@@ -35,6 +35,26 @@ Use this lightweight reference for every `gitSkills` workflow. Read deeper refer
 - Stop before destructive branch operations or ambiguous target selection.
 - Prefer platform CLIs for read operations, then API calls when summary fields are missing.
 
+## Completion Handoff
+
+End a completed Git workflow with the smallest useful next step when a valid follow-up is clear. Do not suggest every related skill, and do not add a generic follow-up when no Git follow-up is needed.
+
+Use these shared handoffs:
+
+- Use `$git-issue-details` after `$git-issue-table` when one selected issue needs a deeper read.
+- Use `$git-issue-table` after closing or finishing an issue when the user wants the next issue or recent issue-table context is available.
+- Use `$git-pr-watcher` after creating a PR/MR or when a PR/MR table result needs a deep dive.
+- Use `$git-ci-watch` when the only remaining question is CI status.
+- Use `$git-pr-address-comments` when review feedback requires local changes.
+- Use `$git-pr-update` when local changes are ready to commit and push to an existing PR/MR.
+- Use `$git-pr-merge` only when the PR/MR is approved, green, mergeable, and the user asked for merge handling.
+
+If an issue-table recommendation is already known, name the next issue directly instead of asking the user to rerun the table. If the next issue is not known, suggest `$git-issue-table` as the smallest next step.
+
+Keep handoff details centralized here and in `agent-matrix.md`. Leaf skills may name their immediate natural next skill, but they should not duplicate a full handoff list. When adding, removing, or rerouting a workflow edge, update both this section and `agent-matrix.md` when the handoff changes.
+
+If no Git follow-up is needed, say so briefly.
+
 ## Subagents And Parallel Work
 
 Use subagents only when the user explicitly asks for subagents, delegation, or parallel work, or when a read-only investigation is large enough that splitting evidence is clearly useful.

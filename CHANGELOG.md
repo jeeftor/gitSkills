@@ -55,6 +55,7 @@
 - Added GitHub Actions validation for repo-local shell, routing, helper, and ShellCheck checks.
 - Added `make ci` for GitHub Actions-safe validation without Codex-local tooling.
 - Added a tracked `$git-issue-table` VHS demo GIF and deterministic tape.
+- Added shared Git workflow completion handoff guidance.
 
 ### Changed
 
@@ -99,6 +100,7 @@
 - Updated `$git-pr`, review references, install scripts, README, and the agent matrix to route local PR/MR review requests.
 - Updated issue and mutation references with safe one-issue update guidance.
 - Updated `$git-workflow` to ask for an explicit completion endpoint before broad issue implementation requests.
+- Updated README and the agent matrix to document shared completion handoff behavior.
 - Updated default `make` behavior to list available targets instead of running `make install`.
 - Updated the GitHub Actions validation workflow with manual dispatch and read-only contents permissions.
 - Updated `make validate` to run static skill routing validation.

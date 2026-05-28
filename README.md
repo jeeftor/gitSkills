@@ -40,6 +40,7 @@ The `git-pr-*` skills intentionally cover both GitHub pull requests and GitLab m
 ## Workflow Control
 
 `$git-workflow` asks for an explicit endpoint before broad implementation requests such as "work on issue 49 to completion" when the prompt does not say whether completion means local verified changes, a local commit, a pushed branch, a PR/MR, or an issue update.
+Completed workflows use shared completion handoff guidance to suggest only the smallest useful next skill or issue-table item.
 
 ## Requirements
 
