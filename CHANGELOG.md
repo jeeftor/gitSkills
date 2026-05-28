@@ -12,7 +12,7 @@
 - Added shared helper guidance in `references/git-workflow/helpers.md`.
   - Defines the `scripts/git/` helper location.
   - Documents the contract for read-only JSON helper scripts.
-  - Notes that installed skills receive helper copies under `~/.agents/skills/<skill>/scripts/git/`.
+  - Notes that installed skills receive helper/reference shims pointing at shared assets under `~/.agents/gitSkills/`.
 - Added GitHub and GitLab issue helper scripts.
   - `scripts/git/gh/get-issues.sh` normalizes lightweight GitHub issue table data.
   - `scripts/git/glab/get-issues.sh` normalizes GitLab issue data, including task completion and blocking metadata.
@@ -47,7 +47,7 @@
 - Updated GitHub issue collection to use one lightweight `gh issue list` call for the default issue table.
 - Updated provider helpers to live under `scripts/git/gh/` and `scripts/git/glab/`.
 - Updated `make validate` to syntax-check shell helpers recursively under `scripts/`.
-- Updated `make install` to copy shared helper scripts into every installed skill alongside shared references.
+- Updated `make install` to copy shared helper scripts and references once under `~/.agents/gitSkills/` and link each installed skill back to them.
 - Updated `README.md` to document shared helper scripts and their install behavior.
 - Updated `README.md` to document helper script prerequisites and usage examples.
 - Updated `README.md` to document installing the local hook with `prek install`.
@@ -74,6 +74,8 @@
 - Updated `scripts/git/get-issues.sh` to support `all remotes` issue collection.
 - Updated `$git-ci-watch` and CI references to prefer the generic CI helper.
 - Updated `$git-pr-watcher` and review references to prefer the generic PR/MR detail helper.
+- Trimmed PR/MR list helper output to default table fields and kept richer relationship data in one-item detail helpers.
+- Updated GitHub CI collection to fetch failed logs only when the selected run has failing jobs.
 
 ### Verified
 
@@ -81,4 +83,4 @@
 - Ran `make shellcheck`.
 - Verified GitHub issue collection against `jeeftor/gitSkills`.
 - Verified GitLab issue collection against a GitLab-backed test repository.
-- Verified installed helper copies under `~/.agents/skills/`.
+- Verified shared installed helper/reference symlinks under `~/.agents/skills/`.

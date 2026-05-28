@@ -102,7 +102,7 @@ The installer copies skills to:
 
 Shared workflow references are kept once in this repository under `references/git-workflow/`.
 Shared helper scripts are kept under `scripts/git/`.
-During install, those references and helpers are copied into each installed skill so every skill is self-contained under `~/.agents/skills/<skill>/`.
+During install, those references and helpers are copied once into `~/.agents/gitSkills/`. Each installed skill gets lightweight `references/git-workflow` and `scripts/git` symlinks back to that shared location, so existing relative paths keep working without duplicating the full helper tree per skill.
 
 Restart Codex after installation.
 

@@ -39,6 +39,7 @@ scripts/git/gh/get-ci.sh --repo <owner/repo> --target-type run --target <run-id>
 ```
 
 The helper emits normalized JSON with `Pass`, `Failing`, `Pending`, `Canceled`, `Skipped`, `Missing`, or `Unknown`, plus job rows, failed log summaries, run URL, commit, and branch when available.
+For table or quick status paths, avoid log collection unless the selected run has failing jobs. Use deeper log retrieval only for troubleshooting failures.
 
 Useful commands:
 
@@ -64,6 +65,7 @@ scripts/git/glab/get-ci.sh --repo <group/project> --target-type pipeline --targe
 ```
 
 The helper emits normalized JSON with `Pass`, `Failing`, `Pending`, `Canceled`, `Skipped`, `Missing`, or `Unknown`, plus job rows, failed log summaries, pipeline URL, commit, and branch when available.
+For table or quick status paths, avoid log collection unless the selected pipeline has failing jobs. Use deeper log retrieval only for troubleshooting failures.
 
 Useful commands:
 
