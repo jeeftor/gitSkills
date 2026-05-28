@@ -4,88 +4,50 @@ Repository: https://github.com/jeeftor/gitSkills
 
 ## Current State
 
-`gitSkills` is a personal/global Codex skill bundle for reusable Git, GitHub, and GitLab workflows. The repo uses `master` as its default branch and installs skills globally under `~/.agents/skills/`.
+`gitSkills` is a personal/global Codex skill bundle for reusable Git, GitHub, and GitLab workflows. The repo uses `master` as its default branch.
 
-`README.md` and `agent-matrix.md` are the source of truth for implemented skills. Current workflows cover:
+`README.md` and `agent-matrix.md` are the source of truth for implemented skills and routing. Shared workflow references live under `references/git-workflow/`, and helper scripts live under `scripts/git/`.
 
-- Routing: `$git-workflow`, `$git-pr`
-- Branches: `$git-branch-sync`
-- Issues: `$git-issue-table`, `$git-issue-details`, `$git-issue-create`, `$git-issue-update`
-- Pull requests and merge requests: `$git-pr-table`, `$git-pr-watcher`, `$git-pr-review`, `$git-pr-address-comments`, `$git-pr-create`, `$git-pr-update`, `$git-pr-merge`
-- CI: `$git-ci-watch`
-
-## Settled Decisions
-
-- Use `~/.agents/skills`, not `~/.agent/skills` or `~/.codex/skills`, for this repo's Makefile install path.
-- Keep references DRY in Git under `references/git-workflow/`.
-- During `make install`, copy shared references and helpers once into `~/.agents/gitSkills/` and link each installed skill back to that shared location.
-- Token efficiency depends on what a skill reads, not on how many reference copies exist on disk.
-- Use `gh` for GitHub workflows and `glab` for GitLab workflows; both are required when using the matching platform.
-- Keep `rg`, `fd`, `gum`, and personal display preferences in global or repo-local `AGENTS.md`, not repeated in every skill.
-- Do not use `allowed-tools` frontmatter for now. The Agent Skills spec marks it experimental and client support varies, so it is not a reliable way to guarantee tool access in Codex.
-- Mark only primary entry-point skills with ⭐ so Codex skill lists are easier to scan without making every skill look equally important. `$git-workflow` is the broadest start-here skill.
-- Keep frontmatter descriptions short because Codex includes installed skill metadata in its initial context.
-- Keep `$git-pr-watcher` read-only. Use `$git-ci-watch` for CI-only work and `$git-pr-update` for branch/code updates.
-- Respect each target repo's `.gitignore`; do not stage ignored local artifacts unless the user explicitly asks.
-- Never blindly run `git add -A`, `git add .`, `git commit -a`, or broad equivalent staging commands. Prefer path-specific staging after reviewing the file list.
-- For repositories with both GitHub and GitLab signals, explicit user intent wins. Branch upstream beats generic remotes. Ask before mutating when the platform is ambiguous.
-- Use subagents for read-only investigation only when explicitly requested or clearly useful. Keep mutations serialized in the main agent.
-- Do not make HA skills depend on `gitSkills` yet. HA-specific workflows stay in `agentSkills`.
-- Do not add `$git-feature` yet. Feature work should remain repo-local/domain-specific and compose existing issue, branch, commit, and PR workflows until a narrower repeated workflow emerges.
-- Do not add provider-specific alias skills such as `$gl-mr-table` yet. Keep `git-pr-*` as the single PR/MR interface for GitHub pull requests and GitLab merge requests to avoid extra skill metadata and routing ambiguity.
-- Do not convert gitSkills into a Codex plugin yet. Keep the checkout plus `make install` path as the supported personal workflow; revisit plugin packaging only if distribution or update friction justifies it.
-
-## Install And Update
-
-Local development install:
+Install from a checkout with:
 
 ```bash
 make install
 ```
 
-Validation:
+The installer copies skills into `~/.agents/skills/`, copies shared references and helpers once into `~/.agents/gitSkills/`, and links each installed skill back to that shared location. Validate changes with:
 
 ```bash
 make validate
 ```
 
-After changing references or skill bodies:
-
-```bash
-git pull
-make install
-```
-
 Restart Codex after installing or updating skills.
 
-`$skill-installer` can install individual skills from GitHub, but it currently defaults to `$CODEX_HOME/skills` and does not copy this repo's top-level shared references. For now, prefer the Makefile from a checkout.
+## Settled Decisions
 
-## Next Phase
+- Use `gh` for GitHub workflows and `glab` for GitLab workflows.
+- Keep frontmatter descriptions concise and mark only primary entry-point skills with `⭐`.
+- Keep table, watcher, and review-inspection workflows read-only by default.
+- Keep mutations grounded in local Git state, explicit user intent, repo `.gitignore`, path-specific staging, and the safety guidance in `references/git-workflow/mutation.md`.
+- Do not use `allowed-tools` frontmatter yet; client support is still too variable.
+- Do not make HA skills depend on `gitSkills`; HA-specific workflows stay in `agentSkills`.
+- Do not add `$git-feature` yet; feature work should compose existing issue, branch, commit, and PR workflows until a narrower repeated workflow emerges.
+- Do not add provider-specific aliases such as `$gl-mr-table` yet; `git-pr-*` remains the single interface for GitHub PRs and GitLab MRs.
+- Do not package gitSkills as a Codex plugin yet; checkout plus `make install` remains the supported personal workflow until distribution or update friction justifies a plugin.
+- Changelog support lives in `references/git-workflow/changelog.md`; use `$changelog-generator` only for explicit release-note or generated-changelog requests.
 
-Use the skills on real work before adding many new ones.
+## Roadmap
+
+Tracked implementation backlog lives in GitHub issues. Keep this file compact: when work becomes concrete, file or update an issue; when a command or helper is implemented, move durable guidance into `README.md`, `agent-matrix.md`, `references/git-workflow/`, or the relevant `SKILL.md`.
 
 During normal use, watch for:
 
-- Trigger problems: the wrong skill fires, or a request is ambiguous.
-- Missing target resolution: current branch, upstream, PR/MR number, URL, remote, or mixed GitHub/GitLab case.
-- CI gaps: checks, runs, pipelines, jobs, logs, retry/rerun wording.
-- Mutation safety gaps: commit, push, rebase, force-with-lease, merge, branch delete, default branch protection.
-- Output quality: tables too verbose, missing blockers, poor next-action recommendations.
-- Reference loading: skills reading too much context or missing the right host-specific reference.
+- trigger ambiguity or wrong skill routing
+- missing target resolution for branches, remotes, PR/MR numbers, URLs, and mixed GitHub/GitLab repositories
+- CI gaps around checks, runs, pipelines, jobs, logs, retry/rerun wording, and skipped or missing states
+- mutation safety gaps around commits, pushes, rebases, force-with-lease, merges, branch deletion, and default branch protection
+- output quality issues such as verbose tables, missing blockers, or weak next-action recommendations
+- reference loading that reads too much context or misses the right host-specific guidance
 
-Keep this plan short. When a command or helper is implemented, move the useful decision into `README.md`, `agent-matrix.md`, `references/git-workflow/`, or the relevant `SKILL.md`, then remove or compact the row here.
+## Open Question
 
-## Live Backlog
-
-Tracked implementation backlog now lives in GitHub issues. Favor work that reuses existing GitHub/GitLab target-resolution and helper patterns.
-
-## Future Policy Notes
-
-- Extend `$git-workflow` only when a new command is actually implemented.
-- Keep `$git-issue-table`, `$git-pr-table`, and `$git-pr-watcher` read-only.
-- Keep local git state, staging, commit, push, rebase, and merge safety grounded in local `git` plus explicit user intent.
-- If GitHub or GitLab MCP servers become available, prefer them only for structured read operations where they are clearly better than CLI output.
-
-## Open Questions
-
-- If GitHub/GitLab MCP servers become available, should read-only table/watcher skills prefer MCP first and use `gh`/`glab` as fallback?
+- If GitHub/GitLab MCP servers become available, should read-only table/watcher skills prefer MCP first and use `gh`/`glab` as fallback? See #42.
