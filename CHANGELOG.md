@@ -50,6 +50,10 @@
 - Added `$git-issue-update` for explicit one-issue comments, edits, metadata changes, close, and reopen workflows.
 - Added `scripts/validate-skill-routing.sh` for static skill routing, helper path, reference path, and frontmatter validation.
 - Added `references/git-workflow/changelog.md` for lightweight changelog update policy and `$changelog-generator` handoff guidance.
+- Added local-only helper JSON smoke tests for `resolve-target.sh` and `get-branch-state.sh`.
+- Added `make test-helpers` for running helper smoke tests directly.
+- Added GitHub Actions validation for repo-local shell, routing, helper, and ShellCheck checks.
+- Added `make ci` for GitHub Actions-safe validation without Codex-local tooling.
 
 ### Changed
 
@@ -93,7 +97,10 @@
 - Updated `$git-workflow`, install scripts, README, and the agent matrix to route branch sync requests.
 - Updated `$git-pr`, review references, install scripts, README, and the agent matrix to route local PR/MR review requests.
 - Updated issue and mutation references with safe one-issue update guidance.
+- Updated `$git-workflow` to ask for an explicit completion endpoint before broad issue implementation requests.
+- Updated default `make` behavior to list available targets instead of running `make install`.
 - Updated `make validate` to run static skill routing validation.
+- Updated `make validate` to run local helper JSON smoke tests.
 - Updated mutation and commit guidance so changelog updates follow repo-local instructions without adding a separate gitSkills changelog skill.
 - Documented policy decisions to avoid a broad `$git-feature` skill, provider-specific alias skills, and plugin packaging until repeated workflow evidence justifies them.
 - Refreshed `plan.md` to remove stale backlog detail and point future implementation work to GitHub issues.

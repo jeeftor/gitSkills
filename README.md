@@ -29,6 +29,10 @@ See [agent-matrix.md](agent-matrix.md) for the skill routing hierarchy.
 
 The `git-pr-*` skills intentionally cover both GitHub pull requests and GitLab merge requests; provider-specific alias skills are not installed.
 
+## Workflow Control
+
+`$git-workflow` asks for an explicit endpoint before broad implementation requests such as "work on issue 49 to completion" when the prompt does not say whether completion means local verified changes, a local commit, a pushed branch, a PR/MR, or an issue update.
+
 ## Requirements
 
 These skills are built around the platform CLIs:
@@ -139,13 +143,35 @@ Restart Codex after installation.
 
 This repository uses `master` as its default branch.
 
+List available Make targets:
+
+```bash
+make
+```
+
 Validate before pushing:
 
 ```bash
 make validate
 ```
 
-Validation checks shell syntax, static skill routing references, helper/reference paths, and skill frontmatter.
+Validation checks shell syntax, static skill routing references, helper/reference paths, skill frontmatter, and local helper JSON contracts.
+
+Run the GitHub Actions-safe validation path with:
+
+```bash
+make ci
+```
+
+`make ci` avoids Codex-specific local validators and runs repo-local checks that can run on a standard GitHub-hosted runner.
+
+Run the local-only helper smoke tests directly with:
+
+```bash
+make test-helpers
+```
+
+The helper smoke tests create a temporary Git repository, avoid platform authentication, and validate `resolve-target.sh` and `get-branch-state.sh` JSON shape with `jq`.
 
 Validate VHS tooling and tapes locally with:
 
