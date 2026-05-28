@@ -119,6 +119,8 @@ Validate before pushing:
 make validate
 ```
 
+Validation checks shell syntax, static skill routing references, helper/reference paths, and skill frontmatter.
+
 Run optional ShellCheck validation for scripts with:
 
 ```bash

@@ -74,11 +74,7 @@ Keep this plan short. When a command or helper is implemented, move the useful d
 
 ## Live Backlog
 
-Implement only one or two at a time. Favor work that reuses existing GitHub/GitLab target-resolution and helper patterns.
-
-| Work | Priority | Why Next | Keep Simple Boundary |
-| --- | --- | --- | --- |
-| `scripts/validate-skill-routing.sh` | Low | Routing examples can catch missing metadata and reference drift during `make validate`. | Start as a lightweight metadata/reference check, not a model-eval harness. |
+Tracked implementation backlog now lives in GitHub issues. Favor work that reuses existing GitHub/GitLab target-resolution and helper patterns.
 
 ## Future Policy Notes
 

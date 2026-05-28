@@ -8,6 +8,7 @@ uninstall:
 
 validate:
 	find scripts -type f -name '*.sh' -exec sh -n {} \;
+	./scripts/validate-skill-routing.sh
 	for skill in skills/*; do ~/.codex/codex-python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py "$$skill"; done
 
 shellcheck:
