@@ -6,6 +6,7 @@ flowchart TD
     ISSUE_TABLE["$git-issue-table<br/>Summarize issues"]
     ISSUE_DETAILS["$git-issue-details<br/>Inspect one issue"]
     ISSUE_CREATE["$git-issue-create<br/>Create issues"]
+    ISSUE_UPDATE["$git-issue-update<br/>Update one issue"]
     BRANCH_SYNC["$git-branch-sync<br/>Sync branches"]
     PR["$git-pr<br/>Route PR and MR work"]
     PR_TABLE["$git-pr-table<br/>Summarize PRs and MRs"]
@@ -20,10 +21,12 @@ flowchart TD
     WORKFLOW --> ISSUE_TABLE
     WORKFLOW --> ISSUE_DETAILS
     WORKFLOW --> ISSUE_CREATE
+    WORKFLOW --> ISSUE_UPDATE
     WORKFLOW --> BRANCH_SYNC
     WORKFLOW --> PR
     WORKFLOW --> CI_WATCH
     ISSUE_TABLE --> ISSUE_DETAILS
+    ISSUE_DETAILS --> ISSUE_UPDATE
     PR --> PR_TABLE
     PR --> PR_WATCHER
     PR --> PR_REVIEW
@@ -47,6 +50,7 @@ flowchart TD
 Read-only overview skills should run before mutating create, update, or merge workflows when the target item is ambiguous.
 `$git-issue-table` uses `scripts/git/get-issues.sh` for the common scripted issue collection path.
 `$git-issue-details` uses `scripts/git/get-issue.sh` for the common scripted issue detail path before recommending next actions.
+`$git-issue-update` uses `scripts/git/get-issue.sh` before and after explicit one-issue mutations.
 `$git-branch-sync` uses `scripts/git/get-branch-state.sh` before recommending or performing branch sync mutations.
 `$git-pr-table` uses `scripts/git/get-prs.sh` for the common scripted PR/MR collection path before handing one selected item to `$git-pr-watcher`.
 `$git-pr-watcher` uses `scripts/git/get-pr.sh` for the common scripted PR/MR detail path before recommending next actions.

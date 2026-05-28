@@ -15,6 +15,7 @@ It installs plain skill names:
 - `$git-branch-sync` - inspect and safely synchronize local Git branches
 - `$git-issue-details` - inspect one GitHub issue or GitLab issue
 - `$git-issue-create` - create a GitHub issue or GitLab issue
+- `$git-issue-update` - update one existing GitHub issue or GitLab issue
 - `$git-pr-table` - summarize open GitHub pull requests or GitLab merge requests
 - `$git-pr-watcher` - inspect one pull request or merge request
 - `$git-pr-review` - review one pull request or merge request locally

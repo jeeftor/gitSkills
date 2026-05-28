@@ -40,6 +40,7 @@
 - Added `scripts/git/get-pr.sh` plus provider detail helpers for normalized one-PR/MR watcher context.
 - Added `$git-branch-sync` for safe read-first branch freshness and synchronization workflows.
 - Added `$git-pr-review` for local read-only PR/MR code reviews with findings-first output.
+- Added `$git-issue-update` for explicit one-issue comments, edits, metadata changes, close, and reopen workflows.
 
 ### Changed
 
@@ -80,6 +81,7 @@
 - Updated GitHub CI collection to fetch failed logs only when the selected run has failing jobs.
 - Updated `$git-workflow`, install scripts, README, and the agent matrix to route branch sync requests.
 - Updated `$git-pr`, review references, install scripts, README, and the agent matrix to route local PR/MR review requests.
+- Updated issue and mutation references with safe one-issue update guidance.
 
 ### Verified
 

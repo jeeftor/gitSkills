@@ -44,4 +44,4 @@ Supported target phrasing:
 - `$git-issue-create https://github.com/owner/repo ...` - create a GitHub issue in the explicit repository.
 - `$git-issue-create https://gitlab.example.com/group/project ...` - create a GitLab issue in the explicit project.
 
-Do not close, reopen, label, assign, milestone, or edit existing issues unless the user explicitly asks for that mutating workflow.
+Use `$git-issue-update` when the user wants to close, reopen, label, assign, milestone, comment on, or edit an existing issue.

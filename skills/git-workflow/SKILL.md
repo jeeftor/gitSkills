@@ -19,6 +19,7 @@ Read `references/git-workflow/common.md`. Read `references/git-workflow/target-r
 - Open issue overview, issue triage, or what issue to work next: `$git-issue-table`.
 - One issue's body, comments, metadata, or next action: `$git-issue-details`.
 - Create, open, or file a new GitHub issue or GitLab issue: `$git-issue-create`.
+- Edit, comment on, close, reopen, label, assign, or milestone one existing issue: `$git-issue-update`.
 
 If the user explicitly asks for subagents or parallel work, delegate using the target skill name in the subagent prompt. Otherwise, continue in the current agent and apply the relevant specialist workflow directly.
 

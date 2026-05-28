@@ -65,6 +65,11 @@ scripts/git/glab/create-issue.sh --repo <group/project> --title "Issue title" --
 The issue create helper searches likely duplicate open issues before creating. Without `--yes`, it emits JSON describing the target and duplicate candidates without mutating issue state.
 
 - Create issue: `glab issue create --repo <group/project> --title <title> --description <description> --yes`
+- Comment on issue: `glab issue note <iid> --repo <group/project> -m <message>`
+- Edit issue: `glab issue update <iid> --repo <group/project>`
+- Close issue: `glab issue close <iid> --repo <group/project>`
+- Reopen issue: `glab issue reopen <iid> --repo <group/project>`
+- Use the GitLab issue API when labels, assignees, milestones, or description updates are not exposed by the local `glab` version.
 - Create draft MR: `glab mr create --draft --source-branch <branch> --target-branch <base> --title <title> --description-file <file>`
 - Create ready MR: `glab mr create --source-branch <branch> --target-branch <base> --title <title> --description-file <file>`
 - Edit MR: `glab mr update <iid>`

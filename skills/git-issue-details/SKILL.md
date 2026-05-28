@@ -30,5 +30,6 @@ Supported target phrasing:
 
 Use `$git-issue-table` when the user wants an overview of open issues.
 Use `$git-issue-create` when the user wants to create a new issue.
+Use `$git-issue-update` when the user wants to edit, comment on, close, reopen, label, assign, or milestone an existing issue.
 
 Do not edit issues, labels, assignees, milestones, comments, or branches from this skill.
