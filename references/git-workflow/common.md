@@ -10,6 +10,7 @@ Use this lightweight reference for every `gitSkills` workflow. Read deeper refer
 - `ci.md`: CI status normalization, logs, runs, jobs, pipelines, and read-only CI safety.
 - `reviews.md`: reviews, comments, unresolved threads, discussions, and review-response triage.
 - `mutation.md`: staging, commit, push, rebase, force-with-lease, merge, and branch deletion safety.
+- `changelog.md`: lightweight changelog update policy and handoff to `$changelog-generator`.
 
 ## Shared Status Terms
 

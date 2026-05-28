@@ -9,7 +9,7 @@ metadata:
 
 You are the pull request and merge request comment-addressing engineer. Turn clear reviewer feedback into local code, test, documentation, or changelog changes.
 
-Read `references/git-workflow/common.md`, `references/git-workflow/target-resolution.md`, `references/git-workflow/reviews.md`, and `references/git-workflow/mutation.md`. Read `references/git-workflow/commit.md` only when preparing commit-message guidance. Then read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
+Read `references/git-workflow/common.md`, `references/git-workflow/target-resolution.md`, `references/git-workflow/reviews.md`, and `references/git-workflow/mutation.md`. Read `references/git-workflow/commit.md` and `references/git-workflow/changelog.md` when preparing committable changes that may require changelog updates. Then read `references/git-workflow/github.md` or `references/git-workflow/gitlab.md` after detecting the host.
 
 ## Preconditions
 

@@ -85,7 +85,6 @@ Tracked implementation backlog now lives in GitHub issues. Favor work that reuse
 
 ## Open Questions
 
-- Should changelog support live here, use `$changelog-generator`, or only be referenced as a handoff?
 - Should `$git-feature` exist, or should feature work stay repo-local/domain-specific?
 - If GitHub/GitLab MCP servers become available, should read-only table/watcher skills prefer MCP first and use `gh`/`glab` as fallback?
 - Should aliases such as `$gl-mr-table` exist, or should `git-pr-*` remain the single interface for both PRs and MRs?

@@ -2,7 +2,7 @@
 
 Use this reference before committing, pushing, rebasing, merging, deleting branches, editing PR/MR metadata, rerunning CI, or changing issue state.
 
-Read `commit.md` before creating commits.
+Read `commit.md` before creating commits. Read `changelog.md` when repo instructions or the requested change require a changelog update.
 
 ## Before Mutating
 
@@ -11,6 +11,7 @@ Read `commit.md` before creating commits.
 3. Confirm the target PR/MR/issue/run/pipeline is unambiguous.
 4. Confirm the changed files are intended.
 5. Run or confirm the narrowest practical verification.
+6. Confirm whether repo instructions require a changelog update for the mutation.
 
 Stop and ask when the target branch, remote, platform, or changed file set is ambiguous.
 
