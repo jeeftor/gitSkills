@@ -1,4 +1,4 @@
-.PHONY: install uninstall validate demo-check demo-validate demo-record demo-record-one demo-clean
+.PHONY: install uninstall validate shellcheck demo-check demo-validate demo-record demo-record-one demo-clean
 
 install:
 	ASSUME_YES=1 ./scripts/install.sh
@@ -9,6 +9,9 @@ uninstall:
 validate:
 	find scripts -type f -name '*.sh' -exec sh -n {} \;
 	for skill in skills/*; do ~/.codex/codex-python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py "$$skill"; done
+
+shellcheck:
+	find scripts -type f -name '*.sh' -exec shellcheck {} +
 
 demo-check:
 	./scripts/demos/render-demo.sh --check

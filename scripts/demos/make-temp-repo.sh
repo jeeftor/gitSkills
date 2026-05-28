@@ -2,8 +2,8 @@
 set -eu
 
 fixture=${1:-tiny-docs}
-script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-repo_root=$(CDPATH= cd -- "$script_dir/../.." && pwd)
+script_dir=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+repo_root=$(CDPATH='' cd -- "$script_dir/../.." && pwd)
 fixture_dir=$repo_root/docs/demos/fixtures/$fixture
 
 if [ ! -d "$fixture_dir" ]; then

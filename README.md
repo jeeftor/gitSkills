@@ -36,8 +36,9 @@ The skills prefer `gh` and `glab` for normal operations and use platform APIs on
 
 ## Helper Scripts
 
-Helper scripts live under `scripts/git/` and emit normalized JSON for table, CI, and explicitly confirmed issue creation workflows:
+Helper scripts live under `scripts/git/` and emit normalized JSON for branch inspection, table, CI, and explicitly confirmed issue creation workflows:
 
+- `get-branch-state.sh` - inspect the current branch, upstream, default/base branch guess, dirty state summaries, ahead/behind counts, current HEAD, and local pushed/upstream HEADs for PR/MR create and update workflows.
 - `get-issues.sh` - resolve the current checkout, named remote, or GitHub/GitLab URL and collect issues.
 - `get-issue.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or issue URL and collect one issue's details.
 - `get-prs.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes and collect PRs/MRs with table-ready status and color-hint fields.
@@ -49,6 +50,8 @@ Helper scripts live under `scripts/git/` and emit normalized JSON for table, CI,
 Examples:
 
 ```bash
+scripts/git/get-branch-state.sh
+scripts/git/get-branch-state.sh --base master
 scripts/git/get-issues.sh --state open --limit 50
 scripts/git/get-issues.sh upstream --state open --limit 50
 scripts/git/get-issue.sh 21
@@ -99,6 +102,12 @@ Validate before pushing:
 
 ```bash
 make validate
+```
+
+Run optional ShellCheck validation for scripts with:
+
+```bash
+make shellcheck
 ```
 
 Install the local commit hook with:

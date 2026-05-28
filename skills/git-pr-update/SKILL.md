@@ -21,7 +21,7 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 
 ## Workflow
 
-1. Inspect branch, remotes, staged files, unstaged files, untracked files, and upstream state.
+1. Use `scripts/git/get-branch-state.sh` to inspect branch, staged files, unstaged files, untracked files, upstream state, pushed state, and the default/base branch guess.
 2. Identify the existing PR or MR and confirm it matches the local branch.
 3. Confirm the staged files are intended.
 4. Run or confirm the narrowest practical verification.

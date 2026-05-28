@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-repo_root=$(CDPATH= cd -- "$script_dir/../.." && pwd)
+script_dir=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+repo_root=$(CDPATH='' cd -- "$script_dir/../.." && pwd)
 
 demo_repo=$("$script_dir/make-temp-repo.sh" tiny-docs)
 
@@ -16,7 +16,7 @@ codex exec \
 	--ephemeral \
 	--sandbox workspace-write \
 	-c 'approval_policy="untrusted"' \
-	'$git-workflow In this temporary repository, decide which coordinator workflow should route a request about preparing a pull request summary before any commit, push, or PR creation. Do not modify files. Keep the final answer to the chosen skill and one sentence why.'
+	"\$git-workflow In this temporary repository, decide which coordinator workflow should route a request about preparing a pull request summary before any commit, push, or PR creation. Do not modify files. Keep the final answer to the chosen skill and one sentence why."
 
 cd "$repo_root"
 
