@@ -14,7 +14,7 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 ## Workflow
 
 1. Identify the PR or MR from the current branch, URL, number, IID, or user prompt.
-2. Inspect status, CI or pipelines, review or approvals, comments, unresolved threads or discussions, and branch freshness.
+2. Prefer `scripts/git/get-pr.sh` for the initial detail snapshot, then inspect status, CI or pipelines, reviews or approvals, comments, unresolved threads or discussions, and branch freshness.
 3. Classify findings as failing CI, requested changes, maintainer questions, documentation gaps, dependency issues, conflicts, or stale branch.
 4. Identify whether the next step belongs to `$git-ci-watch`, `$git-pr-address-comments`, `$git-pr-update`, `$git-pr-merge`, or another workflow.
 5. Ask before behavior changes, risky rebases, force pushes, or ambiguous reviewer feedback.

@@ -19,6 +19,7 @@ Classify feedback into:
 
 Useful commands:
 
+- `scripts/git/get-pr.sh <number-or-url>`
 - `gh pr view <number> --json reviews,comments,reviewDecision,latestReviews`
 - `gh pr diff <number>`
 - `gh api graphql` when unresolved review thread counts or thread bodies are missing from `gh pr view`.
@@ -29,6 +30,7 @@ GitHub review threads often require GraphQL for complete unresolved-thread data.
 
 Useful commands:
 
+- `scripts/git/get-pr.sh <gitlab-remote> --number <iid>`
 - `glab mr view <iid>`
 - `glab mr diff <iid>`
 - GitLab API for discussions, notes, approval state, and unresolved threads when `glab` lacks fields.

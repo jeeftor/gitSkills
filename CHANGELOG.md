@@ -37,6 +37,7 @@
 - Added `references/git-workflow/pr-description.md` for dense PR/MR description and Markdown table guidance.
 - Added `scripts/git/resolve-target.sh` for local-only GitHub/GitLab target resolution shared by generic helpers.
 - Added `scripts/git/get-ci.sh` for generic GitHub/GitLab CI target resolution, provider delegation, and all-remotes CI summaries.
+- Added `scripts/git/get-pr.sh` plus provider detail helpers for normalized one-PR/MR watcher context.
 
 ### Changed
 
@@ -72,6 +73,7 @@
 - Updated generic issue, PR/MR, and issue-creation helpers to use the shared target resolver before provider delegation.
 - Updated `scripts/git/get-issues.sh` to support `all remotes` issue collection.
 - Updated `$git-ci-watch` and CI references to prefer the generic CI helper.
+- Updated `$git-pr-watcher` and review references to prefer the generic PR/MR detail helper.
 
 ### Verified
 

@@ -36,18 +36,19 @@ The skills prefer `gh` and `glab` for normal operations and use platform APIs on
 
 ## Helper Scripts
 
-Helper scripts live under `scripts/git/` and emit normalized JSON for branch inspection, table, CI, and explicitly confirmed issue creation workflows:
+Helper scripts live under `scripts/git/` and emit normalized JSON for branch inspection, table, detail, CI, and explicitly confirmed issue creation workflows:
 
 - `resolve-target.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, explicit repository, or all remotes into normalized target JSON without platform API calls.
 - `get-branch-state.sh` - inspect the current branch, upstream, default/base branch guess, dirty state summaries, ahead/behind counts, current HEAD, and local pushed/upstream HEADs for PR/MR create and update workflows.
 - `get-issues.sh` - resolve the current checkout, named remote, or GitHub/GitLab URL and collect issues.
 - `get-issue.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or issue URL and collect one issue's details.
 - `get-prs.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes and collect PRs/MRs with table-ready status and color-hint fields.
+- `get-pr.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, PR/MR URL, number, or branch and collect one PR/MR's details.
 - `get-ci.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes and collect CI status.
 - `codex-color-probe.sh` - print rendering samples to test which color formats work in the current Codex surface.
 - `create-issue.sh` - resolve the current checkout, named remote, or GitHub/GitLab URL before issue creation.
-- `gh/get-issues.sh`, `gh/get-issue.sh`, `gh/get-prs.sh`, `gh/get-ci.sh`, and `gh/create-issue.sh` - GitHub provider helpers.
-- `glab/get-issues.sh`, `glab/get-issue.sh`, `glab/get-mrs.sh`, `glab/get-ci.sh`, and `glab/create-issue.sh` - GitLab provider helpers.
+- `gh/get-issues.sh`, `gh/get-issue.sh`, `gh/get-prs.sh`, `gh/get-pr.sh`, `gh/get-ci.sh`, and `gh/create-issue.sh` - GitHub provider helpers.
+- `glab/get-issues.sh`, `glab/get-issue.sh`, `glab/get-mrs.sh`, `glab/get-mr.sh`, `glab/get-ci.sh`, and `glab/create-issue.sh` - GitLab provider helpers.
 
 Examples:
 
@@ -64,6 +65,8 @@ scripts/git/get-issue.sh upstream 2
 scripts/git/get-issue.sh https://github.com/owner/repo/issues/21
 scripts/git/get-prs.sh --state open --scope all --limit 50
 scripts/git/get-prs.sh all remotes --state open --scope review --limit 50
+scripts/git/get-pr.sh 31
+scripts/git/get-pr.sh upstream --number 2
 scripts/git/get-ci.sh --target-type branch --target master
 scripts/git/get-ci.sh all remotes --target-type branch --target master
 scripts/git/codex-color-probe.sh
@@ -73,6 +76,8 @@ scripts/git/gh/get-issue.sh --repo jeeftor/gitSkills --issue 21
 scripts/git/glab/get-issue.sh --repo jeef/gitskills --issue 2
 scripts/git/gh/get-prs.sh --repo jeeftor/gitSkills --state open --scope all --limit 50
 scripts/git/glab/get-mrs.sh --repo jeef/gitskills --state opened --scope all --limit 50
+scripts/git/gh/get-pr.sh --repo jeeftor/gitSkills --number 31
+scripts/git/glab/get-mr.sh --repo jeef/gitskills --number 2
 scripts/git/gh/get-ci.sh --repo jeeftor/gitSkills --target-type branch --target master
 scripts/git/glab/get-ci.sh --repo group/project --target-type branch --target main
 scripts/git/create-issue.sh --title "Issue title" --body-file /tmp/issue-body.md
