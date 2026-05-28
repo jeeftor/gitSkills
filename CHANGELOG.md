@@ -42,6 +42,7 @@
 - Added `$git-pr-review` for local read-only PR/MR code reviews with findings-first output.
 - Added `$git-issue-update` for explicit one-issue comments, edits, metadata changes, close, and reopen workflows.
 - Added `scripts/validate-skill-routing.sh` for static skill routing, helper path, reference path, and frontmatter validation.
+- Added `references/git-workflow/changelog.md` for lightweight changelog update policy and `$changelog-generator` handoff guidance.
 
 ### Changed
 
@@ -84,6 +85,7 @@
 - Updated `$git-pr`, review references, install scripts, README, and the agent matrix to route local PR/MR review requests.
 - Updated issue and mutation references with safe one-issue update guidance.
 - Updated `make validate` to run static skill routing validation.
+- Updated mutation and commit guidance so changelog updates follow repo-local instructions without adding a separate gitSkills changelog skill.
 
 ### Verified
 

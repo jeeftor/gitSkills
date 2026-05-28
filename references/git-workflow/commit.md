@@ -17,6 +17,10 @@ Use Conventional Commits only when the repository already uses them, tooling req
 
 If hook config includes commit-message validation, inspect that before choosing or recommending the commit message.
 
+## Changelog
+
+Read `changelog.md` when repo-local instructions require changelog entries. Keep small required entries in the same change; use `$changelog-generator` only when the user asks for release notes or generated changelog text.
+
 ## Conventional Commits
 
 When Conventional Commits are appropriate, use:
