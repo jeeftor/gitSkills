@@ -41,6 +41,7 @@
 - Added `$git-branch-sync` for safe read-first branch freshness and synchronization workflows.
 - Added `$git-pr-review` for local read-only PR/MR code reviews with findings-first output.
 - Added `$git-issue-update` for explicit one-issue comments, edits, metadata changes, close, and reopen workflows.
+- Added `scripts/validate-skill-routing.sh` for static skill routing, helper path, reference path, and frontmatter validation.
 
 ### Changed
 
@@ -82,6 +83,7 @@
 - Updated `$git-workflow`, install scripts, README, and the agent matrix to route branch sync requests.
 - Updated `$git-pr`, review references, install scripts, README, and the agent matrix to route local PR/MR review requests.
 - Updated issue and mutation references with safe one-issue update guidance.
+- Updated `make validate` to run static skill routing validation.
 
 ### Verified
 
