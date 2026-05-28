@@ -17,16 +17,19 @@ Use the GitLab API when approval status, discussions, merge train state, or pipe
 
 ## Merge Requests
 
-When an installed or repo-local helper is available, prefer it for MR table data:
+When an installed or repo-local helper is available, prefer it for MR table and detail data:
 
 ```bash
 scripts/git/get-prs.sh <gitlab-remote> --state open --scope all --limit 50
+scripts/git/get-pr.sh <gitlab-remote> --number <iid>
+scripts/git/get-pr.sh <gitlab-remote> --branch <branch>
 scripts/git/glab/get-mrs.sh --repo <group/project> --state opened --scope all --limit 50
+scripts/git/glab/get-mr.sh --repo <group/project> --number <iid>
 ```
 
 Use `--scope authored`, `--scope assigned`, or `--scope review` when the user asks for MRs they authored, MRs assigned to them, or MRs needing their review.
 
-The generic helper resolves named GitLab remotes before delegating to the GitLab helper. It emits a table-ready `items` list with draft state, CI status, review status, discussion status, mergeability, branch freshness, URLs, and blocker text. The GitLab helper remains available for direct provider-specific collection.
+The generic list helper resolves named GitLab remotes before delegating to the GitLab helper. It emits a table-ready `items` list with draft state, CI status, review status, discussion status, mergeability, branch freshness, URLs, and blocker text. The generic detail helper resolves one MR by URL, IID, or branch and emits description, discussions, approvals, merge state, branches, and pipeline context. GitLab helpers remain available for direct provider-specific collection.
 
 Fallback commands:
 
