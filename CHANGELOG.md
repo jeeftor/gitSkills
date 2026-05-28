@@ -54,6 +54,7 @@
 - Added `make test-helpers` for running helper smoke tests directly.
 - Added GitHub Actions validation for repo-local shell, routing, helper, and ShellCheck checks.
 - Added `make ci` for GitHub Actions-safe validation without Codex-local tooling.
+- Added a tracked `$git-issue-table` VHS demo GIF and deterministic tape.
 
 ### Changed
 
