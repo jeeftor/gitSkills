@@ -38,6 +38,7 @@
 - Added `scripts/git/resolve-target.sh` for local-only GitHub/GitLab target resolution shared by generic helpers.
 - Added `scripts/git/get-ci.sh` for generic GitHub/GitLab CI target resolution, provider delegation, and all-remotes CI summaries.
 - Added `scripts/git/get-pr.sh` plus provider detail helpers for normalized one-PR/MR watcher context.
+- Added `$git-branch-sync` for safe read-first branch freshness and synchronization workflows.
 
 ### Changed
 
@@ -76,6 +77,7 @@
 - Updated `$git-pr-watcher` and review references to prefer the generic PR/MR detail helper.
 - Trimmed PR/MR list helper output to default table fields and kept richer relationship data in one-item detail helpers.
 - Updated GitHub CI collection to fetch failed logs only when the selected run has failing jobs.
+- Updated `$git-workflow`, install scripts, README, and the agent matrix to route branch sync requests.
 
 ### Verified
 

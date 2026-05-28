@@ -14,6 +14,7 @@ Read `references/git-workflow/common.md`. Read `references/git-workflow/target-r
 ## Route
 
 - GitHub PR or GitLab MR lifecycle, status, create, update, or merge: `$git-pr`.
+- Branch freshness, ahead/behind, pull, push sync, rebase, merge base into branch, or force-with-lease: `$git-branch-sync`.
 - Latest CI for a branch, commit, pushed update, PR, MR, run, or pipeline: `$git-ci-watch`.
 - Open issue overview, issue triage, or what issue to work next: `$git-issue-table`.
 - One issue's body, comments, metadata, or next action: `$git-issue-details`.
