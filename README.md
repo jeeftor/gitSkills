@@ -6,6 +6,14 @@
 
 Codex Git Skills is a global skill bundle for GitHub and GitLab workflows, plus repeatable terminal demo recording.
 
+## Demo
+
+`$git-issue-table` turns repository issues into a compact review queue with links and recommendations.
+
+<p align="center">
+  <img src="docs/demos/output/issue-table.gif" alt="$git-issue-table demo" width="900">
+</p>
+
 It installs plain skill names:
 
 - ⭐ `$git-workflow` - choose a Git, GitHub, or GitLab workflow

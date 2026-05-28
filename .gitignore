@@ -4,3 +4,4 @@
 /skillz.png
 /docs/demos/output/*
 !/docs/demos/output/.gitkeep
+!/docs/demos/output/issue-table.gif
