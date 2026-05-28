@@ -26,6 +26,8 @@ It installs plain skill names:
 
 See [agent-matrix.md](agent-matrix.md) for the skill routing hierarchy.
 
+The `git-pr-*` skills intentionally cover both GitHub pull requests and GitLab merge requests; provider-specific alias skills are not installed.
+
 ## Requirements
 
 These skills are built around the platform CLIs:

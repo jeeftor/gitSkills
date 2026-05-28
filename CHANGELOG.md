@@ -86,6 +86,7 @@
 - Updated issue and mutation references with safe one-issue update guidance.
 - Updated `make validate` to run static skill routing validation.
 - Updated mutation and commit guidance so changelog updates follow repo-local instructions without adding a separate gitSkills changelog skill.
+- Documented policy decisions to avoid a broad `$git-feature` skill, provider-specific alias skills, and plugin packaging until repeated workflow evidence justifies them.
 
 ### Verified
 

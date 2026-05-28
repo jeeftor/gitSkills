@@ -31,6 +31,9 @@ Repository: https://github.com/jeeftor/gitSkills
 - For repositories with both GitHub and GitLab signals, explicit user intent wins. Branch upstream beats generic remotes. Ask before mutating when the platform is ambiguous.
 - Use subagents for read-only investigation only when explicitly requested or clearly useful. Keep mutations serialized in the main agent.
 - Do not make HA skills depend on `gitSkills` yet. HA-specific workflows stay in `agentSkills`.
+- Do not add `$git-feature` yet. Feature work should remain repo-local/domain-specific and compose existing issue, branch, commit, and PR workflows until a narrower repeated workflow emerges.
+- Do not add provider-specific alias skills such as `$gl-mr-table` yet. Keep `git-pr-*` as the single PR/MR interface for GitHub pull requests and GitLab merge requests to avoid extra skill metadata and routing ambiguity.
+- Do not convert gitSkills into a Codex plugin yet. Keep the checkout plus `make install` path as the supported personal workflow; revisit plugin packaging only if distribution or update friction justifies it.
 
 ## Install And Update
 
@@ -85,7 +88,4 @@ Tracked implementation backlog now lives in GitHub issues. Favor work that reuse
 
 ## Open Questions
 
-- Should `$git-feature` exist, or should feature work stay repo-local/domain-specific?
 - If GitHub/GitLab MCP servers become available, should read-only table/watcher skills prefer MCP first and use `gh`/`glab` as fallback?
-- Should aliases such as `$gl-mr-table` exist, or should `git-pr-*` remain the single interface for both PRs and MRs?
-- Should this eventually become a Codex plugin, or is repo checkout plus `make install` enough for personal use?
