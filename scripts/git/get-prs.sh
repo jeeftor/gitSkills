@@ -28,90 +28,6 @@ require_command() {
   fi
 }
 
-remote_host() {
-  case "$1" in
-    *github.com[:/]*)
-      printf '%s\n' "github"
-      ;;
-    *gitlab*[:/]*)
-      printf '%s\n' "gitlab"
-      ;;
-    *)
-      return 1
-      ;;
-  esac
-}
-
-remote_repo() {
-  url="$1"
-
-  case "$url" in
-    *://*)
-      path="${url#*://}"
-      path="${path#*@}"
-      path="${path#*/}"
-      ;;
-    *:*)
-      path="${url#*:}"
-      ;;
-    *)
-      path="${url#*/}"
-      ;;
-  esac
-
-  path="${path%.git}"
-  path="${path#/}"
-
-  case "$path" in
-    */*) printf '%s\n' "$path" ;;
-    *) return 1 ;;
-  esac
-}
-
-resolve_remote() {
-  remote_name="$1"
-
-  url="$(git remote get-url "$remote_name" 2>/dev/null)" || return 1
-  detected_host="$(remote_host "$url")" || return 1
-  detected_repo="$(remote_repo "$url")" || return 1
-
-  host="$detected_host"
-  repo="$detected_repo"
-}
-
-resolve_url() {
-  url="$1"
-
-  detected_host="$(remote_host "$url")" || return 1
-  detected_repo="$(remote_repo "$url")" || return 1
-
-  host="$detected_host"
-  repo="$detected_repo"
-}
-
-resolve_target() {
-  target="$1"
-
-  resolve_remote "$target" && return 0
-  resolve_url "$target" && return 0
-  return 1
-}
-
-resolve_from_upstream() {
-  upstream="$(git rev-parse --abbrev-ref --symbolic-full-name "@{u}" 2>/dev/null)" || return 1
-  case "$upstream" in
-    */*) resolve_remote "${upstream%%/*}" ;;
-    *) return 1 ;;
-  esac
-}
-
-resolve_from_known_remotes() {
-  resolve_from_upstream && return 0
-  resolve_remote origin && return 0
-  resolve_remote upstream && return 0
-  return 1
-}
-
 github_state() {
   case "$1" in
     open|opened) printf '%s\n' "open" ;;
@@ -336,30 +252,19 @@ collect_target() {
 }
 
 collect_all_remotes() {
-  require_command git
   require_command jq
 
   results_file="$(mktemp)"
   trap 'rm -f "$results_file"' EXIT HUP INT TERM
 
-  seen_keys="|"
-  found=0
-
-  for remote_name in $(git remote); do
-    if resolve_remote "$remote_name"; then
-      key="$host/$repo"
-      case "$seen_keys" in
-        *"|$key|"*) continue ;;
-      esac
-      seen_keys="$seen_keys$key|"
-      collect_target "$host" "$repo" "$state" >>"$results_file"
-      found=1
-    fi
-  done
-
-  if [ "$found" -eq 0 ]; then
-    die "Could not resolve any GitHub or GitLab repositories from remotes" 2
-  fi
+  target_json="$("$(script_dir)/resolve-target.sh" --all-remotes)"
+  printf '%s\n' "$target_json" |
+    jq -c '.targets[]' |
+    while IFS= read -r resolved_target; do
+      target_host="$(printf '%s\n' "$resolved_target" | jq -r '.host')"
+      target_repo="$(printf '%s\n' "$resolved_target" | jq -r '.repo')"
+      collect_target "$target_host" "$target_repo" "$state" >>"$results_file"
+    done
 
   jq -s \
     --arg state "$state" \
@@ -487,17 +392,22 @@ if [ "$all_remotes" -eq 1 ]; then
   exit 0
 fi
 
-if [ -n "$remote" ]; then
-  require_command git
-  resolve_remote "$remote" || die "Could not resolve GitHub or GitLab repository from remote: $remote" 2
-elif [ -n "$target" ]; then
-  require_command git
-  resolve_target "$target" || die "Could not resolve GitHub or GitLab repository from target: $target" 2
-elif [ -z "$repo" ]; then
-  require_command git
-  resolve_from_known_remotes || die "Could not resolve GitHub or GitLab repository from branch upstream, origin, or upstream" 2
-elif [ -z "$host" ]; then
-  host="github"
+require_command jq
+
+set -- "$(script_dir)/resolve-target.sh"
+if [ -n "$host" ]; then
+  set -- "$@" --host "$host"
 fi
+if [ -n "$repo" ]; then
+  set -- "$@" --repo "$repo"
+fi
+if [ -n "$remote" ]; then
+  set -- "$@" --remote "$remote"
+elif [ -n "$target" ]; then
+  set -- "$@" "$target"
+fi
+target_json="$("$@")"
+host="$(printf '%s\n' "$target_json" | jq -r '.host')"
+repo="$(printf '%s\n' "$target_json" | jq -r '.repo')"
 
 collect_target "$host" "$repo" "$state"

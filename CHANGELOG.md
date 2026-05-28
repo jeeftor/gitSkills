@@ -35,6 +35,7 @@
 - Added a local pre-commit hook configuration that runs `make validate`.
 - Added `scripts/git/get-branch-state.sh` for read-only local branch, dirty state, upstream, base, pushed HEAD, and ahead/behind inspection.
 - Added `references/git-workflow/pr-description.md` for dense PR/MR description and Markdown table guidance.
+- Added `scripts/git/resolve-target.sh` for local-only GitHub/GitLab target resolution shared by generic helpers.
 
 ### Changed
 
@@ -67,6 +68,7 @@
 - Updated `$git-pr-create` to load detailed PR/MR description examples only from the focused reference when needed.
 - Updated `plan.md` to remove stale implemented backlog entries and compact live next-work planning.
 - Added optional `make shellcheck` validation and fixed current demo script ShellCheck warnings.
+- Updated generic issue, PR/MR, and issue-creation helpers to use the shared target resolver before provider delegation.
 
 ### Verified
 

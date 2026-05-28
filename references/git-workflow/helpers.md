@@ -75,8 +75,23 @@ Branch-state helpers should emit this general shape:
 
 Use `scripts/git/get-branch-state.sh` at the start of PR/MR create and update workflows to inspect the current branch, default/base branch guess, upstream or pushed commit state, and dirty working-tree summaries. It is a local-only snapshot; still use provider helpers or platform CLIs to detect duplicate PRs/MRs, verify remote review state, and inspect CI.
 
+Target-resolution helpers should emit this general shape:
+
+```json
+{
+  "host": "github|gitlab|mixed",
+  "repo": "owner/name or group/project",
+  "source": "explicit|remote|url|branch_upstream|origin|upstream|all_remotes",
+  "remote": "origin",
+  "url": "https://github.com/owner/repo"
+}
+```
+
+For `--all-remotes`, `repo` is `null` and `targets` contains one normalized target per distinct GitHub or GitLab repository. Use `scripts/git/resolve-target.sh` inside generic helpers before delegating to provider-specific collectors or mutators. Keep the resolver local-only; it should not call GitHub or GitLab APIs.
+
 ## Current Helpers
 
+- `scripts/git/resolve-target.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, explicit repository, or all remotes into normalized target JSON without platform API calls.
 - `scripts/git/get-branch-state.sh`: inspect the current branch, upstream, base branch guess, dirty state summaries, ahead/behind counts, current HEAD, and local pushed/upstream HEADs for PR/MR create and update workflows.
 - `scripts/git/get-issues.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then collect normalized issue JSON with the provider helper.
 - `scripts/git/get-issue.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or issue URL, then collect normalized detail JSON for one issue.

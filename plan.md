@@ -80,7 +80,6 @@ Implement only one or two at a time. Favor work that reuses existing GitHub/GitL
 | `$git-branch-sync` | High | Common daily workflow and safety-sensitive enough to deserve a skill. | Use `scripts/git/get-branch-state.sh` for the read-only branch snapshot first; mutate only when asked. |
 | `$git-pr-review` plus single PR/MR detail helpers | High | Natural companion to `$git-pr-watcher`; covers checkout, diff, tests, and review findings. | Read-only by default; no submitted review unless explicitly asked. |
 | `$git-issue-update` | Medium | Useful after issue triage finds the next action. | Require an explicit issue target; do not bulk edit. |
-| `scripts/git/resolve-target.sh` | Medium | Repeated target normalization now appears across issue, PR/MR, CI, and mutation helpers. | Output target JSON only; do not call platform APIs. |
 | `scripts/validate-skill-routing.sh` | Low | Routing examples can catch missing metadata and reference drift during `make validate`. | Start as a lightweight metadata/reference check, not a model-eval harness. |
 
 ## Future Policy Notes
