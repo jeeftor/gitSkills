@@ -38,6 +38,7 @@ The skills prefer `gh` and `glab` for normal operations and use platform APIs on
 
 Helper scripts live under `scripts/git/` and emit normalized JSON for branch inspection, table, CI, and explicitly confirmed issue creation workflows:
 
+- `resolve-target.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, explicit repository, or all remotes into normalized target JSON without platform API calls.
 - `get-branch-state.sh` - inspect the current branch, upstream, default/base branch guess, dirty state summaries, ahead/behind counts, current HEAD, and local pushed/upstream HEADs for PR/MR create and update workflows.
 - `get-issues.sh` - resolve the current checkout, named remote, or GitHub/GitLab URL and collect issues.
 - `get-issue.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or issue URL and collect one issue's details.
@@ -50,6 +51,9 @@ Helper scripts live under `scripts/git/` and emit normalized JSON for branch ins
 Examples:
 
 ```bash
+scripts/git/resolve-target.sh
+scripts/git/resolve-target.sh upstream
+scripts/git/resolve-target.sh --all-remotes
 scripts/git/get-branch-state.sh
 scripts/git/get-branch-state.sh --base master
 scripts/git/get-issues.sh --state open --limit 50
