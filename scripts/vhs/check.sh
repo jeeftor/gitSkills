@@ -29,7 +29,7 @@ if [ "$missing" -ne 0 ]; then
 	cat >&2 <<'EOF'
 
 Install guidance:
-  brew install vhs ffmpeg gifsicle
+  brew install vhs ffmpeg ttyd gifsicle
 
 Docker fallback:
   docker run --rm -v "$PWD:/vhs" ghcr.io/charmbracelet/vhs <cassette>.tape
