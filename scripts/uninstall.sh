@@ -3,7 +3,7 @@ set -eu
 
 SKILLS_DIR="${SKILLS_DIR:-$HOME/.agents/skills}"
 GITSKILLS_HOME="${GITSKILLS_HOME:-$HOME/.agents/gitSkills}"
-SKILLS="git-workflow git-branch-sync git-issue-table git-issue-details git-issue-create git-issue-update git-pr git-pr-table git-pr-watcher git-pr-review git-pr-address-comments git-ci-watch git-pr-create git-pr-update git-pr-merge"
+SKILLS="git-workflow git-branch-sync git-issue-table git-issue-details git-issue-create git-issue-update git-pr git-pr-table git-pr-watcher git-pr-review git-pr-address-comments git-ci-watch git-pr-create git-pr-update git-pr-merge vhs"
 
 confirm_plan() {
   echo

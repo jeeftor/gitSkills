@@ -1,4 +1,4 @@
-.PHONY: install uninstall validate shellcheck demo-check demo-validate demo-record demo-record-one demo-clean
+.PHONY: install uninstall validate shellcheck vhs vhs-check vhs-validate vhs-one vhs-new demo-check demo-validate demo-record demo-record-one demo-clean
 
 install:
 	ASSUME_YES=1 ./scripts/install.sh
@@ -13,6 +13,21 @@ validate:
 
 shellcheck:
 	find scripts -type f -name '*.sh' -exec shellcheck {} +
+
+vhs:
+	./scripts/vhs/render.sh --all
+
+vhs-check:
+	./scripts/vhs/render.sh --check
+
+vhs-validate:
+	./scripts/vhs/render.sh --validate
+
+vhs-one:
+	./scripts/vhs/render.sh --demo "$(DEMO)"
+
+vhs-new:
+	./scripts/vhs/new-demo.sh "$(DEMO)"
 
 demo-check:
 	./scripts/demos/render-demo.sh --check

@@ -4,7 +4,7 @@
   <img src="assets/gitSkills.webp" alt="gitSkills mascot" width="480">
 </p>
 
-Codex Git Skills is a global skill bundle for GitHub and GitLab issue, pull request, and merge request workflows.
+Codex Git Skills is a global skill bundle for GitHub and GitLab workflows, plus repeatable terminal demo recording.
 
 It installs plain skill names:
 
@@ -23,6 +23,7 @@ It installs plain skill names:
 - `$git-pr-create` - create a GitHub pull request or GitLab merge request with a concise or tabled description
 - `$git-pr-update` - commit and push updates to an existing pull request or merge request
 - `$git-pr-merge` - merge an approved pull request or merge request
+- `$vhs` - create repeatable terminal screenshots, GIFs, and videos with Charmbracelet VHS
 
 See [agent-matrix.md](agent-matrix.md) for the skill routing hierarchy.
 
@@ -35,6 +36,8 @@ These skills are built around the platform CLIs:
 - GitHub workflows require `gh` with authentication configured.
 - GitLab workflows require `glab` with authentication configured.
 - Helper scripts require `jq`.
+- VHS demo rendering requires `vhs` and `ffmpeg`; some local installations also require `ttyd`.
+- GIF optimization uses optional `gifsicle`.
 - Local hook installation uses `prek`.
 
 The skills prefer `gh` and `glab` for normal operations and use platform APIs only when the CLI output is missing required details.
@@ -91,6 +94,26 @@ scripts/git/gh/create-issue.sh --repo jeeftor/gitSkills --title "Issue title" --
 scripts/git/glab/create-issue.sh --repo group/project --title "Issue title" --yes
 ```
 
+VHS helper scripts live under `scripts/vhs/` and keep terminal recordings repeatable:
+
+- `check.sh` - check required VHS rendering tools and optional optimization tools.
+- `render.sh` - validate or render one tape or all tapes, then report generated artifact sizes.
+- `optimize-gif.sh` - run `gifsicle` optimization and replace a GIF only when the optimized file is smaller.
+- `new-demo.sh` - create a starter tape using deterministic repo defaults.
+
+Examples:
+
+```bash
+make vhs-check
+make vhs-validate
+make vhs
+make vhs-one DEMO=git-workflow
+make vhs-new DEMO=example
+scripts/vhs/render.sh docs/demos/tapes/git-workflow.tape
+```
+
+VHS tapes live under `docs/demos/tapes/` by default, and generated media is written to `docs/demos/output/`. The output directory intentionally keeps only `.gitkeep` tracked; rendered media remains ignored unless a change explicitly chooses to commit it.
+
 ## Install
 
 From this checkout:
@@ -106,8 +129,9 @@ The installer copies skills to:
 ```
 
 Shared workflow references are kept once in this repository under `references/git-workflow/`.
-Shared helper scripts are kept under `scripts/git/`.
-During install, those references and helpers are copied once into `~/.agents/gitSkills/`. Each installed skill gets lightweight `references/git-workflow` and `scripts/git` symlinks back to that shared location, so existing relative paths keep working without duplicating the full helper tree per skill.
+Shared Git helper scripts are kept under `scripts/git/`.
+Shared VHS helper scripts are kept under `scripts/vhs/`.
+During install, those references and helpers are copied once into `~/.agents/gitSkills/`. Each installed Git skill gets lightweight `references/git-workflow` and `scripts/git` symlinks back to that shared location, and `$vhs` gets a `scripts/vhs` symlink.
 
 Restart Codex after installation.
 
@@ -122,6 +146,13 @@ make validate
 ```
 
 Validation checks shell syntax, static skill routing references, helper/reference paths, and skill frontmatter.
+
+Validate VHS tooling and tapes locally with:
+
+```bash
+make vhs-check
+make vhs-validate
+```
 
 Run optional ShellCheck validation for scripts with:
 

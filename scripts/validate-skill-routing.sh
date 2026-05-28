@@ -26,7 +26,7 @@ skill_exists() {
 
 extract_skill_refs() {
   # shellcheck disable=SC2016
-  grep -Eoh '\$git-[A-Za-z0-9-]+' "$@" 2>/dev/null | sed 's/^\$//' | sort -u || true
+  grep -Eoh '\$(git-[A-Za-z0-9-]+|vhs)' "$@" 2>/dev/null | sed 's/^\$//' | sort -u || true
 }
 
 extract_reference_refs() {
