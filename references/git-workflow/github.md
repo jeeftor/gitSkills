@@ -66,6 +66,15 @@ scripts/git/gh/create-issue.sh --repo <owner/repo> --title "Issue title" --body-
 The issue create helper searches likely duplicate open issues before creating. Without `--yes`, it emits JSON describing the target and duplicate candidates without mutating issue state.
 
 - Create issue: `gh issue create --repo <owner/repo> --title <title> --body-file <file>`
+- Comment on issue: `gh issue comment <number> --repo <owner/repo> --body-file <file>`
+- Edit title/body: `gh issue edit <number> --repo <owner/repo> --title <title> --body-file <file>`
+- Add labels: `gh issue edit <number> --repo <owner/repo> --add-label <label>`
+- Remove labels: `gh issue edit <number> --repo <owner/repo> --remove-label <label>`
+- Add assignees: `gh issue edit <number> --repo <owner/repo> --add-assignee <login>`
+- Remove assignees: `gh issue edit <number> --repo <owner/repo> --remove-assignee <login>`
+- Set milestone: `gh issue edit <number> --repo <owner/repo> --milestone <milestone>`
+- Close issue: `gh issue close <number> --repo <owner/repo>`
+- Reopen issue: `gh issue reopen <number> --repo <owner/repo>`
 - Create draft PR: `gh pr create --draft --base <base> --head <branch> --title <title> --body-file <file>`
 - Create ready PR: `gh pr create --base <base> --head <branch> --title <title> --body-file <file>`
 - Edit title/body: `gh pr edit <number> --title <title> --body-file <file>`

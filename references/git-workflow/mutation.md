@@ -14,6 +14,8 @@ Read `commit.md` before creating commits.
 
 Stop and ask when the target branch, remote, platform, or changed file set is ambiguous.
 
+For issue mutations, inspect the current issue first with `scripts/git/get-issue.sh`, apply only the explicit one-issue update the user requested, then inspect the issue again before reporting success.
+
 If the repo has `.pre-commit-config.yaml` or a documented `prek` workflow, prefer the repo's hook workflow before commit/push. Use `prek` over `pre-commit` when both are viable.
 
 ## Staging
