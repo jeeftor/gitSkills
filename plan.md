@@ -11,7 +11,7 @@ Repository: https://github.com/jeeftor/gitSkills
 - Routing: `$git-workflow`, `$git-pr`
 - Branches: `$git-branch-sync`
 - Issues: `$git-issue-table`, `$git-issue-details`, `$git-issue-create`
-- Pull requests and merge requests: `$git-pr-table`, `$git-pr-watcher`, `$git-pr-address-comments`, `$git-pr-create`, `$git-pr-update`, `$git-pr-merge`
+- Pull requests and merge requests: `$git-pr-table`, `$git-pr-watcher`, `$git-pr-review`, `$git-pr-address-comments`, `$git-pr-create`, `$git-pr-update`, `$git-pr-merge`
 - CI: `$git-ci-watch`
 
 ## Settled Decisions
@@ -78,7 +78,6 @@ Implement only one or two at a time. Favor work that reuses existing GitHub/GitL
 
 | Work | Priority | Why Next | Keep Simple Boundary |
 | --- | --- | --- | --- |
-| `$git-pr-review` plus single PR/MR detail helpers | High | Natural companion to `$git-pr-watcher`; covers checkout, diff, tests, and review findings. | Read-only by default; no submitted review unless explicitly asked. |
 | `$git-issue-update` | Medium | Useful after issue triage finds the next action. | Require an explicit issue target; do not bulk edit. |
 | `scripts/validate-skill-routing.sh` | Low | Routing examples can catch missing metadata and reference drift during `make validate`. | Start as a lightweight metadata/reference check, not a model-eval harness. |
 
