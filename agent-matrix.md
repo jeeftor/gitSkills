@@ -4,6 +4,7 @@
 flowchart TD
     WORKFLOW["$git-workflow<br/>Route Git work"]
     ISSUE_TABLE["$git-issue-table<br/>Summarize issues"]
+    ISSUE_DETAILS["$git-issue-details<br/>Inspect one issue"]
     ISSUE_CREATE["$git-issue-create<br/>Create issues"]
     PR["$git-pr<br/>Route PR and MR work"]
     PR_TABLE["$git-pr-table<br/>Summarize PRs and MRs"]
@@ -15,9 +16,11 @@ flowchart TD
     PR_MERGE["$git-pr-merge<br/>Merge a PR or MR"]
 
     WORKFLOW --> ISSUE_TABLE
+    WORKFLOW --> ISSUE_DETAILS
     WORKFLOW --> ISSUE_CREATE
     WORKFLOW --> PR
     WORKFLOW --> CI_WATCH
+    ISSUE_TABLE --> ISSUE_DETAILS
     PR --> PR_TABLE
     PR --> PR_WATCHER
     PR --> PR_ADDRESS
@@ -38,5 +41,6 @@ flowchart TD
 
 Read-only overview skills should run before mutating create, update, or merge workflows when the target item is ambiguous.
 `$git-issue-table` uses `scripts/git/get-issues.sh` for the common scripted issue collection path.
+`$git-issue-details` uses `scripts/git/get-issue.sh` for the common scripted issue detail path before recommending next actions.
 `$git-pr-table` uses `scripts/git/get-prs.sh` for the common scripted PR/MR collection path before handing one selected item to `$git-pr-watcher`.
 Use `$git-ci-watch` instead of `$git-pr-watcher` when the user only asks about CI for the latest push, branch, commit, run, pipeline, PR, or MR.

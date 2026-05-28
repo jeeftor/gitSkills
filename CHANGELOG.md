@@ -25,6 +25,10 @@
   - `scripts/git/gh/get-ci.sh` normalizes GitHub PR checks, workflow runs, jobs, failed logs, and run URLs.
   - `scripts/git/glab/get-ci.sh` normalizes GitLab MR pipelines, branch pipelines, jobs, failed logs, and pipeline URLs.
 - Added `$git-issue-create` for creating GitHub or GitLab issues after target resolution and duplicate checks.
+- Added `$git-issue-details` for inspecting one GitHub or GitLab issue with body, comment, and metadata context.
+- Added script-backed issue detail helpers for `$git-issue-details`.
+  - `scripts/git/get-issue.sh` resolves the current checkout, named remote, GitHub/GitLab URL, or issue URL before delegating.
+  - `scripts/git/gh/get-issue.sh` and `scripts/git/glab/get-issue.sh` normalize one issue's body, metadata, and comments.
 - Added script-backed issue creation helpers for `$git-issue-create`.
   - `scripts/git/create-issue.sh` resolves the current checkout, named remote, or GitHub/GitLab URL before delegating.
   - `scripts/git/gh/create-issue.sh` and `scripts/git/glab/create-issue.sh` search likely duplicate open issues and require `--yes` before creating.
@@ -50,6 +54,7 @@
 - Updated `$git-issue-table` and `$git-pr-table` to read shared helper and table references.
 - Updated `$git-issue-table`, `$git-pr-table`, and `$git-ci-watch` to support consistent named-remote and `all remotes` target phrasing.
 - Updated `$git-workflow` to route explicit create, open, and file issue requests to `$git-issue-create`.
+- Updated `$git-workflow` to route one-issue body, comment, and metadata inspection to `$git-issue-details`.
 - Updated `$git-issue-create` to use the script-backed helper path for normal issue creation.
 - Updated shared target-resolution guidance so named remotes such as `origin` or `upstream` are explicit repository targets.
 - Removed site-specific remote examples from skill and workflow documentation.
