@@ -5,9 +5,14 @@ on:
     branches:
       - master
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   validate:
+    name: Validate
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -18,5 +23,5 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y jq shellcheck
 
-      - name: Run CI-safe validation
+      - name: Validate
         run: make ci

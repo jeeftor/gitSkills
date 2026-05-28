@@ -172,6 +172,7 @@ make ci
 ```
 
 `make ci` avoids Codex-specific local validators and runs repo-local checks that can run on a standard GitHub-hosted runner.
+The hosted `Validate` workflow runs `make ci` on pull requests, pushes to `master`, and manual dispatch.
 
 Run the local-only helper smoke tests directly with:
 

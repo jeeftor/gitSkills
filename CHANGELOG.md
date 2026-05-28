@@ -100,6 +100,7 @@
 - Updated issue and mutation references with safe one-issue update guidance.
 - Updated `$git-workflow` to ask for an explicit completion endpoint before broad issue implementation requests.
 - Updated default `make` behavior to list available targets instead of running `make install`.
+- Updated the GitHub Actions validation workflow with manual dispatch and read-only contents permissions.
 - Updated `make validate` to run static skill routing validation.
 - Updated `make validate` to run local helper JSON smoke tests.
 - Updated mutation and commit guidance so changelog updates follow repo-local instructions without adding a separate gitSkills changelog skill.
