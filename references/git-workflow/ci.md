@@ -30,6 +30,9 @@ Treat missing or partial data as unknown, not successful.
 When an installed or repo-local helper is available, prefer it for CI watch data:
 
 ```bash
+scripts/git/get-ci.sh --target-type branch --target <branch>
+scripts/git/get-ci.sh <remote-or-url> --target-type branch --target <branch>
+scripts/git/get-ci.sh all remotes --target-type branch --target <branch>
 scripts/git/gh/get-ci.sh --repo <owner/repo> --target-type branch --target <branch>
 scripts/git/gh/get-ci.sh --repo <owner/repo> --target-type pr --target <number>
 scripts/git/gh/get-ci.sh --repo <owner/repo> --target-type run --target <run-id>
@@ -52,6 +55,9 @@ Use GraphQL or `gh api` when required-check metadata, check suites, or merge que
 When an installed or repo-local helper is available, prefer it for CI watch data:
 
 ```bash
+scripts/git/get-ci.sh <gitlab-remote> --target-type branch --target <branch>
+scripts/git/get-ci.sh <gitlab-remote> --target-type mr --target <iid>
+scripts/git/get-ci.sh all remotes --target-type branch --target <branch>
 scripts/git/glab/get-ci.sh --repo <group/project> --target-type branch --target <branch>
 scripts/git/glab/get-ci.sh --repo <group/project> --target-type mr --target <iid>
 scripts/git/glab/get-ci.sh --repo <group/project> --target-type pipeline --target <pipeline-id>

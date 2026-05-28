@@ -43,6 +43,7 @@ Helper scripts live under `scripts/git/` and emit normalized JSON for branch ins
 - `get-issues.sh` - resolve the current checkout, named remote, or GitHub/GitLab URL and collect issues.
 - `get-issue.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or issue URL and collect one issue's details.
 - `get-prs.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes and collect PRs/MRs with table-ready status and color-hint fields.
+- `get-ci.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes and collect CI status.
 - `codex-color-probe.sh` - print rendering samples to test which color formats work in the current Codex surface.
 - `create-issue.sh` - resolve the current checkout, named remote, or GitHub/GitLab URL before issue creation.
 - `gh/get-issues.sh`, `gh/get-issue.sh`, `gh/get-prs.sh`, `gh/get-ci.sh`, and `gh/create-issue.sh` - GitHub provider helpers.
@@ -63,6 +64,8 @@ scripts/git/get-issue.sh upstream 2
 scripts/git/get-issue.sh https://github.com/owner/repo/issues/21
 scripts/git/get-prs.sh --state open --scope all --limit 50
 scripts/git/get-prs.sh all remotes --state open --scope review --limit 50
+scripts/git/get-ci.sh --target-type branch --target master
+scripts/git/get-ci.sh all remotes --target-type branch --target master
 scripts/git/codex-color-probe.sh
 scripts/git/gh/get-issues.sh --repo jeeftor/gitSkills --state open --limit 50
 scripts/git/glab/get-issues.sh --repo jeef/gitskills --state opened --limit 50

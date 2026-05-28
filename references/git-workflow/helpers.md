@@ -96,6 +96,7 @@ For `--all-remotes`, `repo` is `null` and `targets` contains one normalized targ
 - `scripts/git/get-issues.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then collect normalized issue JSON with the provider helper.
 - `scripts/git/get-issue.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or issue URL, then collect normalized detail JSON for one issue.
 - `scripts/git/get-prs.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes, then collect normalized PR/MR JSON with table-ready status and color-hint fields.
+- `scripts/git/get-ci.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes, then collect normalized CI JSON with the provider helper.
 - `scripts/git/codex-color-probe.sh`: print ANSI, Markdown, HTML, plain-label, and JSON color-hint samples to test what the current Codex surface renders.
 - `scripts/git/create-issue.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then delegate issue creation to the provider helper.
 - `scripts/git/gh/get-issues.sh`: collect GitHub issues as normalized JSON using the lightweight issue list API fields needed for issue tables.
