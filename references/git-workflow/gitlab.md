@@ -75,7 +75,7 @@ The issue create helper searches likely duplicate open issues before creating. W
 - Edit MR: `glab mr update <iid>`
 - Checkout MR: `glab mr checkout <iid>`
 
-Prefer file-backed descriptions when the repo has a merge request template. For issue bodies, prepare the description in a temporary file first when the body is too long to quote safely.
+Prefer file-backed descriptions when the repo has a merge request or issue template. Check `.gitlab/merge_request_templates/*.md` and `.gitlab/issue_templates/*.md` before composing bodies. Use the template when exactly one applicable template exists. If multiple applicable templates exist, ask the user which one to use before creating the MR or issue. For issue bodies, prepare the description in a temporary file first when the body is too long to quote safely.
 
 ## CI And Pipelines
 

@@ -81,7 +81,7 @@ The issue create helper searches likely duplicate open issues before creating. W
 - Mark ready: `gh pr ready <number>`
 - Checkout PR: `gh pr checkout <number>`
 
-Prefer `--body-file` over generated inline bodies when the repo has an issue or PR template.
+Prefer `--body-file` over generated inline bodies when the repo has an issue or PR template. Check `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`, `.github/PULL_REQUEST_TEMPLATE/*.md`, `.github/ISSUE_TEMPLATE.md`, `.github/ISSUE_TEMPLATE/*.md`, and `.github/ISSUE_TEMPLATE/*.yml` before composing bodies. Use the template when exactly one applicable template exists. If multiple applicable templates exist, ask the user which one to use before creating the PR or issue.
 
 ## CI And Runs
 

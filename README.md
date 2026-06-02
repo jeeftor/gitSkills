@@ -22,13 +22,13 @@ It installs plain skill names:
 - ⭐ `$git-issue-table` - summarize open GitHub issues or GitLab issues
 - `$git-branch-sync` - inspect and safely synchronize local Git branches
 - `$git-issue-details` - inspect one GitHub issue or GitLab issue
-- `$git-issue-create` - create a GitHub issue or GitLab issue
+- `$git-issue-create` - create a GitHub issue or GitLab issue using repo templates when present
 - `$git-issue-update` - update one existing GitHub issue or GitLab issue
 - `$git-pr-table` - summarize open GitHub pull requests or GitLab merge requests
 - `$git-pr-watcher` - inspect one pull request or merge request
 - `$git-pr-review` - review one pull request or merge request locally, including adversarial review when requested
 - `$git-pr-address-comments` - address review comments on an existing pull request or merge request
-- `$git-pr-create` - create a GitHub pull request or GitLab merge request with a concise or tabled description
+- `$git-pr-create` - create a GitHub pull request or GitLab merge request using repo templates when present
 - `$git-pr-update` - commit and push updates to an existing pull request or merge request
 - `$git-pr-merge` - merge an approved pull request or merge request
 - `$vhs` - create repeatable terminal screenshots, GIFs, and videos with Charmbracelet VHS

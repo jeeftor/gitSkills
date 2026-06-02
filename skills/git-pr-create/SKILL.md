@@ -16,6 +16,7 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 - Do not create from a default branch unless the user explicitly requests it.
 - Do not create a duplicate item when the current branch already has an open PR or MR.
 - Do not commit, push, or create when verification is failing unless the user explicitly accepts that status.
+- Before composing the PR or MR body, inspect repo-local PR/MR templates. Use the template when exactly one applicable template exists. If multiple applicable templates exist, ask the user which one to use before creating the PR or MR.
 
 ## Workflow
 
@@ -25,12 +26,19 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 4. Run or confirm the narrowest practical verification.
 5. Commit staged changes when needed.
 6. Push the branch to the appropriate remote.
-7. Create a draft PR or draft MR unless the user asks for ready-for-review.
-8. Verify the URL and state before reporting success.
+7. Prepare the PR or MR body from the selected template when one exists, otherwise from the request and local context.
+8. Create a draft PR or draft MR unless the user asks for ready-for-review.
+9. Verify the URL and state before reporting success.
 
 ## Description Shape
 
-Prefer preserving project templates and repo-local contribution guidance over generated prose. Fill required template sections instead of deleting them, and keep contribution checklist wording intact unless the local instructions say otherwise.
+Always prefer preserving project templates and repo-local contribution guidance over generated prose. Fill required template sections instead of deleting them, and keep contribution checklist wording intact unless the local instructions say otherwise.
+
+Check common template locations before composing the body:
+
+- GitHub: `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`, and `.github/PULL_REQUEST_TEMPLATE/*.md`
+- GitLab: `.gitlab/merge_request_templates/*.md`
+- repo-local contribution docs that explicitly name a PR or MR template
 
 Keep simple PRs and MRs concise. Use short prose or bullets when the change has only a few related facts and a table would add visual noise. When composing a PR/MR description or when dense description guidance is needed, read `references/git-workflow/pr-description.md`.
 

@@ -6,7 +6,7 @@ flowchart TD
     VHS["$vhs<br/>Record terminal demos"]
     ISSUE_TABLE["⭐ $git-issue-table<br/>Summarize issues"]
     ISSUE_DETAILS["$git-issue-details<br/>Inspect one issue"]
-    ISSUE_CREATE["$git-issue-create<br/>Create issues"]
+    ISSUE_CREATE["$git-issue-create<br/>Create issues<br/>using templates"]
     ISSUE_UPDATE["$git-issue-update<br/>Update one issue"]
     BRANCH_SYNC["$git-branch-sync<br/>Sync branches"]
     PR["$git-pr<br/>Route PR and MR work"]
@@ -15,7 +15,7 @@ flowchart TD
     PR_REVIEW["$git-pr-review<br/>Review one PR or MR<br/>adversarially when requested"]
     PR_ADDRESS["$git-pr-address-comments<br/>Address review feedback"]
     CI_WATCH["$git-ci-watch<br/>Watch CI"]
-    PR_CREATE["$git-pr-create<br/>Create a PR or MR<br/>with clear descriptions"]
+    PR_CREATE["$git-pr-create<br/>Create a PR or MR<br/>using templates"]
     PR_UPDATE["$git-pr-update<br/>Update a PR or MR"]
     PR_MERGE["$git-pr-merge<br/>Merge a PR or MR"]
 

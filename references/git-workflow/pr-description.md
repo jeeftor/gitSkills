@@ -4,7 +4,7 @@ Use this reference when composing a GitHub pull request body, GitLab merge reque
 
 ## Shape
 
-Prefer preserving project templates and repo-local contribution guidance over generated prose. Fill required template sections instead of deleting them, and keep contribution checklist wording intact unless the local instructions say otherwise.
+Prefer preserving project templates and repo-local contribution guidance over generated prose. Fill required template sections instead of deleting them, and keep contribution checklist wording intact unless the local instructions say otherwise. If exactly one applicable PR or MR template exists, use it. If multiple applicable templates exist, ask the user which one to use before creating the PR or MR.
 
 Keep simple PRs and MRs concise. Use short prose or bullets when the change has only a few related facts and a table would add visual noise.
 

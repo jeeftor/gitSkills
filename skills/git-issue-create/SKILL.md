@@ -16,16 +16,27 @@ Read `references/git-workflow/common.md`, `references/git-workflow/helpers.md`, 
 - Require explicit user intent before creating or editing issue state.
 - Resolve the target repository before preparing the issue.
 - Do not create duplicate issues when a quick open-issue search finds a likely match.
-- Prefer preserving repo-local issue templates over generated prose.
+- Before composing the issue body, inspect repo-local issue templates. Use the template when exactly one applicable template exists. If multiple applicable templates exist, ask the user which one to use before creating the issue.
 
 ## Workflow
 
 1. Gather the requested title and body only when provided or clearly implied.
-2. Use `scripts/git/create-issue.sh` as the normal path for target resolution, duplicate search, provider delegation, and JSON output.
-3. Run the helper without `--yes` first unless duplicate status is already known from an equivalent open-issue search.
-4. Review any `duplicate_candidates` in the helper output and do not create a duplicate issue unless the user explicitly confirms `--allow-duplicate`.
-5. Create the issue with `--yes` only after the target repository and user intent are unambiguous.
-6. Verify the created issue URL from the helper JSON and report it.
+2. Inspect repo-local issue templates before composing the body.
+3. Use `scripts/git/create-issue.sh` as the normal path for target resolution, duplicate search, provider delegation, and JSON output.
+4. Run the helper without `--yes` first unless duplicate status is already known from an equivalent open-issue search.
+5. Review any `duplicate_candidates` in the helper output and do not create a duplicate issue unless the user explicitly confirms `--allow-duplicate`.
+6. Create the issue with `--yes` only after the target repository, template choice, and user intent are unambiguous.
+7. Verify the created issue URL from the helper JSON and report it.
+
+## Body Shape
+
+Always prefer preserving repo-local issue templates over generated prose. Fill required template sections instead of deleting them, and keep contribution checklist wording intact unless the local instructions say otherwise.
+
+Check common template locations before composing the body:
+
+- GitHub: `.github/ISSUE_TEMPLATE.md`, `.github/ISSUE_TEMPLATE/*.md`, and `.github/ISSUE_TEMPLATE/*.yml`
+- GitLab: `.gitlab/issue_templates/*.md`
+- repo-local contribution docs that explicitly name an issue template
 
 Helper examples:
 
