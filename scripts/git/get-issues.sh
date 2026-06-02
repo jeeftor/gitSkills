@@ -69,11 +69,13 @@ collect_all_remotes() {
   jq -s \
     --arg state "$state" \
     --argjson limit "$limit" \
+    --arg generated_at "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
     '{
       host: "mixed",
       repo: null,
       state: $state,
       limit: $limit,
+      generated_at: $generated_at,
       targets: .,
       issues: ([.[] | .issues[]])
     }' \

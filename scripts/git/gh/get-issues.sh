@@ -14,6 +14,13 @@ repo=""
 state="open"
 limit="50"
 
+script_dir() {
+  case "$0" in
+    */*) dirname "$0" ;;
+    *) pwd ;;
+  esac
+}
+
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --repo)
@@ -81,17 +88,26 @@ gh issue list \
   --limit "$limit" \
   --json number,title,url,state,updatedAt >"$issues_file"
 
-jq \
+generated_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+generated_epoch="$(date -u '+%s')"
+
+TZ=UTC jq \
+  -L "$(script_dir)/../jq" \
   --arg host "github" \
   --arg repo "$repo" \
   --arg state "$state" \
   --argjson limit "$limit" \
+  --arg generated_at "$generated_at" \
+  --argjson generated_epoch "$generated_epoch" \
   '
+  include "relative-time";
+
   {
     host: $host,
     repo: $repo,
     state: $state,
     limit: $limit,
+    generated_at: $generated_at,
     issues: [
       .[] |
       {
@@ -102,7 +118,8 @@ jq \
         updated_at: .updatedAt,
         table: {
           display: ("#" + (.number | tostring)),
-          updated_at: .updatedAt
+          updated_at: .updatedAt,
+          updated_relative: (.updatedAt | relative_age($generated_epoch))
         }
       }
     ]

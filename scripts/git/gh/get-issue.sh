@@ -21,6 +21,13 @@ require_command() {
   fi
 }
 
+script_dir() {
+  case "$0" in
+    */*) dirname "$0" ;;
+    *) pwd ;;
+  esac
+}
+
 repo=""
 issue=""
 
@@ -63,13 +70,22 @@ gh issue view "$issue" \
   --comments \
   --json number,title,url,state,author,assignees,labels,milestone,body,comments,createdAt,updatedAt,closedAt >"$issue_file"
 
-jq \
+generated_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+generated_epoch="$(date -u '+%s')"
+
+TZ=UTC jq \
+  -L "$(script_dir)/../jq" \
   --arg host "github" \
   --arg repo "$repo" \
+  --arg generated_at "$generated_at" \
+  --argjson generated_epoch "$generated_epoch" \
   '
+  include "relative-time";
+
   {
     host: $host,
     repo: $repo,
+    generated_at: $generated_at,
     issue: {
       number,
       title,
@@ -98,7 +114,8 @@ jq \
         display: ("#" + (.number | tostring)),
         labels_text: (if ((.labels // []) | length) == 0 then "No labels" else ([.labels[].name] | join(", ")) end),
         assignee_text: (if ((.assignees // []) | length) == 0 then "No assignee" else ([.assignees[].login] | join(", ")) end),
-        updated_at: .updatedAt
+        updated_at: .updatedAt,
+        updated_relative: (.updatedAt | relative_age($generated_epoch))
       }
     }
   }' \

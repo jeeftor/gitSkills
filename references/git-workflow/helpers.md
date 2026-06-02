@@ -91,6 +91,25 @@ Target-resolution helpers should emit this general shape:
 
 For `--all-remotes`, `repo` is `null` and `targets` contains one normalized target per distinct GitHub or GitLab repository. Use `scripts/git/resolve-target.sh` inside generic helpers before delegating to provider-specific collectors or mutators. Keep the resolver local-only; it should not call GitHub or GitLab APIs.
 
+Issue helpers should emit raw timestamps and table-ready relative ages:
+
+```json
+{
+  "generated_at": "2026-05-28T19:52:05Z",
+  "issues": [
+    {
+      "updated_at": "2026-05-28T01:28:50Z",
+      "table": {
+        "updated_at": "2026-05-28T01:28:50Z",
+        "updated_relative": "18h ago"
+      }
+    }
+  ]
+}
+```
+
+Keep `updated_at` as the source-of-truth timestamp. Use `table.updated_relative` only for compact display.
+
 ## Current Helpers
 
 - `scripts/git/resolve-target.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, explicit repository, or all remotes into normalized target JSON without platform API calls.

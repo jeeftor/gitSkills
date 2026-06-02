@@ -19,7 +19,7 @@ Read `references/git-workflow/common.md`, `references/git-workflow/helpers.md`, 
 4. List open issues with title, URL, and update age.
 5. Build a Markdown table with `Issue`, `Title`, and `Updated`. Do not include labels, owner, work, or a generic `Next action` column for normal issue lists; put recommendations after the table.
 6. Prioritize the `Title` column.
-7. Format `Updated` as a compact relative age such as `2h ago`, `1d ago`, or `3mo ago` when possible. Use an exact date only when relative age would be unclear.
+7. Format `Updated` from `table.updated_relative` when present. Use `table.updated_at` or `updated_at` only when the helper did not return a relative age or an exact date would be clearer.
 8. Recommend the top one to three issues to inspect or work next based on recency, title relevance, and explicit user context.
 
 Supported target phrasing:

@@ -59,6 +59,9 @@
 
 ### Changed
 
+- Updated `$git-issue-table` README and matrix descriptions to mark it as a starred main-entry skill.
+- Updated issue helpers to emit `generated_at` and table-ready `updated_relative` ages while preserving raw `updated_at` timestamps.
+- Updated `$git-pr-review` to include an adversarial review mode that pairs normal PR/MR review with `codex-security:security-diff-scan` when requested.
 - Updated install and uninstall scripts to include `$vhs` and shared `scripts/vhs/` helper installation.
 - Updated static skill routing validation to include `$vhs` references.
 - Updated issue and PR/MR table helpers to emit explicit color-hint metadata while preserving plain status text.

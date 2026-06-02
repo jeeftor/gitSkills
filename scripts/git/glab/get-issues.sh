@@ -14,6 +14,13 @@ repo=""
 state="opened"
 limit="50"
 
+script_dir() {
+  case "$0" in
+    */*) dirname "$0" ;;
+    *) pwd ;;
+  esac
+}
+
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --repo)
@@ -82,17 +89,26 @@ trap 'rm -f "$issues_file"' EXIT HUP INT TERM
 
 glab api "projects/$project_path/issues?state=$api_state&per_page=$limit" >"$issues_file"
 
-jq \
+generated_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+generated_epoch="$(date -u '+%s')"
+
+TZ=UTC jq \
+    -L "$(script_dir)/../jq" \
     --arg host "gitlab" \
     --arg repo "$repo" \
     --arg state "$api_state" \
     --argjson limit "$limit" \
+    --arg generated_at "$generated_at" \
+    --argjson generated_epoch "$generated_epoch" \
     '
+    include "relative-time";
+
     {
       host: $host,
       repo: $repo,
       state: $state,
       limit: $limit,
+      generated_at: $generated_at,
       issues: [
         .[] |
         {
@@ -129,7 +145,8 @@ jq \
             display: ("#" + (.iid | tostring)),
             labels_text: (if ((.labels // []) | length) == 0 then "No labels" else ((.labels // []) | join(", ")) end),
             assignee_text: (if ((.assignees // []) | length) == 0 then "No assignee" else ([(.assignees // [])[].username] | join(", ")) end),
-            updated_at
+            updated_at,
+            updated_relative: (.updated_at | relative_age($generated_epoch))
           }
         }
       ]

@@ -8,7 +8,7 @@ Codex Git Skills is a global skill bundle for GitHub and GitLab workflows, plus 
 
 ## Demo
 
-`$git-issue-table` turns repository issues into a compact review queue with links and recommendations.
+⭐ `$git-issue-table` turns repository issues into a compact review queue with links and recommendations.
 
 <p align="center">
   <img src="docs/demos/output/issue-table.gif" alt="$git-issue-table demo" width="900">
@@ -26,7 +26,7 @@ It installs plain skill names:
 - `$git-issue-update` - update one existing GitHub issue or GitLab issue
 - `$git-pr-table` - summarize open GitHub pull requests or GitLab merge requests
 - `$git-pr-watcher` - inspect one pull request or merge request
-- `$git-pr-review` - review one pull request or merge request locally
+- `$git-pr-review` - review one pull request or merge request locally, including adversarial review when requested
 - `$git-pr-address-comments` - address review comments on an existing pull request or merge request
 - `$git-pr-create` - create a GitHub pull request or GitLab merge request with a concise or tabled description
 - `$git-pr-update` - commit and push updates to an existing pull request or merge request
@@ -181,7 +181,7 @@ Run the local-only helper smoke tests directly with:
 make test-helpers
 ```
 
-The helper smoke tests create a temporary Git repository, avoid platform authentication, and validate `resolve-target.sh` and `get-branch-state.sh` JSON shape with `jq`.
+The helper smoke tests create a temporary Git repository, avoid platform authentication, and validate local helper JSON shape and relative-time formatting with `jq`.
 
 Validate VHS tooling and tapes locally with:
 

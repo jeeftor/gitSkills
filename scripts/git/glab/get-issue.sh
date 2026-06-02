@@ -21,6 +21,13 @@ require_command() {
   fi
 }
 
+script_dir() {
+  case "$0" in
+    */*) dirname "$0" ;;
+    *) pwd ;;
+  esac
+}
+
 repo=""
 issue=""
 comment_limit="100"
@@ -80,14 +87,23 @@ trap 'rm -f "$issue_file" "$comments_file"' EXIT HUP INT TERM
 glab api "projects/$project_path/issues/$issue" >"$issue_file"
 glab api "projects/$project_path/issues/$issue/notes?per_page=$comment_limit" >"$comments_file"
 
-jq \
+generated_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+generated_epoch="$(date -u '+%s')"
+
+TZ=UTC jq \
+  -L "$(script_dir)/../jq" \
   --arg host "gitlab" \
   --arg repo "$repo" \
+  --arg generated_at "$generated_at" \
+  --argjson generated_epoch "$generated_epoch" \
   --slurpfile comments "$comments_file" \
   '
+  include "relative-time";
+
   {
     host: $host,
     repo: $repo,
+    generated_at: $generated_at,
     issue: {
       number: .iid,
       title,
@@ -136,7 +152,8 @@ jq \
         display: ("#" + (.iid | tostring)),
         labels_text: (if ((.labels // []) | length) == 0 then "No labels" else ((.labels // []) | join(", ")) end),
         assignee_text: (if ((.assignees // []) | length) == 0 then "No assignee" else ([(.assignees // [])[].username] | join(", ")) end),
-        updated_at
+        updated_at,
+        updated_relative: (.updated_at | relative_age($generated_epoch))
       }
     }
   }' \

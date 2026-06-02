@@ -4,6 +4,8 @@ Use this reference for review comments, requested changes, unresolved threads, i
 
 For local PR/MR code reviews, lead with findings ordered by severity. Include file/line references, concrete evidence, and the user-visible or maintenance risk. Put open questions after findings and keep summaries brief.
 
+For adversarial, security, abuse-case, exploitability, or high-risk PR/MR review requests, pair the normal correctness and maintainability review with `codex-security:security-diff-scan` when available. Keep the security pass read-only, scope it to the same PR, MR, branch, commit, or diff, and merge validated findings into the normal findings-first output.
+
 ## Review Classification
 
 Classify feedback into:
@@ -13,6 +15,7 @@ Classify feedback into:
 - documentation or changelog request
 - maintainer question
 - CI failure linked from review
+- security or abuse-case risk
 - conflict or stale branch
 - approval or ready-to-merge signal
 - ambiguous feedback requiring user clarification

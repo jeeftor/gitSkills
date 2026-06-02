@@ -97,6 +97,19 @@ assert_json "$all_remotes_json" '.targets | length == 2' "all-remotes target ded
 assert_json "$all_remotes_json" '.targets | any(.host == "github" and .repo == "example/repo")' "all-remotes includes GitHub target"
 assert_json "$all_remotes_json" '.targets | any(.host == "gitlab" and .repo == "group/project")' "all-remotes includes GitLab target"
 
+relative_time_json="$tmp_dir/relative-time.json"
+TZ=UTC jq -L "$repo_root/scripts/git/jq" -n \
+  --argjson now 1779935400 \
+  'include "relative-time";
+  {
+    github: ("2026-05-28T01:28:50Z" | relative_age($now)),
+    gitlab: ("2026-05-27T16:12:25.636-04:00" | relative_age($now)),
+    future: ("2026-05-28T03:30:00Z" | relative_age($now))
+  }' >"$relative_time_json"
+assert_json "$relative_time_json" '.github == "1h ago"' "relative time handles GitHub UTC timestamps"
+assert_json "$relative_time_json" '.gitlab == "6h ago"' "relative time handles GitLab offset timestamps"
+assert_json "$relative_time_json" '.future == "now"' "relative time clamps future timestamps"
+
 branch_state_json="$tmp_dir/branch-state.json"
 "$repo_root/scripts/git/get-branch-state.sh" >"$branch_state_json"
 assert_json "$branch_state_json" '.repo.root == "'"$fixture"'"' "branch state records repository root"
