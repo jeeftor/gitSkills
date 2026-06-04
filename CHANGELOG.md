@@ -59,6 +59,8 @@
 
 ### Changed
 
+- Updated PR/MR creation, review, and watcher guidance to inspect repo-local templates, use the only applicable template for creation, ask when multiple templates apply, and flag missing required sections in read-only workflows.
+- Updated issue creation and body-update guidance to inspect repo-local issue templates, preserve required sections, and ask when multiple templates apply.
 - Updated `$git-issue-table` README and matrix descriptions to mark it as a starred main-entry skill.
 - Updated issue helpers to emit `generated_at` and table-ready `updated_relative` ages while preserving raw `updated_at` timestamps.
 - Updated `$git-pr-review` to include an adversarial review mode that pairs normal PR/MR review with `codex-security:security-diff-scan` when requested.

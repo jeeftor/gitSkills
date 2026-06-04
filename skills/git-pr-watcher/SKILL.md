@@ -15,10 +15,11 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 
 1. Identify the PR or MR from the current branch, URL, number, IID, or user prompt.
 2. Prefer `scripts/git/get-pr.sh` for the initial detail snapshot, then inspect status, CI or pipelines, reviews or approvals, comments, unresolved threads or discussions, and branch freshness.
-3. Classify findings as failing CI, requested changes, maintainer questions, documentation gaps, dependency issues, conflicts, or stale branch.
-4. Identify whether the next step belongs to `$git-ci-watch`, `$git-pr-address-comments`, `$git-pr-update`, `$git-pr-merge`, or another workflow.
-5. Ask before behavior changes, risky rebases, force pushes, or ambiguous reviewer feedback.
-6. Summarize what remains blocked and which checks should be rerun.
+3. Inspect repo-local PR/MR templates when judging description completeness, and classify missing required template sections as documentation gaps.
+4. Classify findings as failing CI, requested changes, maintainer questions, documentation gaps, dependency issues, conflicts, or stale branch.
+5. Identify whether the next step belongs to `$git-ci-watch`, `$git-pr-address-comments`, `$git-pr-update`, `$git-pr-merge`, or another workflow.
+6. Ask before behavior changes, risky rebases, force pushes, or ambiguous reviewer feedback.
+7. Summarize what remains blocked and which checks should be rerun.
 
 Use `$git-pr-table` first when the user asks for a portfolio overview or what to work on next across multiple items.
 Use `$git-ci-watch` when the user only wants CI for a branch, commit, latest push, run, pipeline, PR, or MR.

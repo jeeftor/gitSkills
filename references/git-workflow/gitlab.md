@@ -54,6 +54,13 @@ Fallback commands:
 
 ## Create And Update
 
+Template locations:
+
+- MR templates: `.gitlab/merge_request_templates/*.md`.
+- Issue templates: `.gitlab/issue_templates/*.md`.
+
+Inspect templates before composing MR descriptions, issue bodies, or full body replacements. Use the only applicable template automatically; ask the user which template to use when multiple templates apply.
+
 When an installed or repo-local helper is available, prefer it for issue creation after explicit user intent is confirmed:
 
 ```bash
@@ -75,7 +82,7 @@ The issue create helper searches likely duplicate open issues before creating. W
 - Edit MR: `glab mr update <iid>`
 - Checkout MR: `glab mr checkout <iid>`
 
-Prefer file-backed descriptions when the repo has a merge request template. For issue bodies, prepare the description in a temporary file first when the body is too long to quote safely.
+Prefer file-backed descriptions when the repo has a merge request or issue template.
 
 ## CI And Pipelines
 

@@ -6,6 +6,8 @@ Use this reference when composing a GitHub pull request body, GitLab merge reque
 
 Prefer preserving project templates and repo-local contribution guidance over generated prose. Fill required template sections instead of deleting them, and keep contribution checklist wording intact unless the local instructions say otherwise.
 
+Inspect repo-local PR/MR templates before composing the body. Use the only applicable template automatically; ask the user which template to use when multiple templates apply.
+
 Keep simple PRs and MRs concise. Use short prose or bullets when the change has only a few related facts and a table would add visual noise.
 
 Use Markdown tables when dense structured details are clearer as rows and columns, especially for:

@@ -17,16 +17,17 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 - Prefer `scripts/git/get-pr.sh` for the initial detail snapshot before fetching diffs or checking out code.
 - Stay read-only by default. Do not submit a review, approve, request changes, comment, resolve discussions, edit files, commit, push, rebase, rerun CI, or merge unless the user explicitly asks for that separate mutating workflow.
 - Do not check out or fetch a PR/MR branch when the local working tree is dirty unless the user explicitly accepts the risk.
+- When description completeness is relevant, inspect repo-local PR/MR templates and compare the current body against required sections. Treat missing required template content as a documentation finding or open question; do not edit the body from this skill.
 - When the user asks for an adversarial, security, abuse-case, exploitability, or high-risk review, include a `codex-security:security-diff-scan` pass for the same PR, MR, branch, commit, or diff when that skill is available. If the user explicitly asks for subagents or parallel work, that security pass may run as a read-only subagent; otherwise run it in the current agent.
 
 ## Workflow
 
 1. Resolve the PR or MR and collect status context with `scripts/git/get-pr.sh`.
 2. Inspect the changed files and diff with provider tools such as `gh pr diff`, `glab mr diff`, or local git after a safe checkout.
-3. Read the relevant source, tests, docs, workflow references, and recent local conventions needed to evaluate the change.
+3. Read the relevant source, tests, docs, workflow references, repo-local PR/MR templates, and recent local conventions needed to evaluate the change.
 4. For adversarial review requests, run the security diff pass against the same change set and merge validated security findings into the review output.
 5. Run targeted repo-native verification when practical and clearly relevant to the review.
-6. Validate findings against the diff and reachable behavior; avoid speculative complaints.
+6. Validate findings against the diff, template requirements, and reachable behavior; avoid speculative complaints.
 7. Report findings first, ordered by severity with file/line references, then open questions, then a brief summary and any test gaps. Keep security and code-quality findings in one severity-ordered list unless the user asks for separate sections.
 
 Use `$git-pr-watcher` when the user wants status, comments, mergeability, and CI blockers without a code review.

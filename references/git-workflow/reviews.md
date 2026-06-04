@@ -6,6 +6,8 @@ For local PR/MR code reviews, lead with findings ordered by severity. Include fi
 
 For adversarial, security, abuse-case, exploitability, or high-risk PR/MR review requests, pair the normal correctness and maintainability review with `codex-security:security-diff-scan` when available. Keep the security pass read-only, scope it to the same PR, MR, branch, commit, or diff, and merge validated findings into the normal findings-first output.
 
+When reviewing or watching an existing PR/MR, inspect repo-local PR/MR templates if description completeness matters. Compare the current body against required template sections and treat missing required content as a documentation gap or open question. Read-only workflows must not edit the PR/MR body.
+
 ## Review Classification
 
 Classify feedback into:

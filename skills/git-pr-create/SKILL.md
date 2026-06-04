@@ -16,6 +16,7 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 - Do not create from a default branch unless the user explicitly requests it.
 - Do not create a duplicate item when the current branch already has an open PR or MR.
 - Do not commit, push, or create when verification is failing unless the user explicitly accepts that status.
+- Inspect repo-local PR/MR templates before composing the body. Use the only applicable template automatically; ask the user which template to use when multiple templates apply.
 
 ## Workflow
 
@@ -25,8 +26,9 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 4. Run or confirm the narrowest practical verification.
 5. Commit staged changes when needed.
 6. Push the branch to the appropriate remote.
-7. Create a draft PR or draft MR unless the user asks for ready-for-review.
-8. Verify the URL and state before reporting success.
+7. Inspect the provider template locations in `github.md` or `gitlab.md`, then prepare the body from the selected template when one applies.
+8. Create a draft PR or draft MR unless the user asks for ready-for-review.
+9. Verify the URL and state before reporting success.
 
 ## Description Shape
 

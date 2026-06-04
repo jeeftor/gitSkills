@@ -16,16 +16,18 @@ Read `references/git-workflow/common.md`, `references/git-workflow/helpers.md`, 
 - Require explicit user intent before creating or editing issue state.
 - Resolve the target repository before preparing the issue.
 - Do not create duplicate issues when a quick open-issue search finds a likely match.
+- Inspect repo-local issue templates before composing the body. Use the only applicable template automatically; ask the user which template to use when multiple templates apply.
 - Prefer preserving repo-local issue templates over generated prose.
 
 ## Workflow
 
 1. Gather the requested title and body only when provided or clearly implied.
-2. Use `scripts/git/create-issue.sh` as the normal path for target resolution, duplicate search, provider delegation, and JSON output.
-3. Run the helper without `--yes` first unless duplicate status is already known from an equivalent open-issue search.
-4. Review any `duplicate_candidates` in the helper output and do not create a duplicate issue unless the user explicitly confirms `--allow-duplicate`.
-5. Create the issue with `--yes` only after the target repository and user intent are unambiguous.
-6. Verify the created issue URL from the helper JSON and report it.
+2. Inspect the provider template locations in `github.md` or `gitlab.md`, then prepare the body from the selected template when one applies.
+3. Use `scripts/git/create-issue.sh` as the normal path for target resolution, duplicate search, provider delegation, and JSON output.
+4. Run the helper without `--yes` first unless duplicate status is already known from an equivalent open-issue search.
+5. Review any `duplicate_candidates` in the helper output and do not create a duplicate issue unless the user explicitly confirms `--allow-duplicate`.
+6. Create the issue with `--yes` only after the target repository and user intent are unambiguous.
+7. Verify the created issue URL from the helper JSON and report it.
 
 Helper examples:
 

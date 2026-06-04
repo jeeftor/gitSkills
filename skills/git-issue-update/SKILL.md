@@ -17,6 +17,7 @@ Read `references/git-workflow/common.md`, `references/git-workflow/helpers.md`, 
 - Refuse bulk issue edits. This skill handles one issue per request.
 - Use `scripts/git/get-issue.sh` for the initial issue snapshot before mutating.
 - Do not infer labels, assignees, milestones, close/reopen state, title, body, or comment text when the user has not clearly requested them.
+- When editing or replacing an issue body, inspect repo-local issue templates and preserve required sections unless the user explicitly requests a different body shape.
 - Prefer file-backed body/comment text when content is long or templated.
 
 ## Workflow

@@ -55,6 +55,13 @@ Fallback commands:
 
 ## Create And Update
 
+Template locations:
+
+- PR templates: `.github/pull_request_template.md` and `.github/PULL_REQUEST_TEMPLATE/*.md`.
+- Issue templates: `.github/ISSUE_TEMPLATE/*.md`, `.github/ISSUE_TEMPLATE/*.yml`, and `.github/ISSUE_TEMPLATE/*.yaml`.
+
+Inspect templates before composing PR bodies, issue bodies, or full body replacements. Use the only applicable template automatically; ask the user which template to use when multiple templates apply.
+
 When an installed or repo-local helper is available, prefer it for issue creation after explicit user intent is confirmed:
 
 ```bash
