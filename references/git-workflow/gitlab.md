@@ -11,6 +11,7 @@ Use this reference when remotes, URLs, or user input identify GitLab.
 - View MR: `glab mr view <iid>`
 - Branch MR fallback: `glab mr list --source-branch <branch>`
 - MR checks and pipeline details: `glab pipeline list` and `glab pipeline view`
+- Current issue user: `glab api user`
 - List issues: `glab issue list`
 
 Use the GitLab API when approval status, discussions, merge train state, or pipeline details are missing from `glab`.
@@ -42,10 +43,12 @@ When an installed or repo-local helper is available, prefer it for issue table d
 
 ```bash
 scripts/git/get-issues.sh <gitlab-remote> --state open --limit 50
-scripts/git/glab/get-issues.sh --repo <group/project> --state opened --limit 50
+scripts/git/get-issues.sh <gitlab-remote> --state open --scope authored --limit 50
+scripts/git/get-issues.sh <gitlab-remote> --state open --scope assigned --limit 50
+scripts/git/glab/get-issues.sh --repo <group/project> --state opened --scope all --limit 50
 ```
 
-The generic helper resolves named GitLab remotes before delegating to the GitLab helper. The GitLab helper emits normalized JSON and includes REST fields that are awkward to extract from `glab issue list`, including task completion and blocking issue metadata.
+The generic helper resolves named GitLab remotes before delegating to the GitLab helper. Use `--scope authored` or `--scope assigned` when the user asks for their issues; the GitLab helper resolves the current username before filtering. The GitLab helper emits normalized JSON and includes REST fields that are awkward to extract from `glab issue list`, including task completion and blocking issue metadata.
 
 Fallback commands:
 
@@ -70,6 +73,19 @@ scripts/git/glab/create-issue.sh --repo <group/project> --title "Issue title" --
 ```
 
 The issue create helper searches likely duplicate open issues before creating. Without `--yes`, it emits JSON describing the target and duplicate candidates without mutating issue state.
+
+When an installed or repo-local helper is available, prefer it for issue updates after explicit user intent is confirmed:
+
+```bash
+scripts/git/update-issue.sh <gitlab-remote> <issue-iid> --comment-file <file>
+scripts/git/update-issue.sh <gitlab-remote> <issue-iid> --title "New title" --body-file <file>
+scripts/git/update-issue.sh <gitlab-remote> <issue-iid> --add-label bug --remove-label triage --add-assignee <username>
+scripts/git/update-issue.sh <gitlab-remote> <issue-iid> --milestone "v1.2" --close
+scripts/git/update-issue.sh <gitlab-remote> <issue-iid> --comment-file <file> --yes
+scripts/git/glab/update-issue.sh --repo <group/project> --issue <iid> --title "New title" --yes
+```
+
+Without `--yes`, the issue update helper snapshots `before` and returns `action` JSON without mutating. With `--yes`, it applies the requested mutation and snapshots `after`.
 
 - Create issue: `glab issue create --repo <group/project> --title <title> --description <description> --yes`
 - Comment on issue: `glab issue note <iid> --repo <group/project> -m <message>`
@@ -113,7 +129,8 @@ Do not resolve discussions, approve, or edit MR text from read-only watcher/tabl
 
 ## Merge
 
-- Merge: `glab mr merge <iid>`
+- Capture `sha` from the verified MR detail immediately before merge.
+- Merge: `glab mr merge <iid> --sha <sha>`
 - Squash or remove source branch only when requested or repo policy clearly requires it.
 - Merge train behavior may require GitLab API or project-specific policy checks.
 

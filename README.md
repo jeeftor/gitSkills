@@ -37,9 +37,16 @@ See [agent-matrix.md](agent-matrix.md) for the skill routing hierarchy.
 
 The `git-pr-*` skills intentionally cover both GitHub pull requests and GitLab merge requests; provider-specific alias skills are not installed.
 
+## Plugin Packaging
+
+This repository is packaged as a Codex plugin with `.codex-plugin/plugin.json`. The plugin exposes the skills under `skills/` and uses `agents/openai.yaml` metadata on the starred entry-point skills for Codex app display.
+
+Use plugin packaging when sharing this bundle across developers or through a Codex marketplace. Use `make install` when you only want to copy the skills into your local Codex skill directory.
+
 ## Workflow Control
 
 `$git-workflow` asks for an explicit endpoint before broad implementation requests such as "work on issue 49 to completion" when the prompt does not say whether completion means local verified changes, a local commit, a pushed branch, a PR/MR, or an issue update.
+Commit, push, PR, and MR delivery workflows establish a non-default feature branch before staging or committing, and preserve accidental default-branch commits on a feature branch before restoring the local default branch.
 Completed workflows use shared completion handoff guidance to suggest only the smallest useful next skill or issue-table item.
 
 ## Requirements
@@ -146,7 +153,7 @@ Shared Git helper scripts are kept under `scripts/git/`.
 Shared VHS helper scripts are kept under `scripts/vhs/`.
 During install, those references and helpers are copied once into `~/.agents/gitSkills/`. Each installed Git skill gets lightweight `references/git-workflow` and `scripts/git` symlinks back to that shared location, and `$vhs` gets a `scripts/vhs` symlink.
 
-Restart Codex after installation.
+Codex detects newly installed skills automatically. Restart Codex only if the skills are not visible.
 
 ## Development
 
@@ -164,7 +171,7 @@ Validate before pushing:
 make validate
 ```
 
-Validation checks shell syntax, static skill routing references, helper/reference paths, skill frontmatter, and local helper JSON contracts.
+Validation checks shell syntax, plugin metadata, static skill routing references, helper/reference paths, skill frontmatter, and local helper JSON contracts.
 
 Run the GitHub Actions-safe validation path with:
 

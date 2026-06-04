@@ -17,17 +17,20 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 - Never create a new PR or MR from this skill.
 - Use `$git-pr-address-comments` first when review feedback still needs local code, test, documentation, or changelog changes.
 - Do not update a default branch.
+- If the current branch is the default branch, switch to the existing PR/MR branch before staging, committing, or pushing.
+- If the current branch is a dirty default branch, inspect staged, unstaged, and untracked files before switching; ask when ownership is unclear so unrelated work is not carried onto the PR/MR branch.
 - Do not commit or push when verification is failing unless the user explicitly accepts that status.
 
 ## Workflow
 
 1. Use `scripts/git/get-branch-state.sh` to inspect branch, staged files, unstaged files, untracked files, upstream state, pushed state, and the default/base branch guess.
-2. Identify the existing PR or MR and confirm it matches the local branch.
-3. Confirm the staged files are intended.
-4. Run or confirm the narrowest practical verification.
-5. Commit staged changes with a concise message.
-6. Push to the branch backing the existing PR or MR.
-7. Verify the existing PR or MR now points at the pushed commit.
-8. Recommend `$git-ci-watch` for immediate CI follow-up, or `$git-pr-watcher` for broader review, discussion, mergeability, and branch status.
+2. If the current branch is the default branch, identify and switch to the branch backing the existing PR or MR before staging or committing only after dirty files are confirmed to belong to that PR/MR.
+3. Identify the existing PR or MR and confirm it matches the local branch.
+4. Confirm the staged files are intended.
+5. Run or confirm the narrowest practical verification.
+6. Commit staged changes with a concise message.
+7. Push to the branch backing the existing PR or MR.
+8. Verify the existing PR or MR now points at the pushed commit.
+9. Recommend `$git-ci-watch` for immediate CI follow-up, or `$git-pr-watcher` for broader review, discussion, mergeability, and branch status.
 
 Use force-with-lease only when the user explicitly asks or after an agreed rebase/amend flow.

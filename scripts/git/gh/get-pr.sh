@@ -3,7 +3,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: scripts/git/gh/get-pr.sh --repo owner/name [--number n|--branch branch]
+Usage: scripts/git/gh/get-pr.sh --repo owner/name [--number n|--branch branch] [--state open|all]
 
 Collect one GitHub pull request as normalized JSON for gitSkills watcher workflows.
 The script is read-only and uses gh for repository access.
@@ -33,6 +33,7 @@ number_value() {
 repo=""
 number=""
 branch=""
+state="open"
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -46,6 +47,14 @@ while [ "$#" -gt 0 ]; do
       ;;
     --branch)
       branch="${2:?missing value for --branch}"
+      shift 2
+      ;;
+    --state)
+      state="${2:?missing value for --state}"
+      case "$state" in
+        open|all) ;;
+        *) die "--state must be open or all" 2 ;;
+      esac
       shift 2
       ;;
     -h|--help)
@@ -75,7 +84,7 @@ if [ -z "$number" ]; then
 
   matches_file="$(mktemp)"
   trap 'rm -f "$matches_file"' EXIT HUP INT TERM
-  gh pr list --repo "$repo" --head "$branch" --state all --limit 2 --json number >"$matches_file"
+  gh pr list --repo "$repo" --head "$branch" --state "$state" --limit 2 --json number >"$matches_file"
   match_count="$(jq 'length' "$matches_file")"
   case "$match_count" in
     0) die "Could not find a GitHub pull request for branch: $branch" 2 ;;
@@ -85,16 +94,146 @@ if [ -z "$number" ]; then
 fi
 
 pr_file="$(mktemp)"
-trap 'rm -f "${matches_file:-}" "$pr_file"' EXIT HUP INT TERM
+threads_file="$(mktemp)"
+threads_raw_file="$(mktemp)"
+threads_error_file="$(mktemp)"
+trap 'rm -f "${matches_file:-}" "$pr_file" "$threads_file" "$threads_raw_file" "$threads_error_file"' EXIT HUP INT TERM
 
 gh pr view "$number" \
   --repo "$repo" \
   --json number,title,url,state,isDraft,mergeStateStatus,reviewDecision,reviews,latestReviews,comments,statusCheckRollup,updatedAt,createdAt,closedAt,mergedAt,headRefName,baseRefName,headRefOid,author,assignees,labels,reviewRequests,body \
   >"$pr_file"
 
+write_thread_gap() {
+  reason="$1"
+  message="$2"
+
+  jq -n \
+    --arg reason "$reason" \
+    --arg message "$message" \
+    '{
+      review_threads: [],
+      unresolved_threads_count: null,
+      data_gaps: [{field: "review_threads", reason: $reason, message: $message}]
+    }' >"$threads_file"
+}
+
+case "$repo" in
+  */*)
+    owner="${repo%%/*}"
+    name="${repo#*/}"
+    # shellcheck disable=SC2016
+    query='
+      query($owner: String!, $name: String!, $number: Int!) {
+        repository(owner: $owner, name: $name) {
+          pullRequest(number: $number) {
+            reviewThreads(first: 100) {
+              nodes {
+                id
+                isResolved
+                isOutdated
+                path
+                line
+                startLine
+                originalLine
+                originalStartLine
+                comments(first: 100) {
+                  nodes {
+                    id
+                    author {
+                      login
+                    }
+                    body
+                    createdAt
+                    updatedAt
+                    url
+                    path
+                    line
+                    originalLine
+                    diffHunk
+                  }
+                  pageInfo {
+                    hasNextPage
+                    endCursor
+                  }
+                }
+              }
+              pageInfo {
+                hasNextPage
+                endCursor
+              }
+            }
+          }
+        }
+      }'
+
+    if gh api graphql -f owner="$owner" -f name="$name" -F number="$number" -f query="$query" >"$threads_raw_file" 2>"$threads_error_file" &&
+      jq '
+        (.data.repository.pullRequest.reviewThreads // null) as $threads |
+        if $threads == null then
+          error("missing reviewThreads")
+        else
+          ($threads.nodes // []) as $nodes |
+          {
+            review_threads: [
+              $nodes[] | {
+                id,
+                is_resolved: (if has("isResolved") then .isResolved elif has("is_resolved") then .is_resolved else null end),
+                is_outdated: (if has("isOutdated") then .isOutdated elif has("is_outdated") then .is_outdated else null end),
+                path: (.path // null),
+                line: (.line // null),
+                start_line: (.startLine // .start_line // null),
+                original_line: (.originalLine // .original_line // null),
+                original_start_line: (.originalStartLine // .original_start_line // null),
+                comments: [
+                  (.comments.nodes // [])[] | {
+                    id,
+                    author: (.author.login // null),
+                    created_at: (.createdAt // .created_at // null),
+                    updated_at: (.updatedAt // .updated_at // null),
+                    url: (.url // null),
+                    path: (.path // null),
+                    line: (.line // null),
+                    original_line: (.originalLine // .original_line // null),
+                    diff_hunk: (.diffHunk // .diff_hunk // ""),
+                    body: (.body // "")
+                  }
+                ],
+                comments_truncated: (.comments.pageInfo.hasNextPage // .comments.page_info.has_next_page // false)
+              }
+            ],
+            unresolved_threads_count: ([
+              $nodes[] |
+              (if has("isResolved") then .isResolved elif has("is_resolved") then .is_resolved else true end) as $is_resolved |
+              select($is_resolved == false)
+            ] | length),
+            data_gaps: (
+              [
+                if ($threads.pageInfo.hasNextPage // $threads.page_info.has_next_page // false) then
+                  {field: "review_threads", reason: "pagination_truncated", message: "Only the first 100 review threads were collected."}
+                else empty end,
+                $nodes[] |
+                  select(.comments.pageInfo.hasNextPage // .comments.page_info.has_next_page // false) |
+                  {field: "review_threads.comments", reason: "pagination_truncated", message: ("Only the first 100 comments were collected for thread " + (.id // "unknown") + ".")}
+              ]
+            )
+          }
+        end' "$threads_raw_file" >"$threads_file" 2>/dev/null; then
+      :
+    else
+      write_thread_gap "graphql_unavailable" "GitHub review thread GraphQL data was unavailable."
+    fi
+    ;;
+  *)
+    write_thread_gap "invalid_repo" "GitHub review thread GraphQL requires a repo in owner/name form."
+    ;;
+esac
+
 jq \
   --arg host "github" \
-  --arg repo "$repo" '
+  --arg repo "$repo" \
+  --slurpfile thread_data "$threads_file" '
+  ($thread_data[0] // {review_threads: [], unresolved_threads_count: null, data_gaps: []}) as $thread_data |
   (.statusCheckRollup // []) as $checks |
   {
     host: $host,
@@ -143,7 +282,10 @@ jq \
         body: (.body // "")
       }
     ],
-    unresolved_threads: "Unknown",
+    review_threads: ($thread_data.review_threads // []),
+    unresolved_threads_count: ($thread_data.unresolved_threads_count // null),
+    unresolved_threads: ($thread_data.unresolved_threads_count // "Unknown"),
+    data_gaps: ($thread_data.data_gaps // []),
     status_checks: {
       total: ($checks | length),
       passing: ([
@@ -163,5 +305,4 @@ jq \
       ] | length),
       raw: $checks
     }
-  }' \
-  "$pr_file"
+  }' "$pr_file"

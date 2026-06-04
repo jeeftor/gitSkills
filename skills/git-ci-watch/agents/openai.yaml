@@ -1,0 +1,7 @@
+interface:
+  display_name: "Git CI Watch"
+  short_description: "Watch GitHub or GitLab CI."
+  default_prompt: "Use $git-ci-watch to inspect CI status."
+
+policy:
+  allow_implicit_invocation: true

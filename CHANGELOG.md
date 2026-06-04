@@ -61,6 +61,11 @@
 
 - Updated PR/MR creation, review, and watcher guidance to inspect repo-local templates, use the only applicable template for creation, ask when multiple templates apply, and flag missing required sections in read-only workflows.
 - Updated issue creation and body-update guidance to inspect repo-local issue templates, preserve required sections, and ask when multiple templates apply.
+- Added Codex plugin packaging metadata and Codex app metadata for starred entry-point skills.
+- Updated skill install guidance to restart Codex only when newly installed skills are not visible.
+- Updated shared subagent guidance to require an explicit user request before delegation.
+- Updated skill routing validation to catch starred frontmatter and enforce 25-word frontmatter descriptions.
+- Updated commit, push, PR, and MR delivery guidance to establish a non-default feature branch before staging or committing and to preserve accidental default-branch commits before restoring the default branch.
 - Updated `$git-issue-table` README and matrix descriptions to mark it as a starred main-entry skill.
 - Updated issue helpers to emit `generated_at` and table-ready `updated_relative` ages while preserving raw `updated_at` timestamps.
 - Updated `$git-pr-review` to include an adversarial review mode that pairs normal PR/MR review with `codex-security:security-diff-scan` when requested.

@@ -21,7 +21,7 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 ## Workflow
 
 1. Identify the PR or MR from the current branch, URL, number, IID, or user prompt.
-2. Inspect review comments, issue comments, unresolved threads or discussions, requested changes, related CI failures, and branch freshness.
+2. Inspect review comments, issue comments, unresolved threads or discussions, requested changes, related CI failures, and branch freshness. For GitHub, use `review_threads`, `unresolved_threads_count`, and `data_gaps` from the PR helper before falling back to ad hoc GraphQL.
 3. Classify feedback using `reviews.md`.
 4. Build a short action list separating clear edits from ambiguous feedback.
 5. Apply only clear local code, test, documentation, or changelog changes.

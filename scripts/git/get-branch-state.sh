@@ -98,43 +98,6 @@ set_base_from_remote_head() {
   return 1
 }
 
-set_base_from_remote_branch() {
-  candidate_remote="$1"
-  candidate_branch="$2"
-  candidate_source="$3"
-  candidate_ref="refs/remotes/$candidate_remote/$candidate_branch"
-  candidate_head="$(commit_for_ref "$candidate_ref")"
-
-  if [ -n "$candidate_head" ]; then
-    base_name="$candidate_branch"
-    base_remote="$candidate_remote"
-    base_ref="$candidate_ref"
-    base_head="$candidate_head"
-    base_source="$candidate_source"
-    return 0
-  fi
-
-  return 1
-}
-
-set_base_from_local_branch() {
-  candidate_branch="$1"
-  candidate_source="$2"
-  candidate_ref="refs/heads/$candidate_branch"
-  candidate_head="$(commit_for_ref "$candidate_ref")"
-
-  if [ -n "$candidate_head" ]; then
-    base_name="$candidate_branch"
-    base_remote=""
-    base_ref="$candidate_ref"
-    base_head="$candidate_head"
-    base_source="$candidate_source"
-    return 0
-  fi
-
-  return 1
-}
-
 set_base_from_override() {
   candidate_name="$1"
 
@@ -187,12 +150,8 @@ guess_base() {
 
   set_base_from_remote_head origin "origin_head" && return
   set_base_from_remote_head upstream "upstream_head" && return
-  set_base_from_remote_branch origin master "origin_master" && return
-  set_base_from_remote_branch origin main "origin_main" && return
-  set_base_from_remote_branch upstream master "upstream_master" && return
-  set_base_from_remote_branch upstream main "upstream_main" && return
-  set_base_from_local_branch master "local_master" && return
-  set_base_from_local_branch main "local_main" && return
+  base_source="unknown"
+  return 0
 }
 
 base_override=""
@@ -342,6 +301,8 @@ jq -n \
       head: null_if_empty($base_head),
       exists: ($base_head != ""),
       source: $base_source,
+      default_branch_resolved: ($base_head != ""),
+      is_default_branch_unknown: ($base_head == ""),
       is_current_branch: ($current_branch != "" and $base_name != "" and $current_branch == $base_name)
     },
     dirty: $dirty,

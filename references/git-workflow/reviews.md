@@ -27,11 +27,12 @@ Classify feedback into:
 Useful commands:
 
 - `scripts/git/get-pr.sh <number-or-url>`
+- `scripts/git/gh/get-pr.sh --repo <owner/name> --number <number>` when you need the GitHub-specific `review_threads`, `unresolved_threads_count`, and `data_gaps` fields.
 - `gh pr view <number> --json reviews,comments,reviewDecision,latestReviews`
 - `gh pr diff <number>`
 - `gh api graphql` when unresolved review thread counts or thread bodies are missing from `gh pr view`.
 
-GitHub review threads often require GraphQL for complete unresolved-thread data. Treat missing thread data as unknown, not resolved.
+GitHub review threads require GraphQL for repeatable unresolved-thread data. Prefer the GitHub PR detail helper's `review_threads` and `unresolved_threads_count` fields; if it emits `data_gaps[]` for `review_threads`, report the gap as unknown rather than resolved.
 
 ## GitLab Review Data
 
@@ -42,7 +43,7 @@ Useful commands:
 - `glab mr diff <iid>`
 - GitLab API for discussions, notes, approval state, and unresolved threads when `glab` lacks fields.
 
-Treat "GitLab PR" as a merge request.
+Treat "GitLab PR" as a merge request. Use `discussions` and `unresolved_discussions` from the GitLab MR helper when they are present.
 
 ## Safety
 

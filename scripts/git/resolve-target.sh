@@ -236,7 +236,7 @@ elif [ -n "$target" ]; then
   resolve_target_json "$target" || die "Could not resolve GitHub or GitLab repository from target: $target" 2
 elif [ -n "$repo" ]; then
   if [ -z "$host" ]; then
-    host="github"
+    die "--host is required when using --repo because owner/name and group/project are ambiguous" 2
   fi
   json_target "$host" "$repo" "explicit" "" ""
 else

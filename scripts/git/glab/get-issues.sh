@@ -3,7 +3,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: scripts/git/glab/get-issues.sh --repo group/project [--state open|opened|closed|all] [--limit n]
+Usage: scripts/git/glab/get-issues.sh --repo group/project [--state open|opened|closed|all] [--scope all|authored|assigned] [--limit n]
 
 Collect GitLab issues as normalized JSON for gitSkills table workflows.
 The script is read-only and uses glab for repository access.
@@ -12,6 +12,7 @@ EOF
 
 repo=""
 state="opened"
+scope="all"
 limit="50"
 
 script_dir() {
@@ -29,6 +30,10 @@ while [ "$#" -gt 0 ]; do
       ;;
     --state)
       state="${2:?missing value for --state}"
+      shift 2
+      ;;
+    --scope)
+      scope="${2:?missing value for --scope}"
       shift 2
       ;;
     --limit)
@@ -53,6 +58,14 @@ case "$state" in
   all) api_state="all" ;;
   *)
     echo "Unsupported --state value: $state" >&2
+    exit 2
+    ;;
+esac
+
+case "$scope" in
+  all|authored|assigned) ;;
+  *)
+    echo "Unsupported --scope value: $scope" >&2
     exit 2
     ;;
 esac
@@ -83,11 +96,30 @@ for command_name in glab jq; do
 done
 
 project_path="$(printf '%s' "$repo" | jq -sRr @uri)"
+api_query="state=$api_state&per_page=$limit"
+
+case "$scope" in
+  authored|assigned)
+    user_file="$(mktemp)"
+    trap 'rm -f "$user_file"' EXIT HUP INT TERM
+    glab api user >"$user_file"
+    username="$(jq -r .username "$user_file")"
+    username_query="$(printf '%s' "$username" | jq -sRr @uri)"
+    case "$scope" in
+      authored)
+        api_query="$api_query&author_username=$username_query"
+        ;;
+      assigned)
+        api_query="$api_query&assignee_username=$username_query"
+        ;;
+    esac
+    ;;
+esac
 
 issues_file="$(mktemp)"
-trap 'rm -f "$issues_file"' EXIT HUP INT TERM
+trap 'rm -f "${user_file:-}" "$issues_file"' EXIT HUP INT TERM
 
-glab api "projects/$project_path/issues?state=$api_state&per_page=$limit" >"$issues_file"
+glab api "projects/$project_path/issues?$api_query" >"$issues_file"
 
 generated_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 generated_epoch="$(date -u '+%s')"
@@ -97,6 +129,7 @@ TZ=UTC jq \
     --arg host "gitlab" \
     --arg repo "$repo" \
     --arg state "$api_state" \
+    --arg scope "$scope" \
     --argjson limit "$limit" \
     --arg generated_at "$generated_at" \
     --argjson generated_epoch "$generated_epoch" \
@@ -107,6 +140,7 @@ TZ=UTC jq \
       host: $host,
       repo: $repo,
       state: $state,
+      scope: $scope,
       limit: $limit,
       generated_at: $generated_at,
       issues: [

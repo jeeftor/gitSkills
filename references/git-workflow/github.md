@@ -11,6 +11,7 @@ Use this reference when remotes, URLs, or user input identify GitHub.
 - Current branch PR: `gh pr view --json number,title,url,headRefName,baseRefName,state,isDraft`
 - Branch PR fallback: `gh pr list --head <branch> --state open --json number,title,url,headRefName,baseRefName,isDraft`
 - PR checks: `gh pr checks <number>`
+- Current issue user: `gh api user --jq .login`
 - List issues: `gh issue list --json number,title,url,state,labels,assignees,updatedAt`
 
 Use GraphQL when unresolved review thread counts or mergeability details are missing from `gh pr view`.
@@ -42,11 +43,13 @@ When an installed or repo-local helper is available, prefer it for issue table d
 
 ```bash
 scripts/git/get-issues.sh --state open --limit 50
+scripts/git/get-issues.sh --state open --scope authored --limit 50
+scripts/git/get-issues.sh --state open --scope assigned --limit 50
 scripts/git/get-issues.sh origin --state open --limit 50
-scripts/git/gh/get-issues.sh --repo <owner/repo> --state open --limit 50
+scripts/git/gh/get-issues.sh --repo <owner/repo> --state open --scope all --limit 50
 ```
 
-The generic helper resolves the current checkout or named remote before delegating to the GitHub helper. The GitHub helper emits lightweight normalized JSON for issue tables.
+The generic helper resolves the current checkout or named remote before delegating to the GitHub helper. Use `--scope authored` or `--scope assigned` when the user asks for their issues; the GitHub helper resolves the current login before filtering. The GitHub helper emits lightweight normalized JSON for issue tables.
 
 Fallback commands:
 
@@ -71,6 +74,19 @@ scripts/git/gh/create-issue.sh --repo <owner/repo> --title "Issue title" --body-
 ```
 
 The issue create helper searches likely duplicate open issues before creating. Without `--yes`, it emits JSON describing the target and duplicate candidates without mutating issue state.
+
+When an installed or repo-local helper is available, prefer it for issue updates after explicit user intent is confirmed:
+
+```bash
+scripts/git/update-issue.sh <issue-number-or-url> --comment-file <file>
+scripts/git/update-issue.sh <issue-number-or-url> --title "New title" --body-file <file>
+scripts/git/update-issue.sh <issue-number-or-url> --add-label bug --remove-label triage --add-assignee <login>
+scripts/git/update-issue.sh <issue-number-or-url> --milestone "v1.2" --close
+scripts/git/update-issue.sh <issue-number-or-url> --comment-file <file> --yes
+scripts/git/gh/update-issue.sh --repo <owner/repo> --issue <number> --title "New title" --yes
+```
+
+Without `--yes`, the issue update helper snapshots `before` and returns `action` JSON without mutating. With `--yes`, it applies the requested mutation and snapshots `after`.
 
 - Create issue: `gh issue create --repo <owner/repo> --title <title> --body-file <file>`
 - Comment on issue: `gh issue comment <number> --repo <owner/repo> --body-file <file>`
@@ -120,11 +136,12 @@ Do not resolve comments, submit reviews, or edit PR text from read-only watcher/
 
 ## Merge
 
-- Merge with repo default when unambiguous: `gh pr merge <number>`
-- Squash: `gh pr merge <number> --squash`
-- Rebase: `gh pr merge <number> --rebase`
-- Merge commit: `gh pr merge <number> --merge`
-- Auto-merge only when explicitly requested: `gh pr merge <number> --auto`
+- Capture `headRefOid` from the verified PR detail immediately before merge.
+- Merge with repo default when unambiguous: `gh pr merge <number> --match-head-commit <headRefOid>`
+- Squash: `gh pr merge <number> --squash --match-head-commit <headRefOid>`
+- Rebase: `gh pr merge <number> --rebase --match-head-commit <headRefOid>`
+- Merge commit: `gh pr merge <number> --merge --match-head-commit <headRefOid>`
+- Auto-merge only when explicitly requested: `gh pr merge <number> --auto --match-head-commit <headRefOid>`
 
 Confirm merge method when the repository supports multiple options or policy is unclear.
 

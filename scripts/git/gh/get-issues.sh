@@ -3,7 +3,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: scripts/git/gh/get-issues.sh [--repo owner/name] [--state open|closed|all] [--limit n]
+Usage: scripts/git/gh/get-issues.sh [--repo owner/name] [--state open|closed|all] [--scope all|authored|assigned] [--limit n]
 
 Collect GitHub issues as normalized JSON for gitSkills table workflows.
 The script is read-only and uses gh for repository access.
@@ -12,6 +12,7 @@ EOF
 
 repo=""
 state="open"
+scope="all"
 limit="50"
 
 script_dir() {
@@ -29,6 +30,10 @@ while [ "$#" -gt 0 ]; do
       ;;
     --state)
       state="${2:?missing value for --state}"
+      shift 2
+      ;;
+    --scope)
+      scope="${2:?missing value for --scope}"
       shift 2
       ;;
     --limit)
@@ -51,6 +56,14 @@ case "$state" in
   open|closed|all) ;;
   *)
     echo "Unsupported --state value: $state" >&2
+    exit 2
+    ;;
+esac
+
+case "$scope" in
+  all|authored|assigned) ;;
+  *)
+    echo "Unsupported --scope value: $scope" >&2
     exit 2
     ;;
 esac
@@ -79,14 +92,30 @@ if [ -z "$repo" ]; then
   repo="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
 fi
 
-issues_file="$(mktemp)"
-trap 'rm -f "$issues_file"' EXIT HUP INT TERM
-
-gh issue list \
+set -- gh issue list \
   --repo "$repo" \
   --state "$state" \
   --limit "$limit" \
-  --json number,title,url,state,updatedAt >"$issues_file"
+  --json number,title,url,state,updatedAt
+
+case "$scope" in
+  authored|assigned)
+    login="$(gh api user --jq .login)"
+    case "$scope" in
+      authored)
+        set -- "$@" --author "$login"
+        ;;
+      assigned)
+        set -- "$@" --assignee "$login"
+        ;;
+    esac
+    ;;
+esac
+
+issues_file="$(mktemp)"
+trap 'rm -f "$issues_file"' EXIT HUP INT TERM
+
+"$@" >"$issues_file"
 
 generated_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 generated_epoch="$(date -u '+%s')"
@@ -96,6 +125,7 @@ TZ=UTC jq \
   --arg host "github" \
   --arg repo "$repo" \
   --arg state "$state" \
+  --arg scope "$scope" \
   --argjson limit "$limit" \
   --arg generated_at "$generated_at" \
   --argjson generated_epoch "$generated_epoch" \
@@ -106,6 +136,7 @@ TZ=UTC jq \
     host: $host,
     repo: $repo,
     state: $state,
+    scope: $scope,
     limit: $limit,
     generated_at: $generated_at,
     issues: [

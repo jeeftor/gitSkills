@@ -7,7 +7,7 @@ help:
 	@printf 'Targets:\n'
 	@printf '  install          Install the local Git skills\n'
 	@printf '  uninstall        Uninstall the local Git skills\n'
-	@printf '  validate         Run script syntax, skill routing, skill, and helper tests\n'
+	@printf '  validate         Run script syntax, plugin, skill routing, skill, and helper tests\n'
 	@printf '  ci               Run GitHub Actions-safe validation\n'
 	@printf '  test-helpers     Run local helper tests\n'
 	@printf '  shellcheck       Run shellcheck across scripts\n'
@@ -31,12 +31,15 @@ uninstall:
 validate:
 	find scripts -type f -name '*.sh' -exec sh -n {} \;
 	./scripts/validate-skill-routing.sh
+	sh ./scripts/tests/test-validate-skill-routing.sh
+	~/.codex/codex-python ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .
 	for skill in skills/*; do ~/.codex/codex-python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py "$$skill"; done
 	./scripts/tests/test-local-helpers.sh
 
 ci:
 	find scripts -type f -name '*.sh' -exec sh -n {} \;
 	./scripts/validate-skill-routing.sh
+	sh ./scripts/tests/test-validate-skill-routing.sh
 	./scripts/tests/test-local-helpers.sh
 	$(MAKE) shellcheck
 

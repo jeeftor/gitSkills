@@ -50,6 +50,31 @@ CI helpers should emit this general shape:
 }
 ```
 
+When provider log APIs expose job names, `failed_logs` should contain one entry per failed job. If the provider only returns an unstructured combined log, helpers may emit a single `{ "job": null, "summary": "..." }` fallback instead of inventing job names.
+
+PR/MR detail helpers should emit review and discussion data in the provider-normalized detail snapshot. GitHub PR detail includes GraphQL review thread data when available:
+
+```json
+{
+  "review_threads": [
+    {
+      "id": "...",
+      "is_resolved": false,
+      "is_outdated": false,
+      "path": "src/file.py",
+      "line": 42,
+      "comments": [
+        {"id": "...", "author": "...", "url": "...", "body": "..."}
+      ]
+    }
+  ],
+  "unresolved_threads_count": 1,
+  "data_gaps": []
+}
+```
+
+When GitHub GraphQL review thread data is unavailable, helpers should keep the rest of the PR detail usable and emit `review_threads: []`, `unresolved_threads_count: null`, and a `data_gaps[]` entry with `field: "review_threads"` and a provider-specific reason.
+
 Branch-state helpers should emit this general shape:
 
 ```json
@@ -96,6 +121,7 @@ Issue helpers should emit raw timestamps and table-ready relative ages:
 ```json
 {
   "generated_at": "2026-05-28T19:52:05Z",
+  "scope": "all|authored|assigned",
   "issues": [
     {
       "updated_at": "2026-05-28T01:28:50Z",
@@ -110,26 +136,58 @@ Issue helpers should emit raw timestamps and table-ready relative ages:
 
 Keep `updated_at` as the source-of-truth timestamp. Use `table.updated_relative` only for compact display.
 
+Issue update helpers should emit dry-run and confirmed mutation summaries:
+
+```json
+{
+  "host": "github|gitlab",
+  "repo": "owner/name or group/project",
+  "issue": 123,
+  "dry_run": true,
+  "mutated": false,
+  "before": {"number": 123, "title": "Old title"},
+  "action": {
+    "comment": null,
+    "title": "New title",
+    "body": null,
+    "add_labels": ["bug"],
+    "remove_labels": [],
+    "add_assignees": [],
+    "remove_assignees": [],
+    "milestone": null,
+    "clear_milestone": false,
+    "close": false,
+    "reopen": false
+  },
+  "after": null
+}
+```
+
+Without `--yes`, `scripts/git/update-issue.sh` and provider update helpers must not mutate issue state. With `--yes`, they should snapshot `after` with the same normalized issue detail helper used for `before`.
+
 ## Current Helpers
 
 - `scripts/git/resolve-target.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, explicit repository, or all remotes into normalized target JSON without platform API calls.
 - `scripts/git/get-branch-state.sh`: inspect the current branch, upstream, base branch guess, dirty state summaries, ahead/behind counts, current HEAD, and local pushed/upstream HEADs for PR/MR create and update workflows.
-- `scripts/git/get-issues.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then collect normalized issue JSON with the provider helper.
+- `scripts/git/get-issues.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then collect normalized issue JSON with the provider helper. Supports `--scope all|authored|assigned`.
 - `scripts/git/get-issue.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or issue URL, then collect normalized detail JSON for one issue.
 - `scripts/git/get-prs.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes, then collect normalized PR/MR JSON with table-ready status and color-hint fields.
 - `scripts/git/get-pr.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, PR/MR URL, number, IID, or branch, then collect normalized detail JSON for one PR/MR.
 - `scripts/git/get-ci.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes, then collect normalized CI JSON with the provider helper.
 - `scripts/git/codex-color-probe.sh`: print ANSI, Markdown, HTML, plain-label, and JSON color-hint samples to test what the current Codex surface renders.
 - `scripts/git/create-issue.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then delegate issue creation to the provider helper.
-- `scripts/git/gh/get-issues.sh`: collect GitHub issues as normalized JSON using the lightweight issue list API fields needed for issue tables.
+- `scripts/git/update-issue.sh`: resolve one issue, then delegate explicit dry-run or confirmed issue mutations to the provider helper.
+- `scripts/git/gh/get-issues.sh`: collect GitHub issues as normalized JSON using the lightweight issue list API fields needed for issue tables. Supports `--scope all|authored|assigned`.
 - `scripts/git/gh/get-issue.sh`: collect one GitHub issue as normalized JSON, including body, labels, assignees, milestone, and comments.
 - `scripts/git/gh/get-prs.sh`: collect GitHub pull requests as normalized JSON, including the draft, review, merge, branch, and status-check fields needed for default PR tables.
-- `scripts/git/gh/get-pr.sh`: collect one GitHub pull request as normalized JSON, including body, comments, reviews, merge state, branches, and status checks.
-- `scripts/git/gh/get-ci.sh`: collect GitHub Actions/check status as normalized JSON, including PR checks, workflow runs, jobs, failed logs, and run URLs.
+- `scripts/git/gh/get-pr.sh`: collect one GitHub pull request as normalized JSON, including body, comments, reviews, GraphQL review threads when available, merge state, branches, and status checks.
+- `scripts/git/gh/get-ci.sh`: collect GitHub Actions/check status as normalized JSON, including PR checks, workflow runs, jobs, per-job failed logs when available, and run URLs.
 - `scripts/git/gh/create-issue.sh`: create a GitHub issue after duplicate search and explicit `--yes` confirmation.
-- `scripts/git/glab/get-issues.sh`: collect GitLab issues as normalized JSON, including task completion and blocking issue metadata from the GitLab REST API.
+- `scripts/git/gh/update-issue.sh`: update one GitHub issue with dry-run default and explicit `--yes` mutation confirmation.
+- `scripts/git/glab/get-issues.sh`: collect GitLab issues as normalized JSON, including task completion and blocking issue metadata from the GitLab REST API. Supports `--scope all|authored|assigned`.
 - `scripts/git/glab/get-issue.sh`: collect one GitLab issue as normalized JSON, including description, labels, assignees, milestone, notes, and task metadata.
 - `scripts/git/glab/get-mrs.sh`: collect GitLab merge requests as normalized JSON, including the draft, reviewer, merge, branch, discussion, and pipeline fields needed for default MR tables.
 - `scripts/git/glab/get-mr.sh`: collect one GitLab merge request as normalized JSON, including description, discussions, approvals, merge state, branches, and pipeline fields.
 - `scripts/git/glab/get-ci.sh`: collect GitLab pipeline/job status as normalized JSON, including MR pipelines, branch pipelines, jobs, failed logs, and pipeline URLs.
 - `scripts/git/glab/create-issue.sh`: create a GitLab issue after duplicate search and explicit `--yes` confirmation.
+- `scripts/git/glab/update-issue.sh`: update one GitLab issue with dry-run default and explicit `--yes` mutation confirmation.

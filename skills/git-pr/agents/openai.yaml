@@ -1,0 +1,7 @@
+interface:
+  display_name: "Git PR"
+  short_description: "Route GitHub PR and GitLab MR work."
+  default_prompt: "Use $git-pr to choose the right PR or MR workflow."
+
+policy:
+  allow_implicit_invocation: true

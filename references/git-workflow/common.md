@@ -57,7 +57,7 @@ If no Git follow-up is needed, say so briefly.
 
 ## Subagents And Parallel Work
 
-Use subagents only when the user explicitly asks for subagents, delegation, or parallel work, or when a read-only investigation is large enough that splitting evidence is clearly useful.
+Use subagents only when the user explicitly asks for subagents, delegation, or parallel work.
 
 Good subagent tasks:
 

@@ -27,6 +27,8 @@ Treat "to completion", "finish it", and similar wording as ambiguous unless the 
 
 When the user gives an explicit endpoint, apply the relevant specialist workflows in order. For example, issue inspection first, implementation and verification in the current agent, `$git-pr-create` or `$git-pr-update` for PR/MR delivery, `$git-ci-watch` for pushed CI, and `$git-issue-update` for issue comments or closure.
 
+When the endpoint includes commit, push, PR, or MR delivery, establish a non-default feature branch before staging or committing. Preserve any accidental unpushed default-branch commits on a feature branch before asking to restore the local default branch.
+
 ## Route
 
 - GitHub PR or GitLab MR lifecycle, status, create, update, or merge: `$git-pr`.

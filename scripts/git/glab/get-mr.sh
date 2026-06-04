@@ -3,7 +3,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: scripts/git/glab/get-mr.sh --repo group/project [--number iid|--branch branch]
+Usage: scripts/git/glab/get-mr.sh --repo group/project [--number iid|--branch branch] [--state opened|all]
 
 Collect one GitLab merge request as normalized JSON for gitSkills watcher workflows.
 The script is read-only and uses glab for repository access.
@@ -33,6 +33,7 @@ number_value() {
 repo=""
 number=""
 branch=""
+state="opened"
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -46,6 +47,15 @@ while [ "$#" -gt 0 ]; do
       ;;
     --branch)
       branch="${2:?missing value for --branch}"
+      shift 2
+      ;;
+    --state)
+      state="${2:?missing value for --state}"
+      case "$state" in
+        open) state="opened" ;;
+        opened|all) ;;
+        *) die "--state must be opened, open, or all" 2 ;;
+      esac
       shift 2
       ;;
     -h|--help)
@@ -78,7 +88,7 @@ if [ -z "$number" ]; then
   branch_query="$(printf '%s' "$branch" | jq -sRr @uri)"
   matches_file="$(mktemp)"
   trap 'rm -f "$matches_file"' EXIT HUP INT TERM
-  glab api "projects/$project_path/merge_requests?source_branch=$branch_query&state=all&per_page=2" >"$matches_file"
+  glab api "projects/$project_path/merge_requests?source_branch=$branch_query&state=$state&per_page=2" >"$matches_file"
   match_count="$(jq 'length' "$matches_file")"
   case "$match_count" in
     0) die "Could not find a GitLab merge request for branch: $branch" 2 ;;

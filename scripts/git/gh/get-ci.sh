@@ -270,7 +270,17 @@ jq \
     jobs: $jobs,
     failed_logs: (
       if ($failed_logs | length) > 0 then
-        [{job: null, summary: ($failed_logs | split("\n") | .[:120] | join("\n"))}]
+        ($failed_logs | split("\n") | map(select(length > 0))) as $lines |
+        ($lines | map(capture("^(?<job>[^\t]+)\t(?<line>.*)$")? // {job: null, line: .})) as $parsed |
+        if all($parsed[]; .job != null) then
+          [
+            $parsed |
+            group_by(.job)[] |
+            {job: .[0].job, summary: (map(.line) | .[:120] | join("\n"))}
+          ]
+        else
+          [{job: null, summary: ($lines | .[:120] | join("\n"))}]
+        end
       else
         []
       end

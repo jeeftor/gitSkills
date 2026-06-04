@@ -92,4 +92,4 @@ done
 echo
 echo "Installed Codex Git skills into $SKILLS_DIR"
 echo "Installed shared gitSkills assets into $GITSKILLS_HOME"
-echo "Restart Codex to pick up new skills."
+echo "Codex detects installed skills automatically. Restart Codex only if they are not visible."

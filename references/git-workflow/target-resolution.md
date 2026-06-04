@@ -56,7 +56,7 @@ For read-only overview requests, treat `all remotes` as a request to inspect eve
 - Upstream URL: `git remote get-url upstream`
 - Named remote URL: `git remote get-url <remote>`
 - All remotes: `git remote -v`
-- Default branch candidates: inspect remote HEAD with `git remote show <remote>` when needed.
+- Default branch: use resolved remote HEAD or an explicit base; if remote HEAD is unresolved, treat the default branch as unknown instead of guessing `master` or `main`.
 
 ## PR/MR Lookup
 
@@ -65,9 +65,9 @@ Prefer the platform CLI after host detection:
 - GitHub current branch PR: `gh pr view --json number,title,url,headRefName,baseRefName,state,isDraft`
 - GitHub branch PR fallback: `gh pr list --head <branch> --state open --json number,title,url,headRefName,baseRefName,isDraft`
 - GitLab current branch MR: `glab mr view`
-- GitLab branch MR fallback: `glab mr list --source-branch <branch>`
+- GitLab branch MR fallback: `glab mr list --source-branch <branch> --state opened`
 
-If more than one open PR/MR matches, ask before mutating.
+Branch lookup defaults to open GitHub PRs or opened GitLab MRs. Use all-state lookup only for read-only history or when the user explicitly asks for closed/merged items. If more than one open PR/MR matches, ask before mutating.
 
 ## Issue Lookup
 

@@ -3,7 +3,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: scripts/git/get-issues.sh [remote-or-url|all remotes] [--repo owner/name|group/project] [--host github|gitlab] [--remote name] [--state open|closed|all] [--limit n] [--all-remotes]
+Usage: scripts/git/get-issues.sh [remote-or-url|all|authored|assigned|all remotes] [--repo owner/name|group/project] [--host github|gitlab] [--remote name] [--state open|closed|all] [--scope all|authored|assigned] [--limit n] [--all-remotes]
 
 Collect issues as normalized JSON after resolving the current GitHub or GitLab repository.
 The script is read-only and delegates to the provider-specific issue collector.
@@ -33,6 +33,7 @@ repo=""
 remote=""
 target=""
 state="open"
+scope="all"
 limit="50"
 all_remotes=0
 
@@ -42,10 +43,10 @@ collect_target() {
 
   case "$target_host" in
     github)
-      "$(script_dir)/gh/get-issues.sh" --repo "$target_repo" --state "$state" --limit "$limit"
+      "$(script_dir)/gh/get-issues.sh" --repo "$target_repo" --state "$state" --scope "$scope" --limit "$limit"
       ;;
     gitlab)
-      "$(script_dir)/glab/get-issues.sh" --repo "$target_repo" --state "$state" --limit "$limit"
+      "$(script_dir)/glab/get-issues.sh" --repo "$target_repo" --state "$state" --scope "$scope" --limit "$limit"
       ;;
     *)
       die "Could not determine issue host. Use --host github or --host gitlab." 2
@@ -68,12 +69,14 @@ collect_all_remotes() {
 
   jq -s \
     --arg state "$state" \
+    --arg scope "$scope" \
     --argjson limit "$limit" \
     --arg generated_at "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
     '{
       host: "mixed",
       repo: null,
       state: $state,
+      scope: $scope,
       limit: $limit,
       generated_at: $generated_at,
       targets: .,
@@ -104,6 +107,10 @@ while [ "$#" -gt 0 ]; do
       limit="${2:?missing value for --limit}"
       shift 2
       ;;
+    --scope)
+      scope="${2:?missing value for --scope}"
+      shift 2
+      ;;
     --all-remotes)
       all_remotes=1
       shift
@@ -120,12 +127,13 @@ while [ "$#" -gt 0 ]; do
         all_remotes=1
         shift 2
       else
-        if [ -n "$target" ]; then
-          die "Only one remote or URL target is supported" 2
-        fi
-        target="$1"
+        scope="all"
         shift
       fi
+      ;;
+    authored|assigned)
+      scope="$1"
+      shift
       ;;
     remotes)
       die "Use 'all remotes' or --all-remotes for multi-remote collection" 2
@@ -143,6 +151,11 @@ done
 case "$host" in
   ""|github|gitlab) ;;
   *) die "Unsupported --host value: $host" 2 ;;
+esac
+
+case "$scope" in
+  all|authored|assigned) ;;
+  *) die "Unsupported --scope value: $scope" 2 ;;
 esac
 
 case "$limit" in

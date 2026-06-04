@@ -2,6 +2,7 @@
 set -eu
 
 allowed_starred_skills="git-workflow git-pr git-ci-watch git-issue-table"
+description_word_limit=25
 status=0
 
 fail() {
@@ -37,6 +38,14 @@ extract_helper_refs() {
   grep -Eoh 'scripts/git/[A-Za-z0-9_./-]+\.sh' "$@" 2>/dev/null | sort -u || true
 }
 
+frontmatter_description() {
+  sed -n '/^description: /{s/^description: //;p;q;}' "$1"
+}
+
+description_word_count() {
+  printf '%s\n' "$1" | awk '{print NF}'
+}
+
 validate_skill_frontmatter() {
   skill_dir="$1"
   skill_name="$(basename "$skill_dir")"
@@ -59,9 +68,9 @@ validate_skill_frontmatter() {
   [ -n "$closing_line" ] || fail "$skill_file frontmatter must close within the first 20 lines"
 
   description="${description_line#description: }"
-  description_len="$(printf '%s' "$description" | wc -c | tr -d ' ')"
-  if [ "$description_len" -gt 120 ]; then
-    fail "$skill_file description is longer than 120 characters"
+  description_words="$(description_word_count "$description")"
+  if [ "$description_words" -gt "$description_word_limit" ]; then
+    fail "$skill_file description must be $description_word_limit words or fewer"
   fi
 }
 
@@ -109,7 +118,17 @@ for skill in $allowed_starred_skills; do
 done
 
 # shellcheck disable=SC2016
-for skill in $(grep -Eoh '⭐ `\$git-[A-Za-z0-9-]+`|description: ⭐ .*' README.md skills/*/SKILL.md 2>/dev/null | grep -Eoh '\$git-[A-Za-z0-9-]+' | sed 's/^\$//' | sort -u || true); do
+for skill in $(
+  {
+    grep -Eoh '⭐ `\$git-[A-Za-z0-9-]+`' README.md 2>/dev/null | grep -Eoh '\$git-[A-Za-z0-9-]+' | sed 's/^\$//' || true
+    for skill_file in skills/*/SKILL.md; do
+      [ -f "$skill_file" ] || continue
+      if grep -q '^description: ⭐' "$skill_file"; then
+        basename "$(dirname "$skill_file")"
+      fi
+    done
+  } | sort -u
+); do
   validate_starred_skill "$skill" "starred skill metadata"
 done
 

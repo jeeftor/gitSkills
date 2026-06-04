@@ -1,0 +1,7 @@
+interface:
+  display_name: "Git Workflow"
+  short_description: "Route Git, GitHub, and GitLab workflows."
+  default_prompt: "Use $git-workflow to choose the right Git workflow."
+
+policy:
+  allow_implicit_invocation: true

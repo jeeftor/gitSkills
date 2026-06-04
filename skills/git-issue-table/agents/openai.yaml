@@ -1,0 +1,7 @@
+interface:
+  display_name: "Git Issue Table"
+  short_description: "Summarize GitHub or GitLab issues."
+  default_prompt: "Use $git-issue-table to summarize open issues."
+
+policy:
+  allow_implicit_invocation: true

@@ -30,6 +30,9 @@ If the repo has `.pre-commit-config.yaml` or a documented `prek` workflow, prefe
 ## Commit And Push
 
 - Do not commit directly on default branches unless the user explicitly asks.
+- When the requested endpoint includes commit, push, PR, or MR delivery and the current branch is the default branch, create or switch to a non-default feature branch before staging or committing.
+- If the working tree is dirty on a default branch, do not switch branches until you know whether staged, unstaged, and untracked files belong on the PR/MR branch. Switching can carry uncommitted edits onto the wrong branch or hide unrelated local work.
+- If the default branch already contains unpushed work, first preserve those commits on a feature branch, then ask before restoring the local default branch to its upstream.
 - Do not commit or push when verification is failing unless the user explicitly accepts that status.
 - Use concise commit messages that match the repository style. See `commit.md`.
 - Push to the branch backing the confirmed PR/MR.

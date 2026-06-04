@@ -1,0 +1,35 @@
+{
+  "name": "git-skills",
+  "version": "1.0.0",
+  "description": "Reusable Git, GitHub, and GitLab workflow skills for Codex.",
+  "author": {
+    "name": "gitSkills maintainers"
+  },
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "git",
+    "github",
+    "gitlab",
+    "skills"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Git Skills",
+    "shortDescription": "GitHub and GitLab workflow skills for Codex.",
+    "longDescription": "Reusable Codex skills for Git, GitHub, GitLab, CI, PR, MR, issue, branch, and terminal demo workflows.",
+    "developerName": "gitSkills maintainers",
+    "category": "Productivity",
+    "capabilities": [
+      "Git workflows",
+      "GitHub and GitLab",
+      "CI triage",
+      "Issue and PR management"
+    ],
+    "defaultPrompt": [
+      "Use Git Skills to inspect this repository.",
+      "Use Git Skills to summarize open issues.",
+      "Use Git Skills to inspect the current PR."
+    ]
+  }
+}
