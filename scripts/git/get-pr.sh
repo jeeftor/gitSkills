@@ -168,7 +168,19 @@ case "$host" in
     exec "$(script_dir)/gh/get-pr.sh" "$@"
     ;;
   gitlab)
-    exec "$(script_dir)/glab/get-mr.sh" "$@"
+    if output="$("$(script_dir)/glab/get-mr.sh" "$@" 2>&1)"; then
+      printf '%s\n' "$output"
+      exit 0
+    fi
+    status="$?"
+    printf '%s\n' "$output" >&2
+    if [ -n "$branch" ]; then
+      printf '%s\n' "GitLab branch lookup checked repository: $repo" >&2
+      printf '%s\n' "For fork-to-upstream merge requests, comments and discussions usually live on the target project." >&2
+      printf '%s\n' "Retry with the target project, for example: scripts/git/get-pr.sh --host gitlab --repo <target-group/project> --branch $branch" >&2
+      printf '%s\n' "You can also pass the merge request URL or use --number with the target project." >&2
+    fi
+    exit "$status"
     ;;
   *)
     die "Could not determine PR/MR host. Use --host github or --host gitlab." 2

@@ -1,10 +1,10 @@
-# Codex Git Skills
+# Codex Git Workflow Plugin
 
 <p align="center">
   <img src="assets/gitSkills.webp" alt="gitSkills mascot" width="480">
 </p>
 
-Codex Git Skills is a global skill bundle for GitHub and GitLab workflows, plus repeatable terminal demo recording.
+Codex Git Workflow is a generic Git plugin for Codex. It detects GitHub or GitLab from local remotes, URLs, branch upstreams, and repository markers, then routes to provider-specific helpers only after the target is clear.
 
 ## Demo
 
@@ -41,7 +41,75 @@ The `git-pr-*` skills intentionally cover both GitHub pull requests and GitLab m
 
 This repository is packaged as a Codex plugin with `.codex-plugin/plugin.json`. The plugin exposes the skills under `skills/` and uses `agents/openai.yaml` metadata on the starred entry-point skills for Codex app display.
 
-Use plugin packaging when sharing this bundle across developers or through a Codex marketplace. Use `make install` when you only want to copy the skills into your local Codex skill directory.
+Use plugin packaging for normal installation, sharing across developers, or distribution through a Codex marketplace. Use the legacy direct skill installer only when you intentionally want to copy plain skill folders into your local Codex skill directory without plugin metadata.
+
+For local development, install this checkout as a plugin with:
+
+```bash
+make plugin-install
+```
+
+The helper creates or updates a local marketplace root at `~/.agents/git-skills-marketplace` by default, points that marketplace at this checkout, and runs `codex plugin add git-skills@git-skills-local`.
+Override the destination with `MARKETPLACE_ROOT=/path/to/root` or `MARKETPLACE_NAME=name`.
+
+After changing the plugin, refresh the local install and start a new Codex thread so the updated plugin metadata, skills, and helper files are loaded:
+
+```bash
+make plugin-refresh
+```
+
+`make plugin-refresh` bumps the Codex plugin cachebuster before reinstalling. Use `SKIP_CACHEBUSTER=1 make plugin-refresh` only when you need to reinstall without changing the manifest version.
+
+You can also install this checkout from any Codex marketplace that points at the plugin directory. A local marketplace entry should point at this checkout as a plugin source, usually under `./plugins/git-skills` relative to the marketplace root:
+
+```json
+{
+  "name": "local-git",
+  "plugins": [
+    {
+      "name": "git-skills",
+      "source": {
+        "source": "local",
+        "path": "./plugins/git-skills"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
+```
+
+Then add the marketplace root and install the plugin:
+
+```bash
+codex plugin marketplace add /path/to/local-marketplace-root
+codex plugin add git-skills@local-git
+```
+
+Replace `local-git` with the `name` from the marketplace file you install.
+
+After changing a manually configured local marketplace install, reinstall from that marketplace and start a new Codex thread:
+
+```bash
+codex plugin add git-skills@local-git
+```
+
+For Git-backed marketplace installs, refresh the marketplace snapshot before reinstalling:
+
+```bash
+codex plugin marketplace upgrade local-git
+codex plugin add git-skills@local-git
+```
+
+Plugin changes are not treated as live symlinks in active Codex threads. During local plugin development, validate the package and run the smoke install against a temporary Codex home:
+
+```bash
+make plugin-validate
+make plugin-smoke
+```
 
 ## Workflow Control
 
@@ -64,7 +132,7 @@ The skills prefer `gh` and `glab` for normal operations and use platform APIs on
 
 ## Helper Scripts
 
-Helper scripts live under `scripts/git/` and emit normalized JSON for branch inspection, table, detail, CI, and explicitly confirmed issue creation workflows:
+Helper scripts live under `scripts/git/` and emit normalized JSON for target detection, branch inspection, table, detail, CI, and explicitly confirmed issue mutation workflows:
 
 - `resolve-target.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, explicit repository, or all remotes into normalized target JSON without platform API calls.
 - `get-branch-state.sh` - inspect the current branch, upstream, default/base branch guess, dirty state summaries, ahead/behind counts, current HEAD, and local pushed/upstream HEADs for PR/MR create and update workflows.
@@ -75,6 +143,7 @@ Helper scripts live under `scripts/git/` and emit normalized JSON for branch ins
 - `get-ci.sh` - resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes and collect CI status.
 - `codex-color-probe.sh` - print rendering samples to test which color formats work in the current Codex surface.
 - `create-issue.sh` - resolve the current checkout, named remote, or GitHub/GitLab URL before issue creation.
+- `update-issue.sh` - resolve the current checkout, named remote, issue URL, or explicit repository before issue updates.
 - `gh/get-issues.sh`, `gh/get-issue.sh`, `gh/get-prs.sh`, `gh/get-pr.sh`, `gh/get-ci.sh`, and `gh/create-issue.sh` - GitHub provider helpers.
 - `glab/get-issues.sh`, `glab/get-issue.sh`, `glab/get-mrs.sh`, `glab/get-mr.sh`, `glab/get-ci.sh`, and `glab/create-issue.sh` - GitLab provider helpers.
 
@@ -95,6 +164,7 @@ scripts/git/get-prs.sh --state open --scope all --limit 50
 scripts/git/get-prs.sh all remotes --state open --scope review --limit 50
 scripts/git/get-pr.sh 31
 scripts/git/get-pr.sh upstream --number 2
+scripts/git/get-pr.sh --host gitlab --repo group/project --branch feature/from-fork
 scripts/git/get-ci.sh --target-type branch --target master
 scripts/git/get-ci.sh all remotes --target-type branch --target master
 scripts/git/codex-color-probe.sh
@@ -110,6 +180,8 @@ scripts/git/gh/get-ci.sh --repo jeeftor/gitSkills --target-type branch --target 
 scripts/git/glab/get-ci.sh --repo group/project --target-type branch --target main
 scripts/git/create-issue.sh --title "Issue title" --body-file /tmp/issue-body.md
 scripts/git/create-issue.sh upstream --title "Issue title" --body "Short body" --yes
+scripts/git/update-issue.sh 21 --comment "Follow-up note"
+scripts/git/update-issue.sh upstream 2 --add-label "help wanted" --yes
 scripts/git/gh/create-issue.sh --repo jeeftor/gitSkills --title "Issue title" --yes
 scripts/git/glab/create-issue.sh --repo group/project --title "Issue title" --yes
 ```
@@ -134,13 +206,18 @@ scripts/vhs/render.sh docs/demos/tapes/git-workflow.tape
 
 VHS tapes live under `docs/demos/tapes/` by default, and generated media is written to `docs/demos/output/`. The output directory intentionally keeps only `.gitkeep` tracked; rendered media remains ignored unless a change explicitly chooses to commit it.
 
-## Install
+## Legacy Direct Skill Install
+
+The legacy installer copies the raw skills into `~/.agents/skills/` and shared support files into `~/.agents/gitSkills/`. Prefer plugin installation unless you specifically need this direct skill-folder layout.
 
 From this checkout:
 
 ```bash
-make install
+make legacy-install
+make legacy-uninstall
 ```
+
+`make install` and `make uninstall` remain compatibility aliases for the legacy direct skill layout. They do not install or uninstall the plugin.
 
 The installer copies skills to:
 
@@ -165,6 +242,13 @@ List available Make targets:
 make
 ```
 
+Install or refresh the local plugin:
+
+```bash
+make plugin-install
+make plugin-refresh
+```
+
 Validate before pushing:
 
 ```bash
@@ -172,6 +256,18 @@ make validate
 ```
 
 Validation checks shell syntax, plugin metadata, static skill routing references, helper/reference paths, skill frontmatter, and local helper JSON contracts.
+
+Validate only the plugin packaging metadata with:
+
+```bash
+make plugin-validate
+```
+
+Smoke test local plugin installation without touching your real Codex home:
+
+```bash
+make plugin-smoke
+```
 
 Run the GitHub Actions-safe validation path with:
 

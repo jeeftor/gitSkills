@@ -125,6 +125,8 @@ Treat missing pipeline data as unknown. Include downstream or merge-train pipeli
 - MR diff: `glab mr diff <iid>`
 - Use GitLab API for discussions, notes, unresolved threads, approval state, and merge train state when `glab` lacks fields.
 
+Prefer `scripts/git/get-pr.sh --host gitlab --repo <target-group/project> --branch <source-branch>` for fork-to-upstream MRs. GitLab comments and discussions live on the target project MR, not necessarily on the fork remote that owns the source branch. Installed `glab` versions vary in supported `mr list` and `pipeline list` flags, so use the helper/API path before ad hoc `glab` fallbacks.
+
 Do not resolve discussions, approve, or edit MR text from read-only watcher/table workflows.
 
 ## Merge

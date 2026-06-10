@@ -19,7 +19,7 @@ repo_dir="$(cd "$(script_dir)/.." && pwd)"
 
 confirm_plan() {
   echo
-  echo "Codex Git Skills install/update plan"
+  echo "Codex Git Workflow legacy direct skill install/update plan"
   echo
   echo "Skills will be copied to:"
   for skill in $SKILLS; do
@@ -90,6 +90,6 @@ for skill in $SKILLS; do
 done
 
 echo
-echo "Installed Codex Git skills into $SKILLS_DIR"
-echo "Installed shared gitSkills assets into $GITSKILLS_HOME"
+echo "Installed legacy direct Codex Git skills into $SKILLS_DIR"
+echo "Installed shared legacy gitSkills assets into $GITSKILLS_HOME"
 echo "Codex detects installed skills automatically. Restart Codex only if they are not visible."

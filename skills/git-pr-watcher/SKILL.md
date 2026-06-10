@@ -14,7 +14,7 @@ Read `references/git-workflow/common.md`, `references/git-workflow/target-resolu
 ## Workflow
 
 1. Identify the PR or MR from the current branch, URL, number, IID, or user prompt.
-2. Prefer `scripts/git/get-pr.sh` for the initial detail snapshot, then inspect status, CI or pipelines, reviews or approvals, comments, unresolved threads or discussions, and branch freshness. For GitHub review-thread triage, use the helper's `review_threads`, `unresolved_threads_count`, and `data_gaps` fields; report a `review_threads` data gap as unknown, not resolved.
+2. Use `scripts/git/get-pr.sh` for the initial detail snapshot before raw provider CLI commands. For the current branch, use `scripts/git/get-pr.sh --branch <current-branch>`; for named remotes, use `scripts/git/get-pr.sh <remote> --branch <current-branch>`; for GitLab fork-to-upstream MRs, use the target project explicitly, such as `scripts/git/get-pr.sh --host gitlab --repo <target-group/project> --branch <source-branch>`. Then inspect status, CI or pipelines, reviews or approvals, comments, unresolved threads or discussions, and branch freshness. For GitHub review-thread triage, use the helper's `review_threads`, `unresolved_threads_count`, and `data_gaps` fields; report a `review_threads` data gap as unknown, not resolved.
 3. Inspect repo-local PR/MR templates when judging description completeness, and classify missing required template sections as documentation gaps.
 4. Classify findings as failing CI, requested changes, maintainer questions, documentation gaps, dependency issues, conflicts, or stale branch.
 5. Identify whether the next step belongs to `$git-ci-watch`, `$git-pr-address-comments`, `$git-pr-update`, `$git-pr-merge`, or another workflow.

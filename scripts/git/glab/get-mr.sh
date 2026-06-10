@@ -116,6 +116,12 @@ jq -n \
   --slurpfile mr "$mr_file" \
   --slurpfile discussions "$discussions_file" \
   --slurpfile approvals "$approvals_file" '
+  def value_or($key; $default): if has($key) then .[$key] else $default end;
+  def note_unresolved:
+    ((.resolvable // false) == true) and (has("resolved") and .resolved == false);
+  def discussion_unresolved:
+    ((.individual_note // false) | not) and
+    ((has("resolved") and .resolved == false) or ([(.notes // [])[] | select(note_unresolved)] | length > 0));
   ($mr[0]) as $item |
   ($discussions[0] // []) as $discussion_items |
   ($approvals[0] // {}) as $approval_data |
@@ -127,7 +133,7 @@ jq -n \
     title: $item.title,
     url: $item.web_url,
     state: $item.state,
-    is_draft: ($item.draft // $item.work_in_progress // false),
+    is_draft: ($item | if has("draft") then .draft elif has("work_in_progress") then .work_in_progress else false end),
     author: ($item.author.username // null),
     assignees: [($item.assignees // [])[].username],
     reviewers: [($item.reviewers // [])[].username],
@@ -142,10 +148,10 @@ jq -n \
     head_sha: ($item.sha // null),
     merge_status: ($item.merge_status // "unknown"),
     detailed_merge_status: ($item.detailed_merge_status // "unknown"),
-    has_conflicts: ($item.has_conflicts // null),
-    blocking_discussions_resolved: ($item.blocking_discussions_resolved // null),
+    has_conflicts: ($item | value_or("has_conflicts"; null)),
+    blocking_discussions_resolved: ($item | value_or("blocking_discussions_resolved"; null)),
     approvals: {
-      approved: ($approval_data.approved // null),
+      approved: ($approval_data | value_or("approved"; null)),
       approvals_required: ($approval_data.approvals_required // null),
       approvals_left: ($approval_data.approvals_left // null),
       approved_by: [($approval_data.approved_by // [])[] | .user.username]
@@ -154,13 +160,13 @@ jq -n \
       $discussion_items[] | {
         id,
         individual_note: (.individual_note // false),
-        resolved: (.resolved // null),
+        resolved: (value_or("resolved"; null)),
         notes: [
           (.notes // [])[] | {
             author: (.author.username // null),
             system: (.system // false),
             resolvable: (.resolvable // false),
-            resolved: (.resolved // null),
+            resolved: (value_or("resolved"; null)),
             created_at,
             updated_at,
             body: (.body // "")
@@ -170,7 +176,7 @@ jq -n \
     ],
     unresolved_discussions: ([
       $discussion_items[] |
-      select((.resolved // true) == false)
+      select(discussion_unresolved)
     ] | length),
     pipeline: {
       id: ($item.head_pipeline.id // null),

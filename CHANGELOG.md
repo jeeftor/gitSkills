@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added plugin packaging validation and a temporary-Codex-home plugin smoke install target.
+- Added local plugin install and refresh helpers plus `make plugin-install` and `make plugin-refresh`.
+- Added explicit `make legacy-install` and `make legacy-uninstall` aliases for the old direct skill/script layout.
 - Added `$vhs` for repeatable terminal screenshots, GIFs, videos, output guidance, runner selection, deterministic fixture guidance, and GIF optimization with Charmbracelet VHS.
 - Added VHS helper scripts.
   - `scripts/vhs/check.sh` checks required VHS rendering tools and optional optimization tools.
@@ -59,6 +62,9 @@
 
 ### Changed
 
+- Updated GitLab MR detail collection to preserve unresolved discussion state, count unresolved discussions correctly, and point fork-to-upstream branch lookups at the explicit target-project helper path.
+- Reframed the package as a generic Git Workflow plugin that detects GitHub or GitLab before dispatching to provider helpers.
+- Reframed direct skill installation as a legacy compatibility path and made plugin installation the primary README flow.
 - Updated PR/MR creation, review, and watcher guidance to inspect repo-local templates, use the only applicable template for creation, ask when multiple templates apply, and flag missing required sections in read-only workflows.
 - Updated issue creation and body-update guidance to inspect repo-local issue templates, preserve required sections, and ask when multiple templates apply.
 - Added Codex plugin packaging metadata and Codex app metadata for starred entry-point skills.

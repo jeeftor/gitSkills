@@ -7,7 +7,7 @@ SKILLS="git-workflow git-branch-sync git-issue-table git-issue-details git-issue
 
 confirm_plan() {
   echo
-  echo "Codex Git Skills uninstall plan"
+  echo "Codex Git Workflow legacy direct skill uninstall plan"
   echo
   echo "Skill directories will be removed:"
   for skill in $SKILLS; do
@@ -37,4 +37,4 @@ rm -rf "${GITSKILLS_HOME:?}"
 echo "Removed shared gitSkills assets"
 
 echo
-echo "Uninstalled Codex Git skills. Restart Codex to refresh the skill list."
+echo "Uninstalled legacy direct Codex Git skills. Restart Codex to refresh the skill list."

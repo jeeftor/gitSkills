@@ -38,12 +38,13 @@ GitHub review threads require GraphQL for repeatable unresolved-thread data. Pre
 
 Useful commands:
 
+- `scripts/git/get-pr.sh --host gitlab --repo <target-group/project> --branch <source-branch>` for fork-to-upstream MR comments and discussions.
 - `scripts/git/get-pr.sh <gitlab-remote> --number <iid>`
 - `glab mr view <iid>`
 - `glab mr diff <iid>`
 - GitLab API for discussions, notes, approval state, and unresolved threads when `glab` lacks fields.
 
-Treat "GitLab PR" as a merge request. Use `discussions` and `unresolved_discussions` from the GitLab MR helper when they are present.
+Treat "GitLab PR" as a merge request. Use `discussions` and `unresolved_discussions` from the GitLab MR helper when they are present. If the source branch lives in a fork but the MR targets an upstream project, query the target project because that is where GitLab stores MR discussion state.
 
 ## Safety
 

@@ -96,6 +96,7 @@ git commit -m "initial fixture commit" >/dev/null
 
 git remote add origin https://github.com/example/repo.git
 git remote add gitlab git@gitlab.example.com:group/project.git
+git remote add upstream git@gitlab.example.com:group/project.git
 git update-ref refs/remotes/origin/master HEAD
 git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master
 
@@ -125,6 +126,13 @@ assert_json "$gitlab_json" '.repo == "group/project"' "named GitLab remote resol
 assert_json "$gitlab_json" '.source == "remote"' "named remote records remote source"
 assert_json "$gitlab_json" '.remote == "gitlab"' "named remote records remote name"
 
+upstream_json="$tmp_dir/resolve-upstream.json"
+"$repo_root/scripts/git/resolve-target.sh" upstream >"$upstream_json"
+assert_json "$upstream_json" '.host == "gitlab"' "explicit upstream remote resolves GitLab host"
+assert_json "$upstream_json" '.repo == "group/project"' "explicit upstream remote resolves GitLab repo"
+assert_json "$upstream_json" '.source == "remote"' "explicit upstream remote records remote source"
+assert_json "$upstream_json" '.remote == "upstream"' "explicit upstream remote records remote name"
+
 all_remotes_json="$tmp_dir/resolve-all-remotes.json"
 "$repo_root/scripts/git/resolve-target.sh" --all-remotes >"$all_remotes_json"
 assert_json "$all_remotes_json" '.host == "mixed"' "all-remotes target reports mixed host"
@@ -132,6 +140,7 @@ assert_json "$all_remotes_json" '.repo == null' "all-remotes target has null top
 assert_json "$all_remotes_json" '.targets | length == 2' "all-remotes target deduplicates repositories"
 assert_json "$all_remotes_json" '.targets | any(.host == "github" and .repo == "example/repo")' "all-remotes includes GitHub target"
 assert_json "$all_remotes_json" '.targets | any(.host == "gitlab" and .repo == "group/project")' "all-remotes includes GitLab target"
+assert_json "$all_remotes_json" '[.targets[] | select(.host == "gitlab" and .repo == "group/project")] | length == 1' "all-remotes deduplicates GitLab remotes"
 
 if "$repo_root/scripts/git/resolve-target.sh" --repo group/project >"$tmp_dir/resolve-explicit-repo-no-host.json" 2>"$tmp_dir/resolve-explicit-repo-no-host.err"; then
   echo "resolve-target.sh --repo without --host should fail" >&2
@@ -485,7 +494,40 @@ case "$2" in
     esac
     ;;
   *'/discussions')
-    printf '%s\n' '[]'
+    cat <<'JSON'
+[
+  {
+    "id": "discussion_unresolved",
+    "individual_note": false,
+    "resolved": false,
+    "notes": [
+      {
+        "author": {"username": "reviewer"},
+        "system": false,
+        "resolvable": true,
+        "resolved": false,
+        "created_at": "2026-06-10T10:26:04.494-04:00",
+        "updated_at": "2026-06-10T10:26:04.494-04:00",
+        "body": "Please fix this"
+      }
+    ]
+  },
+  {
+    "id": "note_non_resolvable",
+    "individual_note": true,
+    "notes": [
+      {
+        "author": {"username": "tester"},
+        "system": false,
+        "resolvable": false,
+        "created_at": "2026-06-10T10:30:00.000-04:00",
+        "updated_at": "2026-06-10T10:30:00.000-04:00",
+        "body": "FYI"
+      }
+    ]
+  }
+]
+JSON
     ;;
   *'/approvals')
     printf '%s\n' '{}'
@@ -555,6 +597,15 @@ assert_json "$github_ci_json" '.failed_logs | all(.job != null)' "GitHub CI help
 "$repo_root/scripts/git/glab/get-mr.sh" --repo group/project --branch feature/helper-smoke >"$tmp_dir/glab-mr-opened.json"
 assert_file_contains "$glab_log" "state=opened" "GitLab branch lookup defaults to opened MRs"
 assert_json "$tmp_dir/glab-mr-opened.json" '.number == 11' "GitLab branch lookup reads the opened MR match"
+assert_json "$tmp_dir/glab-mr-opened.json" '.discussions[] | select(.id == "discussion_unresolved") | .resolved == false' "GitLab MR helper preserves unresolved discussion state"
+assert_json "$tmp_dir/glab-mr-opened.json" '.discussions[] | select(.id == "discussion_unresolved") | .notes[] | .resolved == false' "GitLab MR helper preserves unresolved note state"
+assert_json "$tmp_dir/glab-mr-opened.json" '.unresolved_discussions == 1' "GitLab MR helper counts unresolved resolvable discussions"
+
+: >"$glab_log"
+"$repo_root/scripts/git/get-pr.sh" --host gitlab --repo group/project --branch feature/helper-smoke >"$tmp_dir/generic-gitlab-mr-opened.json"
+assert_file_contains "$glab_log" "state=opened" "Generic PR helper uses GitLab opened branch lookup for explicit target projects"
+assert_json "$tmp_dir/generic-gitlab-mr-opened.json" '.repo == "group/project"' "Generic PR helper preserves explicit GitLab target project"
+assert_json "$tmp_dir/generic-gitlab-mr-opened.json" '.unresolved_discussions == 1' "Generic PR helper returns GitLab unresolved discussion details"
 
 : >"$glab_log"
 "$repo_root/scripts/git/glab/get-mr.sh" --repo group/project --branch feature/helper-smoke --state all >"$tmp_dir/glab-mr-all.json"

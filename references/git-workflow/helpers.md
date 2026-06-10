@@ -172,7 +172,7 @@ Without `--yes`, `scripts/git/update-issue.sh` and provider update helpers must 
 - `scripts/git/get-issues.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then collect normalized issue JSON with the provider helper. Supports `--scope all|authored|assigned`.
 - `scripts/git/get-issue.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or issue URL, then collect normalized detail JSON for one issue.
 - `scripts/git/get-prs.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes, then collect normalized PR/MR JSON with table-ready status and color-hint fields.
-- `scripts/git/get-pr.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, PR/MR URL, number, IID, or branch, then collect normalized detail JSON for one PR/MR.
+- `scripts/git/get-pr.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, PR/MR URL, number, IID, or branch, then collect normalized detail JSON for one PR/MR. For GitLab fork-to-upstream MRs, pass the target project explicitly with `--host gitlab --repo <target-group/project> --branch <source-branch>` so discussion state is collected from the project that owns the MR.
 - `scripts/git/get-ci.sh`: resolve the current checkout, named remote, GitHub/GitLab URL, or all remotes, then collect normalized CI JSON with the provider helper.
 - `scripts/git/codex-color-probe.sh`: print ANSI, Markdown, HTML, plain-label, and JSON color-hint samples to test what the current Codex surface renders.
 - `scripts/git/create-issue.sh`: resolve the current checkout, named remote, or GitHub/GitLab URL, then delegate issue creation to the provider helper.

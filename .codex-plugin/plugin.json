@@ -1,7 +1,7 @@
 {
   "name": "git-skills",
   "version": "1.0.0",
-  "description": "Reusable Git, GitHub, and GitLab workflow skills for Codex.",
+  "description": "Generic Git workflow plugin for Codex with GitHub and GitLab detection.",
   "author": {
     "name": "gitSkills maintainers"
   },
@@ -11,25 +11,26 @@
     "git",
     "github",
     "gitlab",
-    "skills"
+    "skills",
+    "workflow"
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Git Skills",
-    "shortDescription": "GitHub and GitLab workflow skills for Codex.",
-    "longDescription": "Reusable Codex skills for Git, GitHub, GitLab, CI, PR, MR, issue, branch, and terminal demo workflows.",
+    "displayName": "Git Workflow",
+    "shortDescription": "Generic Git workflows that detect GitHub or GitLab.",
+    "longDescription": "Reusable Codex workflows for local Git, GitHub pull requests, GitLab merge requests, CI, issues, branches, and terminal demo recording. The entry-point skills resolve repository targets first, then dispatch through generic helper scripts to GitHub or GitLab provider implementations.",
     "developerName": "gitSkills maintainers",
     "category": "Productivity",
     "capabilities": [
-      "Git workflows",
-      "GitHub and GitLab",
+      "Generic Git workflows",
+      "GitHub and GitLab detection",
       "CI triage",
       "Issue and PR management"
     ],
     "defaultPrompt": [
-      "Use Git Skills to inspect this repository.",
-      "Use Git Skills to summarize open issues.",
-      "Use Git Skills to inspect the current PR."
+      "Use Git Workflow to inspect this repository.",
+      "Use Git Workflow to summarize open issues.",
+      "Use Git Workflow to inspect the current PR or MR."
     ]
   }
 }

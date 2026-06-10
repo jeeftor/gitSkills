@@ -1,5 +1,7 @@
 # Git Skill Matrix
 
+These skills ship inside the `git-skills` Codex plugin. `$git-workflow` is the generic Git entry point: it resolves the local repository target, detects GitHub or GitLab when possible, and then routes to the smallest specialist workflow.
+
 ```mermaid
 flowchart TD
     WORKFLOW["$git-workflow<br/>Route Git work"]
@@ -60,7 +62,7 @@ Completed workflows use `references/git-workflow/common.md` completion handoff g
 `$git-issue-create` and issue body updates inspect repo-local issue templates, use the only applicable template automatically, and ask when multiple templates apply.
 `$git-branch-sync` uses `scripts/git/get-branch-state.sh` before recommending or performing branch sync mutations.
 `$git-pr-table` uses `scripts/git/get-prs.sh` for the common scripted PR/MR collection path before handing one selected item to `$git-pr-watcher`.
-`$git-pr-watcher` uses `scripts/git/get-pr.sh` for the common scripted PR/MR detail path before recommending next actions.
+`$git-pr-watcher` uses `scripts/git/get-pr.sh` for the common scripted PR/MR detail path before recommending next actions, including explicit target-project lookup for GitLab fork-to-upstream MR discussions.
 `$git-pr-review` uses `scripts/git/get-pr.sh` for initial status context before diff inspection and findings, and includes a `codex-security:security-diff-scan` pass for adversarial or security review requests when available.
 `$git-pr-create`, `$git-pr-watcher`, and `$git-pr-review` inspect repo-local PR/MR templates when composing or evaluating descriptions, use the only applicable template automatically for creation, and flag missing required template sections in read-only workflows.
 Use `$git-ci-watch` instead of `$git-pr-watcher` when the user only asks about CI for the latest push, branch, commit, run, pipeline, PR, or MR.
