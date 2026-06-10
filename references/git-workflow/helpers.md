@@ -4,21 +4,24 @@ Use helper scripts for repeated target detection, collection, and normalization.
 
 ## Location
 
-Repo-local helpers live under:
+In plugin installs, helper scripts and references are packaged at the plugin root alongside `skills/`:
 
 ```text
 scripts/git/
+references/git-workflow/
 ```
 
-During `make install`, these helpers are copied once into the shared gitSkills install directory:
+Use these root-relative paths in skill instructions and examples. When developing this repository, run the repo-local helper paths directly from the checkout.
+
+The legacy direct installer still supports the old copied-asset layout. During `make legacy-install` or its compatibility alias `make install`, helpers are copied once into the shared legacy gitSkills install directory:
 
 ```text
 ~/.agents/gitSkills/scripts/git/
 ```
 
-Each installed skill gets a `scripts/git` symlink back to that shared helper directory so relative helper paths keep working without duplicating the full helper tree per skill.
+Each legacy-installed skill gets a `scripts/git` symlink back to that shared helper directory so relative helper paths keep working without duplicating the full helper tree per skill.
 
-Prefer the installed helper next to the active skill when working outside this repository checkout. Use the repo-local helper when developing this repository.
+Prefer the plugin-packaged or repo-local helper path for normal Codex plugin use. Use the legacy shared helper path only when intentionally working with the direct skill-folder install.
 
 ## Contract
 

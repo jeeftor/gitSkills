@@ -13,7 +13,8 @@
 - Include plain status values first; use color only for human-facing output or as explicit color hint fields so Codex can preserve the meaning in final responses.
 
 ## Git Workflow
-- Default branch: `master`.
+- Default branch for this repository: `master`.
+- When gitSkills workflows inspect another repository, respect that repository's actual default branch or PR/MR target branch instead of applying this repo's `master` default.
 - Work directly on `master` unless the user explicitly asks for a separate branch.
 - Before every commit, verify whether `README.md` and `agent-matrix.md` need to be updated for the change; update them in the same commit when user-facing behavior, install steps, commands, skills, helpers, workflows, or routing relationships change.
 - Update `CHANGELOG.md` for every commit with a concise description of the user-visible, workflow, tooling, or documentation change.

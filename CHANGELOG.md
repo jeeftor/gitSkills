@@ -65,6 +65,10 @@
 - Updated GitLab MR detail collection to preserve unresolved discussion state, count unresolved discussions correctly, and point fork-to-upstream branch lookups at the explicit target-project helper path.
 - Reframed the package as a generic Git Workflow plugin that detects GitHub or GitLab before dispatching to provider helpers.
 - Reframed direct skill installation as a legacy compatibility path and made plugin installation the primary README flow.
+- Documented the Codex command completion distinction between the plugin-level `Git Workflow` entry and individual exported skill entries.
+- Updated helper reference guidance to distinguish plugin-packaged helper paths from the legacy copied helper layout.
+- Expanded `make` help with workflow-oriented plugin install, update, validation, legacy install, and demo directions.
+- Clarified default-branch guidance so gitSkills keeps `master` for this repository while respecting other repositories' actual default or PR/MR target branches.
 - Updated PR/MR creation, review, and watcher guidance to inspect repo-local templates, use the only applicable template for creation, ask when multiple templates apply, and flag missing required sections in read-only workflows.
 - Updated issue creation and body-update guidance to inspect repo-local issue templates, preserve required sections, and ask when multiple templates apply.
 - Added Codex plugin packaging metadata and Codex app metadata for starred entry-point skills.
@@ -122,7 +126,7 @@
 - Updated `make validate` to run static skill routing validation.
 - Updated `make validate` to run local helper JSON smoke tests.
 - Updated mutation and commit guidance so changelog updates follow repo-local instructions without adding a separate gitSkills changelog skill.
-- Documented policy decisions to avoid a broad `$git-feature` skill, provider-specific alias skills, and plugin packaging until repeated workflow evidence justifies them.
+- Documented policy decisions to avoid a broad `$git-feature` skill and provider-specific alias skills.
 - Refreshed `plan.md` to remove stale backlog detail and point future implementation work to GitHub issues.
 - Removed `plan.md`; roadmap and follow-up work now live in GitHub issues, with durable guidance kept in README, references, and skill files.
 

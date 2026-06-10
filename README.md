@@ -14,7 +14,7 @@ Codex Git Workflow is a generic Git plugin for Codex. It detects GitHub or GitLa
   <img src="docs/demos/output/issue-table.gif" alt="$git-issue-table demo" width="900">
 </p>
 
-It installs plain skill names:
+The plugin exposes these skill commands:
 
 - ⭐ `$git-workflow` - choose a Git, GitHub, or GitLab workflow
 - ⭐ `$git-pr` - route GitHub pull request or GitLab merge request work
@@ -37,9 +37,17 @@ See [agent-matrix.md](agent-matrix.md) for the skill routing hierarchy.
 
 The `git-pr-*` skills intentionally cover both GitHub pull requests and GitLab merge requests; provider-specific alias skills are not installed.
 
+In Codex command completion, this repository can appear as both a plugin and individual skills:
+
+- `Git Workflow [Plugin]` is the plugin-level entry from `.codex-plugin/plugin.json`.
+- `Git Workflow [Skill]`, `Git PR [Skill]`, `Git CI Watch [Skill]`, and `Git Issue Table [Skill]` are starred entry-point skills with `agents/openai.yaml` display metadata.
+- Raw entries such as `git-branch-sync (git-skills) [Skill]` are regular exported skills from the same plugin.
+
+Use the plugin-level `Git Workflow` entry for broad Git workflow requests. Use a skill entry when you already know the exact workflow you want.
+
 ## Plugin Packaging
 
-This repository is packaged as a Codex plugin with `.codex-plugin/plugin.json`. The plugin exposes the skills under `skills/` and uses `agents/openai.yaml` metadata on the starred entry-point skills for Codex app display.
+This repository is packaged as a Codex plugin with `.codex-plugin/plugin.json`. The plugin exposes the skills under `skills/`, packages shared references and helper scripts from the repository root, and uses `agents/openai.yaml` metadata on the starred entry-point skills for Codex app display.
 
 Use plugin packaging for normal installation, sharing across developers, or distribution through a Codex marketplace. Use the legacy direct skill installer only when you intentionally want to copy plain skill folders into your local Codex skill directory without plugin metadata.
 

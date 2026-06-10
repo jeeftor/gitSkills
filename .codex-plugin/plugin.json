@@ -1,6 +1,6 @@
 {
   "name": "git-skills",
-  "version": "1.0.0",
+  "version": "1.0.0+codex.20260610154320",
   "description": "Generic Git workflow plugin for Codex with GitHub and GitLab detection.",
   "author": {
     "name": "gitSkills maintainers"
